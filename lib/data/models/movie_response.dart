@@ -6,15 +6,19 @@ class MovieResponse extends Equatable {
 
   const MovieResponse({required this.movieList});
 
-  factory MovieResponse.fromJson(Map<String, dynamic> json) => MovieResponse(
-        movieList: List<MovieModel>.from((json["results"] as List)
-            .map((x) => MovieModel.fromJson(x))
-            .where((element) => element.posterPath != null)),
-      );
+  factory MovieResponse.fromJson(Map<String, dynamic> movies) {
+    return MovieResponse(
+      movieList: List<MovieModel>.from((movies['results'] as List).map((movie) {
+        return MovieModel.fromJson(movie);
+      })),
+    );
+  }
 
-  Map<String, dynamic> toJson() => {
-        "results": List<dynamic>.from(movieList.map((x) => x.toJson())),
-      };
+  Map<String, dynamic> toJson() {
+    return {
+      'results': List<dynamic>.from(movieList.map((movies) => movies.toJson())),
+    };
+  }
 
   @override
   List<Object> get props => [movieList];

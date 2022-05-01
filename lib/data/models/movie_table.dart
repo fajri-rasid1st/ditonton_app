@@ -4,9 +4,9 @@ import 'package:equatable/equatable.dart';
 
 class MovieTable extends Equatable {
   final int id;
-  final String? title;
-  final String? posterPath;
-  final String? overview;
+  final String title;
+  final String overview;
+  final String posterPath;
 
   const MovieTable({
     required this.id,
@@ -19,8 +19,8 @@ class MovieTable extends Equatable {
     return MovieTable(
       id: movie.id,
       title: movie.title,
-      posterPath: movie.posterPath,
       overview: movie.overview,
+      posterPath: movie.posterPath,
     );
   }
 
@@ -28,8 +28,8 @@ class MovieTable extends Equatable {
     return MovieTable(
       id: movie['id'],
       title: movie['title'],
-      posterPath: movie['posterPath'],
       overview: movie['overview'],
+      posterPath: movie['posterPath'],
     );
   }
 
@@ -37,20 +37,20 @@ class MovieTable extends Equatable {
     return {
       'id': id,
       'title': title,
-      'posterPath': posterPath,
       'overview': overview,
+      'posterPath': posterPath,
     };
   }
 
   Movie toEntity() {
     return Movie.watchlist(
       id: id,
+      title: title,
       overview: overview,
       posterPath: posterPath,
-      title: title,
     );
   }
 
   @override
-  List<Object?> get props => [id, title, posterPath, overview];
+  List<Object?> get props => [id, title, overview, posterPath];
 }

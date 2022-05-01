@@ -1,8 +1,8 @@
 import 'dart:async';
-
 import 'package:ditonton/data/models/movie_table.dart';
 import 'package:ditonton/data/models/movie_watchlist.dart';
-import 'package:ditonton/data/models/tv_watchlist.dart';
+import 'package:ditonton/data/models/tv_series_table.dart';
+import 'package:ditonton/data/models/tv_series_watchlist.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -33,8 +33,7 @@ class DatabaseHelper {
 
   /// Create database table
   Future<void> _onCreate(Database db, int version) async {
-    await db.execute(
-        '''
+    await db.execute('''
       CREATE TABLE $movieWatchlistTable (
         ${MovieWatchlistFields.id} INTEGER PRIMARY KEY AUTOINCREMENT,
         ${MovieWatchlistFields.title} TEXT,
@@ -42,55 +41,80 @@ class DatabaseHelper {
         ${MovieWatchlistFields.posterPath} TEXT)
         ''');
 
-    await db.execute(
-        '''
-      CREATE TABLE $tvWatchlistTable (
-        ${TvWatchlistFields.id} INTEGER PRIMARY KEY AUTOINCREMENT,
-        ${TvWatchlistFields.name} TEXT,
-        ${TvWatchlistFields.overview} TEXT,
-        ${TvWatchlistFields.posterPath} TEXT)
+    await db.execute('''
+      CREATE TABLE $tvSeriesWatchlistTable (
+        ${TvSeriesWatchlistFields.id} INTEGER PRIMARY KEY AUTOINCREMENT,
+        ${TvSeriesWatchlistFields.name} TEXT,
+        ${TvSeriesWatchlistFields.overview} TEXT,
+        ${TvSeriesWatchlistFields.posterPath} TEXT)
         ''');
   }
 
-  Future<int> insertMovieWatchlist(MovieTable movie) async {
+  Future<int> insertWatchlist(
+    MovieTable? movie,
+    TvSeriesTable? tvSeries,
+  ) async {
     final db = await database;
 
-    return await db.insert(movieWatchlistTable, movie.toJson());
+    if (movie != null) {
+      return await db.insert(movieWatchlistTable, movie.toJson());
+    }
+
+    return await db.insert(tvSeriesWatchlistTable, tvSeries!.toJson());
   }
 
-  Future<int> insertTvWatchlist(MovieTable movie) async {
+  Future<int> removeWatchlist(
+    MovieTable? movie,
+    TvSeriesTable? tvSeries,
+  ) async {
     final db = await database;
 
-    return await db.insert(movieWatchlistTable, movie.toJson());
-  }
+    if (movie != null) {
+      return await db.delete(
+        movieWatchlistTable,
+        where: '${MovieWatchlistFields.id} = ?',
+        whereArgs: [movie.id],
+      );
+    }
 
-  Future<int> removeWatchlist(MovieTable movie) async {
-    final db = await database;
-    return await db!.delete(
-      _tblWatchlist,
-      where: 'id = ?',
-      whereArgs: [movie.id],
+    return await db.delete(
+      tvSeriesWatchlistTable,
+      where: '${TvSeriesWatchlistFields.id} = ?',
+      whereArgs: [tvSeries!.id],
     );
   }
 
-  Future<Map<String, dynamic>?> getMovieById(int id) async {
+  Future<Map<String, dynamic>?> getMovieOrTvSeriesById(
+    int id,
+    String type,
+  ) async {
     final db = await database;
-    final results = await db!.query(
-      _tblWatchlist,
-      where: 'id = ?',
+
+    final watchlistTable = type.toLowerCase() == 'movie'
+        ? movieWatchlistTable
+        : tvSeriesWatchlistTable;
+
+    final watchlistId = type.toLowerCase() == 'movie'
+        ? MovieWatchlistFields.id
+        : TvSeriesWatchlistFields.id;
+
+    final results = await db.query(
+      watchlistTable,
+      where: '$watchlistId = ?',
       whereArgs: [id],
     );
 
-    if (results.isNotEmpty) {
-      return results.first;
-    } else {
-      return null;
-    }
+    return results.isNotEmpty ? results.first : null;
   }
 
-  Future<List<Map<String, dynamic>>> getWatchlistMovies() async {
+  Future<List<Map<String, dynamic>>> getWatchlist(String type) async {
     final db = await database;
-    final List<Map<String, dynamic>> results = await db!.query(_tblWatchlist);
+
+    final watchlistTable = type.toLowerCase() == 'movie'
+        ? movieWatchlistTable
+        : tvSeriesWatchlistTable;
+
+    final List<Map<String, dynamic>> results = await db.query(watchlistTable);
 
     return results;
   }

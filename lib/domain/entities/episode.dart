@@ -5,7 +5,7 @@ class Episode extends Equatable {
   final int episodeNumber;
   final String name;
   final String overview;
-  final int? runtime;
+  final int runtime;
   final String stillPath;
 
   const Episode({
@@ -18,7 +18,7 @@ class Episode extends Equatable {
   });
 
   @override
-  List<Object?> get props => [
+  List<Object> get props => [
         airDate,
         episodeNumber,
         name,

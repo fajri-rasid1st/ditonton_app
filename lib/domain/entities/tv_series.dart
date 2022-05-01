@@ -2,9 +2,9 @@ import 'package:equatable/equatable.dart';
 
 class TvSeries extends Equatable {
   final int id;
-  final String? name;
-  final String? overview;
-  final String? posterPath;
+  final String name;
+  final String overview;
+  final String posterPath;
 
   const TvSeries({
     required this.id,

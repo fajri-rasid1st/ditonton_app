@@ -31,7 +31,7 @@ class DatabaseHelper {
     return await openDatabase(path, version: 1, onCreate: _onCreate);
   }
 
-  /// Create database table
+  /// Create database table.
   Future<void> _onCreate(Database db, int version) async {
     await db.execute(
         '''
@@ -52,66 +52,71 @@ class DatabaseHelper {
         ''');
   }
 
-  Future<int> insertWatchlist(MovieTable? movie, TvShowTable? tvShow) async {
+  Future<int> insertMovieWatchlist(MovieTable movie) async {
     final db = await database;
 
-    if (movie != null) {
-      return await db.insert(movieWatchlistTable, movie.toJson());
-    }
-
-    return await db.insert(tvShowWatchlistTable, tvShow!.toJson());
+    return await db.insert(movieWatchlistTable, movie.toJson());
   }
 
-  Future<int> removeWatchlist(MovieTable? movie, TvShowTable? tvShow) async {
+  Future<int> insertTvShowWatchlist(TvShowTable tvShow) async {
     final db = await database;
 
-    if (movie != null) {
-      return await db.delete(
-        movieWatchlistTable,
-        where: '${MovieWatchlistFields.id} = ?',
-        whereArgs: [movie.id],
-      );
-    }
+    return await db.insert(tvShowWatchlistTable, tvShow.toJson());
+  }
+
+  Future<int> removeMovieWatchlist(MovieTable movie) async {
+    final db = await database;
+
+    return await db.delete(
+      movieWatchlistTable,
+      where: '${MovieWatchlistFields.id} = ?',
+      whereArgs: [movie.id],
+    );
+  }
+
+  Future<int> removeTvShowWatchlist(TvShowTable tvShow) async {
+    final db = await database;
 
     return await db.delete(
       tvShowWatchlistTable,
       where: '${TvShowWatchlistFields.id} = ?',
-      whereArgs: [tvShow!.id],
+      whereArgs: [tvShow.id],
     );
   }
 
-  Future<Map<String, dynamic>?> getMovieOrTvShowById(
-    int id,
-    String type,
-  ) async {
+  Future<Map<String, dynamic>?> getMovieById(int id) async {
     final db = await database;
 
-    final watchlistTable = type.toLowerCase() == 'movie'
-        ? movieWatchlistTable
-        : tvShowWatchlistTable;
-
-    final watchlistId = type.toLowerCase() == 'movie'
-        ? MovieWatchlistFields.id
-        : TvShowWatchlistFields.id;
-
     final results = await db.query(
-      watchlistTable,
-      where: '$watchlistId = ?',
+      movieWatchlistTable,
+      where: '${MovieWatchlistFields.id} = ?',
       whereArgs: [id],
     );
 
     return results.isNotEmpty ? results.first : null;
   }
 
-  Future<List<Map<String, dynamic>>> getWatchlist(String type) async {
+  Future<Map<String, dynamic>?> getTvShowById(int id) async {
     final db = await database;
 
-    final watchlistTable = type.toLowerCase() == 'movie'
-        ? movieWatchlistTable
-        : tvShowWatchlistTable;
+    final results = await db.query(
+      tvShowWatchlistTable,
+      where: '${TvShowWatchlistFields.id} = ?',
+      whereArgs: [id],
+    );
 
-    final List<Map<String, dynamic>> results = await db.query(watchlistTable);
+    return results.isNotEmpty ? results.first : null;
+  }
 
-    return results;
+  Future<List<Map<String, dynamic>>> getWatchlistMovies() async {
+    final db = await database;
+
+    return await db.query(movieWatchlistTable);
+  }
+
+  Future<List<Map<String, dynamic>>> getWatchlistTvShows() async {
+    final db = await database;
+
+    return await db.query(tvShowWatchlistTable);
   }
 }

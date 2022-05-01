@@ -1,5 +1,5 @@
-import 'package:ditonton/domain/entities/movie.dart';
 import 'package:equatable/equatable.dart';
+import 'package:ditonton/domain/entities/movie.dart';
 
 class MovieModel extends Equatable {
   final int id;
@@ -18,8 +18,8 @@ class MovieModel extends Equatable {
     return MovieModel(
       id: movie['id'] as int,
       title: movie['title'] as String,
-      overview: movie['overview'],
-      posterPath: movie['poster_path'],
+      overview: movie['overview'] ?? '',
+      posterPath: movie['poster_path'] ?? '',
     );
   }
 
@@ -27,8 +27,8 @@ class MovieModel extends Equatable {
     return {
       'id': id,
       'title': title,
-      'overview': overview ?? '',
-      'poster_path': posterPath ?? '',
+      'overview': overview,
+      'poster_path': posterPath,
     };
   }
 

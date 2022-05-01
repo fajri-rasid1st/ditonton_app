@@ -1,6 +1,6 @@
-const String tvSeriesWatchlistTable = 'tv_series_watchlist_table';
+const String tvShowWatchlistTable = 'tv_show_watchlist_table';
 
-class TvSeriesWatchlistFields {
+class TvShowWatchlistFields {
   static const String id = '_id';
   static const String name = 'name';
   static const String overview = 'overview';

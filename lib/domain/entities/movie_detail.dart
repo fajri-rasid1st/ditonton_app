@@ -1,5 +1,5 @@
-import 'package:ditonton/domain/entities/genre.dart';
 import 'package:equatable/equatable.dart';
+import 'package:ditonton/domain/entities/genre.dart';
 
 class MovieDetail extends Equatable {
   final String backdropPath;

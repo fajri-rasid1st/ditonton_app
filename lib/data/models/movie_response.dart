@@ -1,25 +1,27 @@
-import 'package:ditonton/data/models/movie_model.dart';
 import 'package:equatable/equatable.dart';
+import 'package:ditonton/data/models/movie_model.dart';
 
 class MovieResponse extends Equatable {
-  final List<MovieModel> movieList;
+  final List<MovieModel> movies;
 
-  const MovieResponse({required this.movieList});
+  const MovieResponse({required this.movies});
 
   factory MovieResponse.fromJson(Map<String, dynamic> movies) {
     return MovieResponse(
-      movieList: List<MovieModel>.from((movies['results'] as List).map((movie) {
-        return MovieModel.fromJson(movie);
-      })),
+      movies: List<MovieModel>.from(
+        (movies['results'] as List).map(
+          (movie) => MovieModel.fromJson(movie),
+        ),
+      ),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'results': List<dynamic>.from(movieList.map((movies) => movies.toJson())),
+      'results': List<dynamic>.from(movies.map((movies) => movies.toJson())),
     };
   }
 
   @override
-  List<Object> get props => [movieList];
+  List<Object> get props => [movies];
 }

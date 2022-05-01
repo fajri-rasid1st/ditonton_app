@@ -1,25 +1,25 @@
-import 'package:ditonton/domain/entities/tv_series.dart';
 import 'package:equatable/equatable.dart';
+import 'package:ditonton/domain/entities/tv_show.dart';
 
-class TvSeriesModel extends Equatable {
+class TvShowModel extends Equatable {
   final int id;
   final String name;
   final String? overview;
   final String? posterPath;
 
-  const TvSeriesModel({
+  const TvShowModel({
     required this.id,
     required this.name,
     required this.overview,
     required this.posterPath,
   });
 
-  factory TvSeriesModel.fromJson(Map<String, dynamic> tvSeries) {
-    return TvSeriesModel(
-      id: tvSeries['id'] as int,
-      name: tvSeries['name'] as String,
-      overview: tvSeries['overview'],
-      posterPath: tvSeries['poster_path'],
+  factory TvShowModel.fromJson(Map<String, dynamic> tvShow) {
+    return TvShowModel(
+      id: tvShow['id'] as int,
+      name: tvShow['name'] as String,
+      overview: tvShow['overview'] ?? '',
+      posterPath: tvShow['poster_path'] ?? '',
     );
   }
 
@@ -27,13 +27,13 @@ class TvSeriesModel extends Equatable {
     return {
       'id': id,
       'name': name,
-      'overview': overview ?? '',
-      'poster_path': posterPath ?? '',
+      'overview': overview,
+      'poster_path': posterPath,
     };
   }
 
-  TvSeries toEntity() {
-    return TvSeries(
+  TvShow toEntity() {
+    return TvShow(
       id: id,
       name: name,
       overview: overview ?? '',

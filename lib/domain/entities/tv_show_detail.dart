@@ -1,8 +1,8 @@
+import 'package:equatable/equatable.dart';
 import 'package:ditonton/domain/entities/genre.dart';
 import 'package:ditonton/domain/entities/season.dart';
-import 'package:equatable/equatable.dart';
 
-class TvSeriesDetail extends Equatable {
+class TvShowDetail extends Equatable {
   final String backdropPath;
   final String firstAirDate;
   final List<Genre> genres;
@@ -16,7 +16,7 @@ class TvSeriesDetail extends Equatable {
   final double voteAverage;
   final int voteCount;
 
-  const TvSeriesDetail({
+  const TvShowDetail({
     required this.backdropPath,
     required this.firstAirDate,
     required this.genres,

@@ -1,8 +1,9 @@
 import 'dart:convert';
+import 'package:ditonton/common/constants.dart';
+import 'package:ditonton/common/exception.dart';
 import 'package:ditonton/data/models/movie_detail_model.dart';
 import 'package:ditonton/data/models/movie_model.dart';
 import 'package:ditonton/data/models/movie_response.dart';
-import 'package:ditonton/common/exception.dart';
 import 'package:http/http.dart' as http;
 
 abstract class MovieRemoteDataSource {
@@ -20,11 +21,8 @@ abstract class MovieRemoteDataSource {
 }
 
 class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
-  static const baseUrl = 'https://api.themoviedb.org/3';
-  static const apiKey = 'api_key=1f93a5b4410a2cf0e46efda561c514cf';
-
   final http.Client client;
-
+  
   MovieRemoteDataSourceImpl({required this.client});
 
   @override

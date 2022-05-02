@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:ditonton/domain/entities/tv_show.dart';
-import 'package:ditonton/domain/entities/tv_show_detail.dart';
+import 'package:ditonton/domain/entities/tv_show_entities/tv_show.dart';
+import 'package:ditonton/domain/entities/tv_show_entities/tv_show_detail.dart';
 
 class TvShowTable extends Equatable {
   final int id;

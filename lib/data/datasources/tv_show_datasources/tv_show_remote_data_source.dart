@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/common/exception.dart';
 import 'package:ditonton/data/models/episode_model.dart';
-import 'package:ditonton/data/models/tv_show_detail_model.dart';
-import 'package:ditonton/data/models/tv_show_model.dart';
-import 'package:ditonton/data/models/tv_show_response.dart';
+import 'package:ditonton/data/models/tv_show_models/tv_show_detail_model.dart';
+import 'package:ditonton/data/models/tv_show_models/tv_show_model.dart';
+import 'package:ditonton/data/models/tv_show_models/tv_show_response.dart';
 import 'package:http/http.dart' as http;
 
 abstract class TvShowRemoteDataSource {

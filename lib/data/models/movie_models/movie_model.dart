@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:ditonton/domain/entities/movie.dart';
+import 'package:ditonton/domain/entities/movie_entities/movie.dart';
 
 class MovieModel extends Equatable {
   final int id;

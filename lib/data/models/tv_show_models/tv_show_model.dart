@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:ditonton/domain/entities/tv_show.dart';
+import 'package:ditonton/domain/entities/tv_show_entities/tv_show.dart';
 
 class TvShowModel extends Equatable {
   final int id;

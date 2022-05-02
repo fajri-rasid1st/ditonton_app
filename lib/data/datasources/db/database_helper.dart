@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:ditonton/data/models/movie_table.dart';
-import 'package:ditonton/data/models/movie_watchlist.dart';
-import 'package:ditonton/data/models/tv_show_table.dart';
-import 'package:ditonton/data/models/tv_show_watchlist.dart';
+import 'package:ditonton/data/models/movie_models/movie_table.dart';
+import 'package:ditonton/data/models/movie_models/movie_watchlist.dart';
+import 'package:ditonton/data/models/tv_show_models/tv_show_table.dart';
+import 'package:ditonton/data/models/tv_show_models/tv_show_watchlist.dart';
 
 class DatabaseHelper {
   static DatabaseHelper? _databaseHelper;

@@ -1,31 +1,14 @@
+import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/domain/entities/movie_entities/movie.dart';
 import 'package:ditonton/domain/usecases/movie_usecases/get_now_playing_movies.dart';
-import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/domain/usecases/movie_usecases/get_popular_movies.dart';
 import 'package:ditonton/domain/usecases/movie_usecases/get_top_rated_movies.dart';
 import 'package:flutter/material.dart';
 
 class MovieListNotifier extends ChangeNotifier {
-  var _nowPlayingMovies = <Movie>[];
-  List<Movie> get nowPlayingMovies => _nowPlayingMovies;
-
-  RequestState _nowPlayingState = RequestState.Empty;
-  RequestState get nowPlayingState => _nowPlayingState;
-
-  var _popularMovies = <Movie>[];
-  List<Movie> get popularMovies => _popularMovies;
-
-  RequestState _popularMoviesState = RequestState.Empty;
-  RequestState get popularMoviesState => _popularMoviesState;
-
-  var _topRatedMovies = <Movie>[];
-  List<Movie> get topRatedMovies => _topRatedMovies;
-
-  RequestState _topRatedMoviesState = RequestState.Empty;
-  RequestState get topRatedMoviesState => _topRatedMoviesState;
-
-  String _message = '';
-  String get message => _message;
+  final GetNowPlayingMovies getNowPlayingMovies;
+  final GetPopularMovies getPopularMovies;
+  final GetTopRatedMovies getTopRatedMovies;
 
   MovieListNotifier({
     required this.getNowPlayingMovies,
@@ -33,62 +16,82 @@ class MovieListNotifier extends ChangeNotifier {
     required this.getTopRatedMovies,
   });
 
-  final GetNowPlayingMovies getNowPlayingMovies;
-  final GetPopularMovies getPopularMovies;
-  final GetTopRatedMovies getTopRatedMovies;
+  List<Movie> _nowPlayingMovies = <Movie>[];
+  List<Movie> get nowPlayingMovies => _nowPlayingMovies;
+
+  RequestState _nowPlayingMoviesState = RequestState.empty;
+  RequestState get nowPlayingMovieState => _nowPlayingMoviesState;
+
+  List<Movie> _popularMovies = <Movie>[];
+  List<Movie> get popularMovies => _popularMovies;
+
+  RequestState _popularMoviesState = RequestState.empty;
+  RequestState get popularMoviesState => _popularMoviesState;
+
+  List<Movie> _topRatedMovies = <Movie>[];
+  List<Movie> get topRatedMovies => _topRatedMovies;
+
+  RequestState _topRatedMoviesState = RequestState.empty;
+  RequestState get topRatedMoviesState => _topRatedMoviesState;
+
+  String _message = '';
+  String get message => _message;
 
   Future<void> fetchNowPlayingMovies() async {
-    _nowPlayingState = RequestState.Loading;
+    _nowPlayingMoviesState = RequestState.loading;
     notifyListeners();
 
     final result = await getNowPlayingMovies.execute();
+
     result.fold(
       (failure) {
-        _nowPlayingState = RequestState.Error;
         _message = failure.message;
+        _nowPlayingMoviesState = RequestState.error;
         notifyListeners();
       },
       (moviesData) {
-        _nowPlayingState = RequestState.Loaded;
         _nowPlayingMovies = moviesData;
+        _nowPlayingMoviesState = RequestState.loaded;
         notifyListeners();
       },
     );
   }
 
   Future<void> fetchPopularMovies() async {
-    _popularMoviesState = RequestState.Loading;
+    _popularMoviesState = RequestState.loading;
     notifyListeners();
 
     final result = await getPopularMovies.execute();
+
     result.fold(
       (failure) {
-        _popularMoviesState = RequestState.Error;
         _message = failure.message;
+        _popularMoviesState = RequestState.error;
         notifyListeners();
       },
       (moviesData) {
-        _popularMoviesState = RequestState.Loaded;
         _popularMovies = moviesData;
+        _popularMoviesState = RequestState.loaded;
         notifyListeners();
       },
     );
   }
 
   Future<void> fetchTopRatedMovies() async {
-    _topRatedMoviesState = RequestState.Loading;
+    _topRatedMoviesState = RequestState.loading;
     notifyListeners();
 
     final result = await getTopRatedMovies.execute();
+
     result.fold(
       (failure) {
-        _topRatedMoviesState = RequestState.Error;
         _message = failure.message;
+        _topRatedMoviesState = RequestState.error;
         notifyListeners();
       },
       (moviesData) {
-        _topRatedMoviesState = RequestState.Loaded;
         _topRatedMovies = moviesData;
+        _topRatedMoviesState = RequestState.loaded;
         notifyListeners();
       },
     );

@@ -47,20 +47,6 @@ class MovieDetailContent extends StatelessWidget {
             ),
           ),
         ),
-        Positioned.fill(
-          child: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.black12,
-                  Colors.transparent,
-                ],
-              ),
-            ),
-          ),
-        ),
         Container(
           margin: const EdgeInsets.only(top: 48 + 8),
           child: DraggableScrollableSheet(
@@ -160,50 +146,20 @@ class MovieDetailContent extends StatelessWidget {
                           ),
                           Consumer<MovieDetailNotifier>(
                             builder: (context, data, child) {
-                              if (data.recommendationState ==
-                                  RequestState.loading) {
+                              final state = data.recommendationState;
+
+                              if (state == RequestState.loading) {
                                 return const Center(
                                   child: CircularProgressIndicator(),
                                 );
-                              } else if (data.recommendationState ==
-                                  RequestState.error) {
-                                return Text(data.message);
-                              } else if (data.recommendationState ==
-                                  RequestState.loaded) {
+                              } else if (state == RequestState.error) {
+                                return Center(
+                                  child: Text(data.message),
+                                );
+                              } else if (state == RequestState.loaded) {
                                 return SizedBox(
                                   height: 160,
-                                  child: ListView.separated(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                    ),
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) {
-                                      final movie = recommendations[index];
-
-                                      return InkWell(
-                                        onTap: () {
-                                          Navigator.pushReplacementNamed(
-                                            context,
-                                            MovieDetailPage.routeName,
-                                            arguments: movie.id,
-                                          );
-                                        },
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: CustomNetworkImage(
-                                            imgUrl:
-                                                '$baseImageUrlW300${movie.posterPath}',
-                                            placeHolderSize: 40,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    itemCount: recommendations.length,
-                                    separatorBuilder: (context, index) {
-                                      return const SizedBox(width: 8);
-                                    },
-                                  ),
+                                  child: _buildRecommendationsList(),
                                 );
                               }
 
@@ -245,6 +201,35 @@ class MovieDetailContent extends StatelessWidget {
     );
   }
 
+  ListView _buildRecommendationsList() {
+    return ListView.separated(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (context, index) {
+        final movie = recommendations[index];
+
+        return InkWell(
+          onTap: () {
+            Navigator.pushReplacementNamed(
+              context,
+              MovieDetailPage.routeName,
+              arguments: movie.id,
+            );
+          },
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: CustomNetworkImage(
+              imgUrl: '$baseImageUrlW300${movie.posterPath}',
+              placeHolderSize: 40,
+            ),
+          ),
+        );
+      },
+      itemCount: recommendations.length,
+      separatorBuilder: (context, index) => const SizedBox(width: 8),
+    );
+  }
+
   Future<void> _onPressedWatchlistButton(BuildContext context) async {
     if (!isAddedWatchlist) {
       await Provider.of<MovieDetailNotifier>(context, listen: false)
@@ -259,15 +244,17 @@ class MovieDetailContent extends StatelessWidget {
 
     if (message == MovieDetailNotifier.watchlistAddSuccessMessage ||
         message == MovieDetailNotifier.watchlistRemoveSuccessMessage) {
+      final SnackBar snackBar = SnackBar(
+        content: Text(
+          message,
+          style: kDefaultText,
+        ),
+        backgroundColor: kMikadoYellow,
+      );
+
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
-        ..showSnackBar(SnackBar(
-          content: Text(
-            message,
-            style: kDefaultText,
-          ),
-          backgroundColor: kMikadoYellow,
-        ));
+        ..showSnackBar(snackBar);
     } else {
       showDialog(
         context: context,

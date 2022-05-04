@@ -1,16 +1,23 @@
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/domain/entities/movie_entities/movie.dart';
+import 'package:ditonton/domain/entities/tv_show_entities/tv_show.dart';
 import 'package:ditonton/presentation/pages/movie_detail_page.dart';
 import 'package:ditonton/presentation/widgets/custom_network_image.dart';
 import 'package:flutter/material.dart';
 
 class CardItem extends StatelessWidget {
-  final Movie movie;
+  final Movie? movie;
+  final TvShow? tvShow;
 
-  const CardItem({Key? key, required this.movie}) : super(key: key);
+  const CardItem({Key? key, this.movie, this.tvShow}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final id = movie?.id ?? tvShow!.id;
+    final titleName = movie?.title ?? tvShow!.name;
+    final overview = movie?.overview ?? tvShow!.overview;
+    final posterPath = movie?.posterPath ?? tvShow!.posterPath;
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       child: InkWell(
@@ -18,7 +25,7 @@ class CardItem extends StatelessWidget {
           Navigator.pushNamed(
             context,
             MovieDetailPage.routeName,
-            arguments: movie.id,
+            arguments: id,
           );
         },
         child: Stack(
@@ -34,14 +41,14 @@ class CardItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      movie.title,
+                      titleName,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: kHeading6,
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      movie.overview,
+                      overview,
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -54,7 +61,7 @@ class CardItem extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: CustomNetworkImage(
-                  imgUrl: '$baseImageUrlW300${movie.posterPath}',
+                  imgUrl: '$baseImageUrlW300$posterPath',
                   width: 80,
                   placeHolderSize: 40,
                 ),

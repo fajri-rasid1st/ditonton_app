@@ -4,10 +4,10 @@ import 'package:ditonton/domain/usecases/tv_show_usecases/get_tv_show_episode_de
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class TvShowDetailNotifier extends ChangeNotifier {
+class TvShowEpisodeDetailNotifier extends ChangeNotifier {
   final GetTvShowEpisodeDetail getTvShowEpisodeDetail;
 
-  TvShowDetailNotifier({required this.getTvShowEpisodeDetail});
+  TvShowEpisodeDetailNotifier({required this.getTvShowEpisodeDetail});
 
   late Episode _episode;
   Episode get episode => _episode;

@@ -5,10 +5,10 @@ import 'package:ditonton/presentation/widgets/card_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SearchPage extends StatelessWidget {
+class SearchMoviesPage extends StatelessWidget {
   static const routeName = '/search-movie';
 
-  const SearchPage({Key? key}) : super(key: key);
+  const SearchMoviesPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

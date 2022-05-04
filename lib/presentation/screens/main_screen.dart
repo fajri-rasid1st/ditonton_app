@@ -3,7 +3,6 @@ import 'package:ditonton/presentation/pages/about_page.dart';
 import 'package:ditonton/presentation/pages/movies_page.dart';
 import 'package:ditonton/presentation/pages/tv_shows_page.dart';
 import 'package:ditonton/presentation/pages/search_movies_page.dart';
-import 'package:ditonton/presentation/pages/watchlist_movies_page.dart';
 import 'package:ditonton/presentation/provider/bottom_nav_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -77,8 +76,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ),
           ListTile(
-            onTap: () =>
-                Navigator.pushNamed(context, WatchlistMoviesPage.routeName),
+            onTap: () {},
             leading: const Icon(Icons.save_alt_rounded),
             title: Text(
               'Watchlist',

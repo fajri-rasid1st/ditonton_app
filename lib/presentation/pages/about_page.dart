@@ -15,19 +15,18 @@ class AboutPage extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 child: Container(
-                  color: kPrussianBlue,
                   child: Center(
                     child: Image.asset(
                       'assets/circle-g.png',
                       width: 128,
                     ),
                   ),
+                  color: kPrussianBlue,
                 ),
               ),
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.all(16),
-                  color: kMikadoYellow,
                   child: const Text(
                     'Ditonton merupakan sebuah aplikasi katalog film yang dikembangkan oleh Dicoding Indonesia sebagai contoh proyek aplikasi untuk kelas Menjadi Flutter Developer Expert.',
                     textAlign: TextAlign.justify,
@@ -36,6 +35,7 @@ class AboutPage extends StatelessWidget {
                       color: Colors.black87,
                     ),
                   ),
+                  color: kMikadoYellow,
                 ),
               ),
             ],
@@ -44,6 +44,7 @@ class AboutPage extends StatelessWidget {
             child: IconButton(
               onPressed: () => Navigator.pop(context),
               icon: const Icon(Icons.arrow_back_rounded),
+              tooltip: 'Back',
             ),
           )
         ],

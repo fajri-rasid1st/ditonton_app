@@ -26,7 +26,7 @@ class SearchMoviesPage extends StatelessWidget {
               },
               decoration: const InputDecoration(
                 hintText: 'Search movie...',
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: Icon(Icons.search_rounded),
                 border: OutlineInputBorder(),
               ),
               textInputAction: TextInputAction.search,
@@ -42,21 +42,17 @@ class SearchMoviesPage extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Consumer<MovieSearchNotifier>(
-            builder: (context, data, child) {
-              if (data.state == RequestState.loading) {
+            builder: (context, provider, child) {
+              if (provider.state == RequestState.loading) {
                 return const Center(child: CircularProgressIndicator());
-              } else if (data.state == RequestState.loaded) {
-                final result = data.searchResult;
-
+              } else if (provider.state == RequestState.loaded) {
                 return Expanded(
                   child: ListView.separated(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     itemBuilder: (context, index) {
-                      final movie = data.searchResult[index];
-
-                      return CardItem(movie: movie);
+                      return CardItem(movie: provider.searchResult[index]);
                     },
-                    itemCount: result.length,
+                    itemCount: provider.searchResult.length,
                     separatorBuilder: (context, index) {
                       return const SizedBox(height: 8);
                     },

@@ -40,78 +40,90 @@ class _TvShowsPageState extends State<TvShowsPage>
         children: <Widget>[
           _buildSubHeading(
             title: 'On The Air',
-            onTap: () {
-              Navigator.pushNamed(context, OnTheAirTvShowsPage.routeName);
+            onTap: () => Navigator.pushNamed(
+              context,
+              OnTheAirTvShowsPage.routeName,
+            ),
+          ),
+          Consumer<TvShowListNotifier>(
+            builder: (context, provider, child) {
+              final state = provider.onTheAirTvShowsState;
+
+              if (state == RequestState.loading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state == RequestState.loaded) {
+                return ItemList(tvShows: provider.onTheAirTvShows);
+              }
+
+              return const SizedBox(
+                height: 100,
+                child: Center(
+                  child: Text('Failed to fetch on the air tv shows'),
+                ),
+              );
             },
           ),
-          Consumer<TvShowListNotifier>(builder: (context, data, child) {
-            final state = data.onTheAirTvShowsState;
-
-            if (state == RequestState.loading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state == RequestState.loaded) {
-              return ItemList(tvShows: data.onTheAirTvShows);
-            }
-
-            return const SizedBox(
-              height: 100,
-              child: Center(
-                child: Text('Failed to fetch tv shows'),
-              ),
-            );
-          }),
           _buildSubHeading(
             title: 'Popular',
-            onTap: () {
-              Navigator.pushNamed(context, PopularTvShowsPage.routeName);
+            onTap: () => Navigator.pushNamed(
+              context,
+              PopularTvShowsPage.routeName,
+            ),
+          ),
+          Consumer<TvShowListNotifier>(
+            builder: (context, provider, child) {
+              final state = provider.popularTvShowsState;
+
+              if (state == RequestState.loading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state == RequestState.loaded) {
+                return ItemList(tvShows: provider.popularTvShows);
+              }
+
+              return const SizedBox(
+                height: 100,
+                child: Center(
+                  child: Text('Failed to fetch popular tv shows'),
+                ),
+              );
             },
           ),
-          Consumer<TvShowListNotifier>(builder: (context, data, child) {
-            final state = data.popularTvShowsState;
-
-            if (state == RequestState.loading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state == RequestState.loaded) {
-              return ItemList(tvShows: data.popularTvShows);
-            }
-
-            return const SizedBox(
-              height: 100,
-              child: Center(
-                child: Text('Failed to fetch tv shows'),
-              ),
-            );
-          }),
           _buildSubHeading(
             title: 'Top Rated',
-            onTap: () {
-              Navigator.pushNamed(context, TopRatedTvShowsPage.routeName);
+            onTap: () => Navigator.pushNamed(
+              context,
+              TopRatedTvShowsPage.routeName,
+            ),
+          ),
+          Consumer<TvShowListNotifier>(
+            builder: (context, provider, child) {
+              final state = provider.topRatedTvShowsState;
+
+              if (state == RequestState.loading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state == RequestState.loaded) {
+                return ItemList(tvShows: provider.topRatedTvShows);
+              }
+
+              return const SizedBox(
+                height: 100,
+                child: Center(
+                  child: Text('Failed to fetch top rated tv shows'),
+                ),
+              );
             },
           ),
-          Consumer<TvShowListNotifier>(builder: (context, data, child) {
-            final state = data.topRatedTvShowsState;
-
-            if (state == RequestState.loading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state == RequestState.loaded) {
-              return ItemList(tvShows: data.topRatedTvShows);
-            }
-
-            return const SizedBox(
-              height: 100,
-              child: Center(
-                child: Text('Failed to fetch tv shows'),
-              ),
-            );
-          }),
         ],
       ),
     );
   }
 
-  Padding _buildSubHeading({required String title, required Function() onTap}) {
+  Padding _buildSubHeading({
+    required String title,
+    required VoidCallback onTap,
+  }) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 8, 0),
+      padding: const EdgeInsets.fromLTRB(16, 8, 4, 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[

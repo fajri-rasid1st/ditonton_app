@@ -29,25 +29,23 @@ class _OnTheAirTvShowsPageState extends State<OnTheAirTvShowsPage> {
     return Scaffold(
       appBar: AppBar(title: const Text('On The Air Tv Shows')),
       body: Consumer<OnTheAirTvShowsNotifier>(
-        builder: (context, data, child) {
-          if (data.state == RequestState.loading) {
+        builder: (context, provider, child) {
+          if (provider.state == RequestState.loading) {
             return const Center(child: CircularProgressIndicator());
-          } else if (data.state == RequestState.loaded) {
+          } else if (provider.state == RequestState.loaded) {
             return ListView.separated(
               padding: const EdgeInsets.symmetric(vertical: 16),
               itemBuilder: (context, index) {
-                final tvShow = data.tvShows[index];
-
-                return CardItem(tvShow: tvShow);
+                return CardItem(tvShow: provider.tvShows[index]);
               },
-              itemCount: data.tvShows.length,
+              itemCount: provider.tvShows.length,
               separatorBuilder: (context, index) => const SizedBox(height: 8),
             );
           }
 
           return Center(
             key: const Key('error_message'),
-            child: Text(data.message),
+            child: Text(provider.message),
           );
         },
       ),

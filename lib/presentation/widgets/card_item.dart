@@ -62,8 +62,8 @@ class CardItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 child: CustomNetworkImage(
                   imgUrl: '$baseImageUrlW300$posterPath',
-                  width: 80,
                   placeHolderSize: 40,
+                  width: 80,
                 ),
               ),
             ),

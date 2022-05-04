@@ -29,25 +29,23 @@ class _PopularMoviesPageState extends State<PopularMoviesPage> {
     return Scaffold(
       appBar: AppBar(title: const Text('Popular Movies')),
       body: Consumer<PopularMoviesNotifier>(
-        builder: (context, data, child) {
-          if (data.state == RequestState.loading) {
+        builder: (context, provider, child) {
+          if (provider.state == RequestState.loading) {
             return const Center(child: CircularProgressIndicator());
-          } else if (data.state == RequestState.loaded) {
+          } else if (provider.state == RequestState.loaded) {
             return ListView.separated(
               padding: const EdgeInsets.symmetric(vertical: 16),
               itemBuilder: (context, index) {
-                final movie = data.movies[index];
-
-                return CardItem(movie: movie);
+                return CardItem(movie: provider.movies[index]);
               },
-              itemCount: data.movies.length,
+              itemCount: provider.movies.length,
               separatorBuilder: (context, index) => const SizedBox(height: 8),
             );
           }
 
           return Center(
             key: const Key('error_message'),
-            child: Text(data.message),
+            child: Text(provider.message),
           );
         },
       ),

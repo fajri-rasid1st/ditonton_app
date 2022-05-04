@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:ditonton/common/state_enum.dart';
 
 class MovieDetailPage extends StatefulWidget {
-  static const routeName = '/detail';
+  static const routeName = '/movie-detail';
 
   final int id;
 
@@ -35,18 +35,18 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           if (provider.movieState == RequestState.loading) {
             return const Center(child: CircularProgressIndicator());
           } else if (provider.movieState == RequestState.loaded) {
-            final movie = provider.movie;
-
             return SafeArea(
               child: MovieDetailContent(
-                movie: movie,
+                movie: provider.movie,
                 recommendations: provider.movieRecommendations,
                 isAddedWatchlist: provider.isAddedToWatchlist,
               ),
             );
           }
 
-          return Center(child: Text(provider.message));
+          return Center(
+            child: Text(provider.message),
+          );
         },
       ),
     );

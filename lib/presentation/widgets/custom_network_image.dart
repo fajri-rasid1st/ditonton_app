@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 
 class CustomNetworkImage extends StatelessWidget {
   final String imgUrl;
+  final double placeHolderSize;
   final double? width;
   final double? height;
-  final double placeHolderSize;
 
   const CustomNetworkImage({
     Key? key,
     required this.imgUrl,
+    required this.placeHolderSize,
     this.width,
     this.height,
-    required this.placeHolderSize,
   }) : super(key: key);
 
   @override
@@ -28,7 +28,10 @@ class CustomNetworkImage extends StatelessWidget {
           child: SizedBox(
             width: placeHolderSize,
             height: placeHolderSize,
-            child: const CircularProgressIndicator(),
+            child: const Padding(
+              padding: EdgeInsets.all(16),
+              child: CircularProgressIndicator(),
+            ),
           ),
         );
       },
@@ -37,7 +40,10 @@ class CustomNetworkImage extends StatelessWidget {
           child: SizedBox(
             width: placeHolderSize,
             height: placeHolderSize,
-            child: const Icon(Icons.motion_photos_off_outlined),
+            child: const Padding(
+              padding: EdgeInsets.all(16),
+              child: Icon(Icons.motion_photos_off_outlined),
+            ),
           ),
         );
       },

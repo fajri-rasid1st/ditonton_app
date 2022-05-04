@@ -52,7 +52,7 @@ class MovieDetailContent extends StatelessWidget {
           child: DraggableScrollableSheet(
             snap: true,
             snapSizes: const [0.5],
-            builder: (context, scrollController) {
+            builder: (context, controller) {
               return Container(
                 padding: const EdgeInsets.only(top: 16),
                 decoration: const BoxDecoration(
@@ -62,7 +62,7 @@ class MovieDetailContent extends StatelessWidget {
                 child: Stack(
                   children: <Widget>[
                     SingleChildScrollView(
-                      controller: scrollController,
+                      controller: controller,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,22 +76,16 @@ class MovieDetailContent extends StatelessWidget {
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
-                            child: ElevatedButton(
+                            child: ElevatedButton.icon(
                               onPressed: () async {
                                 await _onPressedWatchlistButton(context);
                               },
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  isAddedWatchlist
-                                      ? const Icon(Icons.check_rounded)
-                                      : const Icon(Icons.add_rounded),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    'Watchlist',
-                                    style: kDefaultText,
-                                  ),
-                                ],
+                              icon: isAddedWatchlist
+                                  ? const Icon(Icons.check_rounded)
+                                  : const Icon(Icons.add_rounded),
+                              label: Text(
+                                'Watchlist',
+                                style: kSubtitle,
                               ),
                             ),
                           ),
@@ -145,8 +139,8 @@ class MovieDetailContent extends StatelessWidget {
                             ),
                           ),
                           Consumer<MovieDetailNotifier>(
-                            builder: (context, data, child) {
-                              final state = data.recommendationState;
+                            builder: (context, provider, child) {
+                              final state = provider.recommendationState;
 
                               if (state == RequestState.loading) {
                                 return const Center(
@@ -154,7 +148,7 @@ class MovieDetailContent extends StatelessWidget {
                                 );
                               } else if (state == RequestState.error) {
                                 return Center(
-                                  child: Text(data.message),
+                                  child: Text(provider.message),
                                 );
                               } else if (state == RequestState.loaded) {
                                 return SizedBox(

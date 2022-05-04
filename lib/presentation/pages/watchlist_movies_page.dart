@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class WatchlistMoviesPage extends StatefulWidget {
-  static const routeName = '/watchlist-movie';
-
   const WatchlistMoviesPage({Key? key}) : super(key: key);
 
   @override
@@ -48,31 +46,26 @@ class _WatchlistMoviesPageState extends State<WatchlistMoviesPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Watchlist')),
-      body: Consumer<WatchlistMoviesNotifier>(
-        builder: (context, data, child) {
-          if (data.watchlistState == RequestState.loading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (data.watchlistState == RequestState.loaded) {
-            return ListView.separated(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              itemBuilder: (context, index) {
-                final movie = data.watchlistMovies[index];
-
-                return CardItem(movie: movie);
-              },
-              itemCount: data.watchlistMovies.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 8),
-            );
-          }
-
-          return Center(
-            key: const Key('error_message'),
-            child: Text(data.message),
+    return Consumer<WatchlistMoviesNotifier>(
+      builder: (context, provider, child) {
+        if (provider.watchlistState == RequestState.loading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (provider.watchlistState == RequestState.loaded) {
+          return ListView.separated(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            itemBuilder: (context, index) {
+              return CardItem(movie: provider.watchlistMovies[index]);
+            },
+            itemCount: provider.watchlistMovies.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 8),
           );
-        },
-      ),
+        }
+
+        return Center(
+          key: const Key('error_message'),
+          child: Text(provider.message),
+        );
+      },
     );
   }
 }

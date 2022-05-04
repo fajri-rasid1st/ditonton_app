@@ -44,74 +44,85 @@ class _MoviesPageState extends State<MoviesPage>
               style: kHeading6,
             ),
           ),
-          Consumer<MovieListNotifier>(builder: (context, data, child) {
-            final state = data.nowPlayingMovieState;
+          Consumer<MovieListNotifier>(
+            builder: (context, provider, child) {
+              final state = provider.nowPlayingMovieState;
 
-            if (state == RequestState.loading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state == RequestState.loaded) {
-              return ItemList(movies: data.nowPlayingMovies);
-            }
+              if (state == RequestState.loading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state == RequestState.loaded) {
+                return ItemList(movies: provider.nowPlayingMovies);
+              }
 
-            return const SizedBox(
-              height: 100,
-              child: Center(
-                child: Text('Failed to fetch movies'),
-              ),
-            );
-          }),
+              return const SizedBox(
+                height: 100,
+                child: Center(
+                  child: Text('Failed to fetch now playing movies'),
+                ),
+              );
+            },
+          ),
           _buildSubHeading(
             title: 'Popular',
-            onTap: () {
-              Navigator.pushNamed(context, PopularMoviesPage.routeName);
+            onTap: () => Navigator.pushNamed(
+              context,
+              PopularMoviesPage.routeName,
+            ),
+          ),
+          Consumer<MovieListNotifier>(
+            builder: (context, provider, child) {
+              final state = provider.popularMoviesState;
+
+              if (state == RequestState.loading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state == RequestState.loaded) {
+                return ItemList(movies: provider.popularMovies);
+              }
+
+              return const SizedBox(
+                height: 100,
+                child: Center(
+                  child: Text('Failed to fetch popular movies'),
+                ),
+              );
             },
           ),
-          Consumer<MovieListNotifier>(builder: (context, data, child) {
-            final state = data.popularMoviesState;
-
-            if (state == RequestState.loading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state == RequestState.loaded) {
-              return ItemList(movies: data.popularMovies);
-            }
-
-            return const SizedBox(
-              height: 100,
-              child: Center(
-                child: Text('Failed to fetch movies'),
-              ),
-            );
-          }),
           _buildSubHeading(
             title: 'Top Rated',
-            onTap: () {
-              Navigator.pushNamed(context, TopRatedMoviesPage.routeName);
+            onTap: () => Navigator.pushNamed(
+              context,
+              TopRatedMoviesPage.routeName,
+            ),
+          ),
+          Consumer<MovieListNotifier>(
+            builder: (context, proivider, child) {
+              final state = proivider.topRatedMoviesState;
+
+              if (state == RequestState.loading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state == RequestState.loaded) {
+                return ItemList(movies: proivider.topRatedMovies);
+              }
+
+              return const SizedBox(
+                height: 100,
+                child: Center(
+                  child: Text('Failed to fetch top rated movies'),
+                ),
+              );
             },
           ),
-          Consumer<MovieListNotifier>(builder: (context, data, child) {
-            final state = data.topRatedMoviesState;
-
-            if (state == RequestState.loading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state == RequestState.loaded) {
-              return ItemList(movies: data.topRatedMovies);
-            }
-
-            return const SizedBox(
-              height: 100,
-              child: Center(
-                child: Text('Failed to fetch movies'),
-              ),
-            );
-          }),
         ],
       ),
     );
   }
 
-  Padding _buildSubHeading({required String title, required Function() onTap}) {
+  Padding _buildSubHeading({
+    required String title,
+    required VoidCallback onTap,
+  }) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 8, 0),
+      padding: const EdgeInsets.fromLTRB(16, 8, 4, 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[

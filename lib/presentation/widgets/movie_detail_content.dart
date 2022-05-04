@@ -33,25 +33,56 @@ class MovieDetailContent extends StatelessWidget {
           width: screenWidth,
           placeHolderSize: 100,
         ),
+        Positioned.fill(
+          child: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                colors: [
+                  Colors.black,
+                  Colors.transparent,
+                ],
+              ),
+            ),
+          ),
+        ),
+        Positioned.fill(
+          child: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black12,
+                  Colors.transparent,
+                ],
+              ),
+            ),
+          ),
+        ),
         Container(
           margin: const EdgeInsets.only(top: 48 + 8),
           child: DraggableScrollableSheet(
+            snap: true,
+            snapSizes: const [0.5],
             builder: (context, scrollController) {
               return Container(
+                padding: const EdgeInsets.only(top: 16),
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                   color: kRichBlack,
                 ),
-                padding: const EdgeInsets.only(top: 16),
                 child: Stack(
                   children: <Widget>[
                     SingleChildScrollView(
                       controller: scrollController,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
+                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
                             child: Text(
                               movie.title,
                               style: kHeading5,

@@ -12,7 +12,7 @@ class CardItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 16),
       child: InkWell(
         onTap: () {
           Navigator.pushNamed(
@@ -25,12 +25,11 @@ class CardItem extends StatelessWidget {
           alignment: Alignment.bottomLeft,
           children: <Widget>[
             Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
               child: Container(
-                margin: const EdgeInsets.only(
-                  left: 16 + 80 + 16,
-                  bottom: 8,
-                  right: 8,
-                ),
+                margin: const EdgeInsets.fromLTRB(16 + 80 + 16, 8, 8, 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -40,7 +39,7 @@ class CardItem extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: kHeading6,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 4),
                     Text(
                       movie.overview,
                       maxLines: 3,
@@ -51,7 +50,7 @@ class CardItem extends StatelessWidget {
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(left: 16, bottom: 16),
+              padding: const EdgeInsets.only(left: 16, bottom: 16),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: CustomNetworkImage(

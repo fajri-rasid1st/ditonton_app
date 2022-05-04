@@ -2,7 +2,6 @@ import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/presentation/pages/movie_detail_page.dart';
 import 'package:ditonton/presentation/widgets/custom_network_image.dart';
 import 'package:flutter/material.dart';
-
 import 'package:ditonton/domain/entities/movie_entities/movie.dart';
 
 class ItemList extends StatelessWidget {
@@ -15,7 +14,7 @@ class ItemList extends StatelessWidget {
     return SizedBox(
       height: 200,
       child: ListView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           final movie = movies[index];
@@ -31,7 +30,7 @@ class ItemList extends StatelessWidget {
                 );
               },
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(12),
                 child: CustomNetworkImage(
                   imgUrl: '$baseImageUrlW300${movie.posterPath}',
                   placeHolderSize: 40,

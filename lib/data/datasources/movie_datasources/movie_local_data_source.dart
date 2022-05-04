@@ -22,7 +22,7 @@ class MovieLocalDataSourceImpl implements MovieLocalDataSource {
     try {
       await databaseHelper.insertMovieWatchlist(movie);
 
-      return 'Added to Watchlist';
+      return 'Added Movie to Watchlist';
     } catch (e) {
       throw DatabaseException(e.toString());
     }
@@ -33,7 +33,7 @@ class MovieLocalDataSourceImpl implements MovieLocalDataSource {
     try {
       await databaseHelper.removeMovieWatchlist(movie);
 
-      return 'Removed from Watchlist';
+      return 'Removed Movie from Watchlist';
     } catch (e) {
       throw DatabaseException(e.toString());
     }

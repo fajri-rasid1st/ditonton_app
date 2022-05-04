@@ -50,29 +50,28 @@ class _WatchlistMoviesPageState extends State<WatchlistMoviesPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Watchlist')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Consumer<WatchlistMoviesNotifier>(
-          builder: (context, data, child) {
-            if (data.watchlistState == RequestState.loading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (data.watchlistState == RequestState.loaded) {
-              return ListView.builder(
-                itemBuilder: (context, index) {
-                  final movie = data.watchlistMovies[index];
+      body: Consumer<WatchlistMoviesNotifier>(
+        builder: (context, data, child) {
+          if (data.watchlistState == RequestState.loading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (data.watchlistState == RequestState.loaded) {
+            return ListView.separated(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              itemBuilder: (context, index) {
+                final movie = data.watchlistMovies[index];
 
-                  return CardItem(movie: movie);
-                },
-                itemCount: data.watchlistMovies.length,
-              );
-            }
-
-            return Center(
-              key: const Key('error_message'),
-              child: Text(data.message),
+                return CardItem(movie: movie);
+              },
+              itemCount: data.watchlistMovies.length,
+              separatorBuilder: (context, index) => const SizedBox(height: 8),
             );
-          },
-        ),
+          }
+
+          return Center(
+            key: const Key('error_message'),
+            child: Text(data.message),
+          );
+        },
       ),
     );
   }

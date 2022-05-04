@@ -45,13 +45,16 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 16),
+        padding: const EdgeInsets.symmetric(vertical: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              'Now Playing',
-              style: kHeading6,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                'Now Playing',
+                style: kHeading6,
+              ),
             ),
             Consumer<MovieListNotifier>(builder: (context, data, child) {
               final state = data.nowPlayingMovieState;
@@ -104,30 +107,31 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
     );
   }
 
-  Row _buildSubHeading({required String title, required Function() onTap}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text(
-          title,
-          style: kHeading6,
-        ),
-        InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.all(8),
+  Padding _buildSubHeading({required String title, required Function() onTap}) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 8, 0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            title,
+            style: kHeading6,
+          ),
+          InkWell(
+            onTap: onTap,
             child: Row(
               children: const <Widget>[
                 Text('See more'),
+                SizedBox(width: 4),
                 Icon(
                   Icons.arrow_forward_ios_rounded,
-                  size: 20,
+                  size: 16,
                 ),
               ],
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

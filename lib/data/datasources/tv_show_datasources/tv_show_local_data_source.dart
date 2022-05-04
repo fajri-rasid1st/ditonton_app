@@ -22,7 +22,7 @@ class TvShowLocalDataSourceImpl implements TvShowLocalDataSource {
     try {
       await databaseHelper.insertTvShowWatchlist(tvShow);
 
-      return 'Added to Watchlist';
+      return 'Added Tv Show to Watchlist';
     } catch (e) {
       throw DatabaseException(e.toString());
     }
@@ -33,7 +33,7 @@ class TvShowLocalDataSourceImpl implements TvShowLocalDataSource {
     try {
       await databaseHelper.removeTvShowWatchlist(tvShow);
 
-      return 'Removed from Watchlist';
+      return 'Removed Tv Show from Watchlist';
     } catch (e) {
       throw DatabaseException(e.toString());
     }

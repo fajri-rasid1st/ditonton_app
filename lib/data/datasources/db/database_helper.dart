@@ -33,19 +33,17 @@ class DatabaseHelper {
 
   /// Create database table.
   Future<void> _onCreate(Database db, int version) async {
-    await db.execute(
-        '''
+    await db.execute('''
       CREATE TABLE $movieWatchlistTable (
-        ${MovieWatchlistFields.id} INTEGER PRIMARY KEY AUTOINCREMENT,
+        ${MovieWatchlistFields.id} INTEGER PRIMARY KEY,
         ${MovieWatchlistFields.title} TEXT,
         ${MovieWatchlistFields.overview} TEXT,
         ${MovieWatchlistFields.posterPath} TEXT)
         ''');
 
-    await db.execute(
-        '''
+    await db.execute('''
       CREATE TABLE $tvShowWatchlistTable (
-        ${TvShowWatchlistFields.id} INTEGER PRIMARY KEY AUTOINCREMENT,
+        ${TvShowWatchlistFields.id} INTEGER PRIMARY KEY,
         ${TvShowWatchlistFields.name} TEXT,
         ${TvShowWatchlistFields.overview} TEXT,
         ${TvShowWatchlistFields.posterPath} TEXT)

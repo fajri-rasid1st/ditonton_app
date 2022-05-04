@@ -28,29 +28,28 @@ class _TopRatedMoviesPageState extends State<TopRatedMoviesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Top Rated Movies')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Consumer<TopRatedMoviesNotifier>(
-          builder: (context, data, child) {
-            if (data.state == RequestState.loading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (data.state == RequestState.loaded) {
-              return ListView.builder(
-                itemBuilder: (context, index) {
-                  final movie = data.movies[index];
+      body: Consumer<TopRatedMoviesNotifier>(
+        builder: (context, data, child) {
+          if (data.state == RequestState.loading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (data.state == RequestState.loaded) {
+            return ListView.separated(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              itemBuilder: (context, index) {
+                final movie = data.movies[index];
 
-                  return CardItem(movie: movie);
-                },
-                itemCount: data.movies.length,
-              );
-            }
-
-            return Center(
-              key: const Key('error_message'),
-              child: Text(data.message),
+                return CardItem(movie: movie);
+              },
+              itemCount: data.movies.length,
+              separatorBuilder: (context, index) => const SizedBox(height: 8),
             );
-          },
-        ),
+          }
+
+          return Center(
+            key: const Key('error_message'),
+            child: Text(data.message),
+          );
+        },
       ),
     );
   }

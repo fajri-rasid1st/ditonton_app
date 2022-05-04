@@ -14,12 +14,12 @@ class SearchPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Search Movie')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            TextField(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: TextField(
               onSubmitted: (query) {
                 Provider.of<MovieSearchNotifier>(context, listen: false)
                     .fetchMovieSearch(query);
@@ -31,36 +31,43 @@ class SearchPage extends StatelessWidget {
               ),
               textInputAction: TextInputAction.search,
             ),
-            const SizedBox(height: 16),
-            Text(
+          ),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
               'Search result',
               style: kHeading6,
             ),
-            Consumer<MovieSearchNotifier>(
-              builder: (context, data, child) {
-                if (data.state == RequestState.loading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (data.state == RequestState.loaded) {
-                  final result = data.searchResult;
+          ),
+          const SizedBox(height: 8),
+          Consumer<MovieSearchNotifier>(
+            builder: (context, data, child) {
+              if (data.state == RequestState.loading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (data.state == RequestState.loaded) {
+                final result = data.searchResult;
 
-                  return Expanded(
-                    child: ListView.builder(
-                      padding: const EdgeInsets.all(8),
-                      itemBuilder: (context, index) {
-                        final movie = data.searchResult[index];
+                return Expanded(
+                  child: ListView.separated(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    itemBuilder: (context, index) {
+                      final movie = data.searchResult[index];
 
-                        return CardItem(movie: movie);
-                      },
-                      itemCount: result.length,
-                    ),
-                  );
-                }
+                      return CardItem(movie: movie);
+                    },
+                    itemCount: result.length,
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(height: 8);
+                    },
+                  ),
+                );
+              }
 
-                return Expanded(child: Container());
-              },
-            ),
-          ],
-        ),
+              return Expanded(child: Container());
+            },
+          ),
+        ],
       ),
     );
   }

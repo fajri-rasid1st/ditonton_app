@@ -13,12 +13,26 @@ import 'package:ditonton/presentation/provider/movie_notifiers/movie_search_noti
 import 'package:ditonton/presentation/provider/movie_notifiers/popular_movies_notifier.dart';
 import 'package:ditonton/presentation/provider/movie_notifiers/top_rated_movies_notifier.dart';
 import 'package:ditonton/presentation/provider/movie_notifiers/watchlist_movies_notifier.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:ditonton/injection.dart' as di;
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Prevent landscape orientation
+  SystemChrome.setPreferredOrientations(<DeviceOrientation>[
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
+  // Change status bar color
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    systemNavigationBarColor: kRichBlack,
+    systemNavigationBarIconBrightness: Brightness.light,
+  ));
+
   di.init();
 
   runApp(const MyApp());
@@ -51,6 +65,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Ditonton',
         theme: ThemeData.dark().copyWith(
           colorScheme: kColorScheme,
@@ -68,11 +83,11 @@ class MyApp extends StatelessWidget {
                 return const HomeMoviePage();
               });
             case PopularMoviesPage.routeName:
-              return CupertinoPageRoute(builder: (_) {
+              return MaterialPageRoute(builder: (_) {
                 return const PopularMoviesPage();
               });
             case TopRatedMoviesPage.routeName:
-              return CupertinoPageRoute(builder: (_) {
+              return MaterialPageRoute(builder: (_) {
                 return const TopRatedMoviesPage();
               });
             case MovieDetailPage.routeName:
@@ -83,7 +98,7 @@ class MyApp extends StatelessWidget {
                 settings: settings,
               );
             case SearchPage.routeName:
-              return CupertinoPageRoute(builder: (_) {
+              return MaterialPageRoute(builder: (_) {
                 return const SearchPage();
               });
             case WatchlistMoviesPage.routeName:
@@ -97,7 +112,9 @@ class MyApp extends StatelessWidget {
             default:
               return MaterialPageRoute(builder: (_) {
                 return const Scaffold(
-                  body: Center(child: Text('Page not found :(')),
+                  body: Center(
+                    child: Text('Page not found :('),
+                  ),
                 );
               });
           }

@@ -1,29 +1,29 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/domain/entities/movie_entities/movie.dart';
 import 'package:ditonton/presentation/pages/movie_detail_page.dart';
+import 'package:ditonton/presentation/widgets/custom_network_image.dart';
 import 'package:flutter/material.dart';
 
-class MovieCard extends StatelessWidget {
+class CardItem extends StatelessWidget {
   final Movie movie;
 
-  MovieCard(this.movie);
+  const CardItem({Key? key, required this.movie}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 4),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       child: InkWell(
         onTap: () {
           Navigator.pushNamed(
             context,
-            MovieDetailPage.ROUTE_NAME,
+            MovieDetailPage.routeName,
             arguments: movie.id,
           );
         },
         child: Stack(
           alignment: Alignment.bottomLeft,
-          children: [
+          children: <Widget>[
             Card(
               child: Container(
                 margin: const EdgeInsets.only(
@@ -33,17 +33,17 @@ class MovieCard extends StatelessWidget {
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: <Widget>[
                     Text(
-                      movie.title ?? '-',
+                      movie.title,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: kHeading6,
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Text(
-                      movie.overview ?? '-',
-                      maxLines: 2,
+                      movie.overview,
+                      maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
@@ -51,20 +51,14 @@ class MovieCard extends StatelessWidget {
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(
-                left: 16,
-                bottom: 16,
-              ),
+              margin: const EdgeInsets.only(left: 16, bottom: 16),
               child: ClipRRect(
-                child: CachedNetworkImage(
-                  imageUrl: '$BASE_IMAGE_URL${movie.posterPath}',
+                borderRadius: BorderRadius.circular(8),
+                child: CustomNetworkImage(
+                  imgUrl: '$baseImageUrlW300${movie.posterPath}',
                   width: 80,
-                  placeholder: (context, url) => Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  placeHolderSize: 40,
                 ),
-                borderRadius: BorderRadius.all(Radius.circular(8)),
               ),
             ),
           ],

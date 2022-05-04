@@ -10,9 +10,9 @@ class AboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        children: [
+        children: <Widget>[
           Column(
-            children: [
+            children: <Widget>[
               Expanded(
                 child: Container(
                   color: kPrussianBlue,
@@ -43,7 +43,7 @@ class AboutPage extends StatelessWidget {
           SafeArea(
             child: IconButton(
               onPressed: () => Navigator.pop(context),
-              icon: const Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back_rounded),
             ),
           )
         ],

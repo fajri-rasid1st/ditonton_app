@@ -65,7 +65,12 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
                 return ItemList(movies: data.nowPlayingMovies);
               }
 
-              return const Text('Failed');
+              return const SizedBox(
+                height: 100,
+                child: Center(
+                  child: Text('Failed to fetch movies'),
+                ),
+              );
             }),
             _buildSubHeading(
               title: 'Popular',
@@ -82,7 +87,12 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
                 return ItemList(movies: data.popularMovies);
               }
 
-              return const Text('Failed');
+              return const SizedBox(
+                height: 100,
+                child: Center(
+                  child: Text('Failed to fetch movies'),
+                ),
+              );
             }),
             _buildSubHeading(
               title: 'Top Rated',
@@ -99,7 +109,12 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
                 return ItemList(movies: data.topRatedMovies);
               }
 
-              return const Text('Failed');
+              return const SizedBox(
+                height: 100,
+                child: Center(
+                  child: Text('Failed to fetch movies'),
+                ),
+              );
             }),
           ],
         ),

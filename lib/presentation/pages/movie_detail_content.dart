@@ -12,13 +12,13 @@ import 'package:provider/provider.dart';
 
 class MovieDetailContent extends StatelessWidget {
   final MovieDetail movie;
-  final List<Movie> recommendations;
+  final List<Movie> movieRecommendations;
   final bool isAddedWatchlist;
 
   const MovieDetailContent({
     Key? key,
     required this.movie,
-    required this.recommendations,
+    required this.movieRecommendations,
     required this.isAddedWatchlist,
   }) : super(key: key);
 
@@ -134,7 +134,10 @@ class MovieDetailContent extends StatelessWidget {
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                            child: Text(movie.overview),
+                            child: Text(
+                              movie.overview,
+                              style: const TextStyle(color: kDavysGrey),
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
@@ -158,7 +161,7 @@ class MovieDetailContent extends StatelessWidget {
                               } else if (state == RequestState.loaded) {
                                 return SizedBox(
                                   height: 160,
-                                  child: _buildRecommendationsList(),
+                                  child: _buildRecommendationList(),
                                 );
                               }
 
@@ -201,12 +204,12 @@ class MovieDetailContent extends StatelessWidget {
     );
   }
 
-  ListView _buildRecommendationsList() {
+  ListView _buildRecommendationList() {
     return ListView.separated(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) {
-        final movie = recommendations[index];
+        final movie = movieRecommendations[index];
 
         return InkWell(
           onTap: () {
@@ -225,7 +228,7 @@ class MovieDetailContent extends StatelessWidget {
           ),
         );
       },
-      itemCount: recommendations.length,
+      itemCount: movieRecommendations.length,
       separatorBuilder: (context, index) => const SizedBox(width: 12),
     );
   }

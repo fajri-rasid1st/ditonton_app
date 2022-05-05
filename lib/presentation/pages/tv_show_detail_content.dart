@@ -13,13 +13,13 @@ import 'package:provider/provider.dart';
 
 class TvShowDetailContent extends StatelessWidget {
   final TvShowDetail tvShow;
-  final List<TvShow> recommendations;
+  final List<TvShow> tvShowRecommendations;
   final bool isAddedWatchlist;
 
   const TvShowDetailContent({
     Key? key,
     required this.tvShow,
-    required this.recommendations,
+    required this.tvShowRecommendations,
     required this.isAddedWatchlist,
   }) : super(key: key);
 
@@ -144,29 +144,29 @@ class TvShowDetailContent extends StatelessWidget {
                                     Text(
                                       'Total Season',
                                       style: kSubtitle.copyWith(
-                                        fontWeight: FontWeight.w500,
                                         color: kMikadoYellow,
                                       ),
                                     ),
                                   ],
                                 ),
                                 Container(
-                                  width: 1,
+                                  width: 2,
                                   height: 64,
-                                  decoration: const BoxDecoration(
-                                    color: kDavysGrey,
-                                    boxShadow: <BoxShadow>[
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(1),
+                                    boxShadow: const <BoxShadow>[
                                       BoxShadow(
                                         offset: Offset(0.25, 0),
-                                        blurRadius: 0.5,
+                                        blurRadius: 0.25,
                                         color: kDavysGrey,
                                       ),
                                       BoxShadow(
                                         offset: Offset(-0.25, 0),
-                                        blurRadius: 0.5,
+                                        blurRadius: 0.25,
                                         color: kDavysGrey,
                                       ),
                                     ],
+                                    color: kDavysGrey,
                                   ),
                                 ),
                                 Column(
@@ -178,13 +178,19 @@ class TvShowDetailContent extends StatelessWidget {
                                     Text(
                                       'Total Episode',
                                       style: kSubtitle.copyWith(
-                                        fontWeight: FontWeight.w500,
                                         color: kMikadoYellow,
                                       ),
                                     ),
                                   ],
                                 ),
                               ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                            child: Text(
+                              'Seasons',
+                              style: kHeading6,
                             ),
                           ),
                           Padding(
@@ -196,7 +202,10 @@ class TvShowDetailContent extends StatelessWidget {
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                            child: Text(tvShow.overview),
+                            child: Text(
+                              tvShow.overview,
+                              style: const TextStyle(color: kDavysGrey),
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
@@ -220,7 +229,7 @@ class TvShowDetailContent extends StatelessWidget {
                               } else if (state == RequestState.loaded) {
                                 return SizedBox(
                                   height: 160,
-                                  child: _buildRecommendationsList(),
+                                  child: _buildRecommendationList(),
                                 );
                               }
 
@@ -263,12 +272,12 @@ class TvShowDetailContent extends StatelessWidget {
     );
   }
 
-  ListView _buildRecommendationsList() {
+  ListView _buildSeasonList() {
     return ListView.separated(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) {
-        final tvShow = recommendations[index];
+        final tvShow = tvShowRecommendations[index];
 
         return InkWell(
           onTap: () {
@@ -287,7 +296,36 @@ class TvShowDetailContent extends StatelessWidget {
           ),
         );
       },
-      itemCount: recommendations.length,
+      itemCount: tvShowRecommendations.length,
+      separatorBuilder: (context, index) => const SizedBox(width: 12),
+    );
+  }
+
+  ListView _buildRecommendationList() {
+    return ListView.separated(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (context, index) {
+        final tvShow = tvShowRecommendations[index];
+
+        return InkWell(
+          onTap: () {
+            Navigator.pushReplacementNamed(
+              context,
+              TvShowDetailPage.routeName,
+              arguments: tvShow.id,
+            );
+          },
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: CustomNetworkImage(
+              imgUrl: '$baseImageUrlW300${tvShow.posterPath}',
+              placeHolderSize: 40,
+            ),
+          ),
+        );
+      },
+      itemCount: tvShowRecommendations.length,
       separatorBuilder: (context, index) => const SizedBox(width: 12),
     );
   }
@@ -338,13 +376,13 @@ class TvShowDetailContent extends StatelessWidget {
   }
 
   String _showReleaseDate(String firstAirDate, String lastAirDate) {
-    final firstAirDateParse = firstAirDate != '?'
-        ? DateFormat('MMM dd, y').format(DateTime.parse(firstAirDate))
-        : firstAirDate;
+    final firstAirDateParse = firstAirDate.isEmpty
+        ? '?'
+        : DateFormat('MMM dd, y').format(DateTime.parse(firstAirDate));
 
-    final lastAirDateParse = lastAirDate != '?'
-        ? DateFormat('MMM dd, y').format(DateTime.parse(lastAirDate))
-        : firstAirDate;
+    final lastAirDateParse = lastAirDate.isEmpty
+        ? '?'
+        : DateFormat('MMM dd, y').format(DateTime.parse(lastAirDate));
 
     return '$firstAirDateParse to $lastAirDateParse';
   }

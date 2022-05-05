@@ -20,7 +20,7 @@ import 'package:ditonton/presentation/provider/tv_show_notifiers/popular_tv_show
 import 'package:ditonton/presentation/provider/tv_show_notifiers/top_rated_tv_shows_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_show_notifiers/tv_show_list_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_show_notifiers/watchlist_tv_shows_notifier.dart';
-import 'package:ditonton/presentation/screens/main_screen.dart';
+import 'package:ditonton/presentation/screens/home_screen.dart';
 import 'package:ditonton/presentation/screens/watchlist_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -100,30 +100,30 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: kRichBlack,
           textTheme: kTextTheme,
         ),
-        home: const MainScreen(),
+        home: const HomeScreen(),
         navigatorObservers: [routeObserver],
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
             case PopularMoviesPage.routeName:
-              return MaterialPageRoute(builder: (_) {
-                return const PopularMoviesPage();
-              });
+              return MaterialPageRoute(
+                builder: (_) => const PopularMoviesPage(),
+              );
             case TopRatedMoviesPage.routeName:
-              return MaterialPageRoute(builder: (_) {
-                return const TopRatedMoviesPage();
-              });
+              return MaterialPageRoute(
+                builder: (_) => const TopRatedMoviesPage(),
+              );
             case OnTheAirTvShowsPage.routeName:
-              return MaterialPageRoute(builder: (_) {
-                return const OnTheAirTvShowsPage();
-              });
+              return MaterialPageRoute(
+                builder: (_) => const OnTheAirTvShowsPage(),
+              );
             case PopularTvShowsPage.routeName:
-              return MaterialPageRoute(builder: (_) {
-                return const PopularTvShowsPage();
-              });
+              return MaterialPageRoute(
+                builder: (_) => const PopularTvShowsPage(),
+              );
             case TopRatedTvShowsPage.routeName:
-              return MaterialPageRoute(builder: (_) {
-                return const TopRatedTvShowsPage();
-              });
+              return MaterialPageRoute(
+                builder: (_) => const TopRatedTvShowsPage(),
+              );
             case MovieDetailPage.routeName:
               final id = settings.arguments as int;
 
@@ -132,25 +132,27 @@ class MyApp extends StatelessWidget {
                 settings: settings,
               );
             case SearchMoviesPage.routeName:
-              return MaterialPageRoute(builder: (_) {
-                return const SearchMoviesPage();
-              });
+              return MaterialPageRoute(
+                builder: (_) => const SearchMoviesPage(),
+              );
             case AboutPage.routeName:
-              return MaterialPageRoute(builder: (_) {
-                return const AboutPage();
-              });
+              return MaterialPageRoute(
+                builder: (_) => const AboutPage(),
+              );
             case WatchlistScreen.routeName:
-              return MaterialPageRoute(builder: (_) {
-                return const WatchlistScreen();
-              });
+              return MaterialPageRoute(
+                builder: (_) => const WatchlistScreen(),
+              );
             default:
-              return MaterialPageRoute(builder: (_) {
-                return const Scaffold(
-                  body: Center(
-                    child: Text('Page not found :('),
-                  ),
-                );
-              });
+              return MaterialPageRoute(
+                builder: (_) {
+                  return const Scaffold(
+                    body: Center(
+                      child: Text('Page not found :('),
+                    ),
+                  );
+                },
+              );
           }
         },
       ),

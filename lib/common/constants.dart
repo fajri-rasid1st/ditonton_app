@@ -16,7 +16,6 @@ const Color kDavysGrey = Color(0xFF4B5358);
 const Color kGrey = Color(0xFF303030);
 
 // Text style
-final TextStyle kDefaultText = GoogleFonts.poppins();
 final TextStyle kHeading5 = GoogleFonts.poppins(
   fontSize: 23,
   fontWeight: FontWeight.w400,
@@ -36,6 +35,7 @@ final TextStyle kBodyText = GoogleFonts.poppins(
   fontWeight: FontWeight.w400,
   letterSpacing: 0.25,
 );
+final TextStyle kDefaultText = GoogleFonts.poppins();
 
 // Text theme
 final kTextTheme = TextTheme(

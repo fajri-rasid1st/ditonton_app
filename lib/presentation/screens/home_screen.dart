@@ -8,14 +8,14 @@ import 'package:ditonton/presentation/screens/watchlist_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _pages = const <Widget>[
     MoviesPage(),
     TvShowsPage(),

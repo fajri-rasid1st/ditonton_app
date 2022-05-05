@@ -33,7 +33,7 @@ class _MoviesPageState extends State<MoviesPage>
     super.build(context);
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.only(bottom: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

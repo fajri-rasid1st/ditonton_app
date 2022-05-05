@@ -1,7 +1,7 @@
 import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/common/utils.dart';
 import 'package:ditonton/presentation/provider/movie_notifiers/watchlist_movies_notifier.dart';
-import 'package:ditonton/presentation/widgets/card_item.dart';
+import 'package:ditonton/presentation/widgets/sliver_list_card_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -51,44 +51,12 @@ class _WatchlistMoviesPageState extends State<WatchlistMoviesPage>
         if (provider.watchlistState == RequestState.loading) {
           return const Center(child: CircularProgressIndicator());
         } else if (provider.watchlistState == RequestState.loaded) {
-          return _buildSliverWatchlist(provider);
+          return SliverListCardItem(movies: provider.watchlistMovies);
         }
 
         return Center(
           key: const Key('error_message'),
           child: Text(provider.message),
-        );
-      },
-    );
-  }
-
-  Builder _buildSliverWatchlist(WatchlistMoviesNotifier provider) {
-    return Builder(
-      builder: (context) {
-        return CustomScrollView(
-          slivers: <Widget>[
-            SliverOverlapInjector(
-              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-            ),
-            SliverPadding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    final count = provider.watchlistMovies.length;
-                    final hasSeparator = index != count - 1;
-                    final bottom = hasSeparator ? 8.0 : 0.0;
-
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: bottom),
-                      child: CardItem(movie: provider.watchlistMovies[index]),
-                    );
-                  },
-                  childCount: provider.watchlistMovies.length,
-                ),
-              ),
-            ),
-          ],
         );
       },
     );

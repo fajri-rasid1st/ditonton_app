@@ -1,19 +1,19 @@
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/common/state_enum.dart';
-import 'package:ditonton/presentation/provider/movie_notifiers/movie_search_notifier.dart';
+import 'package:ditonton/presentation/provider/tv_show_notifiers/tv_show_search_notifier.dart';
 import 'package:ditonton/presentation/widgets/list_card_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SearchMoviesPage extends StatelessWidget {
-  static const routeName = '/search-movie';
+class SearchTvShowsPage extends StatelessWidget {
+  static const routeName = '/search-tv-show';
 
-  const SearchMoviesPage({Key? key}) : super(key: key);
+  const SearchTvShowsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Search Movie')),
+      appBar: AppBar(title: const Text('Search Tv Show')),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -21,11 +21,11 @@ class SearchMoviesPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: TextField(
               onSubmitted: (query) {
-                Provider.of<MovieSearchNotifier>(context, listen: false)
-                    .fetchMovieSearch(query);
+                Provider.of<TvShowSearchNotifier>(context, listen: false)
+                    .fetchTvShowSearch(query);
               },
               decoration: const InputDecoration(
-                hintText: 'Search movie...',
+                hintText: 'Search tv show...',
                 prefixIcon: Icon(Icons.search_rounded),
                 border: OutlineInputBorder(),
               ),
@@ -41,13 +41,13 @@ class SearchMoviesPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          Consumer<MovieSearchNotifier>(
+          Consumer<TvShowSearchNotifier>(
             builder: (context, provider, child) {
               if (provider.state == RequestState.loading) {
                 return const Center(child: CircularProgressIndicator());
               } else if (provider.state == RequestState.loaded) {
                 return Expanded(
-                  child: ListCardItem(movies: provider.searchResult),
+                  child: ListCardItem(tvShows: provider.searchResult),
                 );
               }
 

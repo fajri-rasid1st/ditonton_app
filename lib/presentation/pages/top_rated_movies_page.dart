@@ -1,6 +1,6 @@
 import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/presentation/provider/movie_notifiers/top_rated_movies_notifier.dart';
-import 'package:ditonton/presentation/widgets/card_item.dart';
+import 'package:ditonton/presentation/widgets/list_card_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,14 +33,7 @@ class _TopRatedMoviesPageState extends State<TopRatedMoviesPage> {
           if (provider.state == RequestState.loading) {
             return const Center(child: CircularProgressIndicator());
           } else if (provider.state == RequestState.loaded) {
-            return ListView.separated(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              itemBuilder: (context, index) {
-                return CardItem(movie: provider.movies[index]);
-              },
-              itemCount: provider.movies.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 8),
-            );
+            return ListCardItem(movies: provider.movies);
           }
 
           return Center(

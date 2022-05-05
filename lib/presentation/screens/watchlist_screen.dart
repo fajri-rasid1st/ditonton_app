@@ -49,6 +49,7 @@ class _WatchlistScreenState extends State<WatchlistScreen>
               sliver: SliverSafeArea(
                 top: false,
                 sliver: SliverAppBar(
+                  forceElevated: innerBoxIsScrolled,
                   floating: true,
                   pinned: true,
                   snap: true,
@@ -59,12 +60,11 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                     indicatorColor: kMikadoYellow,
                     labelColor: kMikadoYellow,
                     unselectedLabelColor: kDavysGrey,
-                    tabs: <Widget>[
+                    tabs: <Tab>[
                       Tab(child: Text('Movie', style: kDefaultText)),
                       Tab(child: Text('Tv Show', style: kDefaultText)),
                     ],
                   ),
-                  forceElevated: innerBoxIsScrolled,
                 ),
               ),
             )

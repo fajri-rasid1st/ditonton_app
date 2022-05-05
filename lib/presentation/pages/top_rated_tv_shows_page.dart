@@ -1,6 +1,6 @@
 import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/presentation/provider/tv_show_notifiers/top_rated_tv_shows_notifier.dart';
-import 'package:ditonton/presentation/widgets/card_item.dart';
+import 'package:ditonton/presentation/widgets/list_card_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,14 +33,7 @@ class _TopRatedTvShowsPageState extends State<TopRatedTvShowsPage> {
           if (provider.state == RequestState.loading) {
             return const Center(child: CircularProgressIndicator());
           } else if (provider.state == RequestState.loaded) {
-            return ListView.separated(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              itemBuilder: (context, index) {
-                return CardItem(tvShow: provider.tvShows[index]);
-              },
-              itemCount: provider.tvShows.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 8),
-            );
+            return ListCardItem(tvShows: provider.tvShows);
           }
 
           return Center(

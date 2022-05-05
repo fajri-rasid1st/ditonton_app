@@ -1,6 +1,7 @@
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/presentation/pages/about_page.dart';
 import 'package:ditonton/presentation/pages/movies_page.dart';
+import 'package:ditonton/presentation/pages/search_tv_shows_page.dart';
 import 'package:ditonton/presentation/pages/tv_shows_page.dart';
 import 'package:ditonton/presentation/pages/search_movies_page.dart';
 import 'package:ditonton/presentation/provider/bottom_nav_notifier.dart';
@@ -40,12 +41,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<BottomNavNotifier>(
-      builder: ((context, notifier, child) {
+      builder: ((context, provider, child) {
         return Scaffold(
           drawer: _buildDrawer(context),
-          appBar: _buildAppBar(notifier, context),
-          body: _buildBody(notifier),
-          bottomNavigationBar: _buildBottomNavBar(notifier),
+          appBar: _buildAppBar(provider, context),
+          body: _buildBody(provider),
+          bottomNavigationBar: _buildBottomNavBar(provider),
         );
       }),
     );
@@ -103,14 +104,16 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  AppBar _buildAppBar(BottomNavNotifier notifier, BuildContext context) {
+  AppBar _buildAppBar(BottomNavNotifier provider, BuildContext context) {
     return AppBar(
-      title: Text(notifier.title),
+      title: Text(provider.title),
       actions: <IconButton>[
         IconButton(
           onPressed: () => Navigator.pushNamed(
             context,
-            SearchMoviesPage.routeName,
+            provider.index == 0
+                ? SearchMoviesPage.routeName
+                : SearchTvShowsPage.routeName,
           ),
           icon: const Icon(Icons.search_rounded),
         )
@@ -118,21 +121,21 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  SafeArea _buildBody(BottomNavNotifier notifier) {
+  SafeArea _buildBody(BottomNavNotifier provider) {
     return SafeArea(
       child: PageView(
         physics: const NeverScrollableScrollPhysics(),
         controller: _pageController,
         children: _pages,
         onPageChanged: (index) {
-          notifier.index = index;
+          provider.index = index;
 
           switch (index) {
             case 0:
-              notifier.title = 'Ditonton Movies';
+              provider.title = 'Ditonton Movies';
               break;
             case 1:
-              notifier.title = 'Ditonton Tv Shows';
+              provider.title = 'Ditonton Tv Shows';
               break;
           }
         },
@@ -140,9 +143,9 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  BottomNavigationBar _buildBottomNavBar(BottomNavNotifier notifier) {
+  BottomNavigationBar _buildBottomNavBar(BottomNavNotifier provider) {
     return BottomNavigationBar(
-      currentIndex: notifier.index,
+      currentIndex: provider.index,
       backgroundColor: kRichBlack,
       selectedFontSize: 12,
       selectedItemColor: kMikadoYellow,

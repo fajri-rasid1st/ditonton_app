@@ -40,7 +40,7 @@ class MovieDetailContent extends StatelessWidget {
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
                 colors: [
-                  Colors.black,
+                  Colors.black54,
                   Colors.transparent,
                 ],
               ),
@@ -54,7 +54,6 @@ class MovieDetailContent extends StatelessWidget {
             snapSizes: const [0.5],
             builder: (context, scrollController) {
               return Container(
-                padding: const EdgeInsets.only(top: 16),
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                   color: kRichBlack,
@@ -63,7 +62,7 @@ class MovieDetailContent extends StatelessWidget {
                   children: <Widget>[
                     SingleChildScrollView(
                       controller: scrollController,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      padding: const EdgeInsets.only(top: 32, bottom: 16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -166,11 +165,12 @@ class MovieDetailContent extends StatelessWidget {
                     Align(
                       alignment: Alignment.topCenter,
                       child: Container(
+                        margin: const EdgeInsets.only(top: 16),
                         width: 48,
                         height: 4,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(2),
-                          color: Colors.white,
+                          color: kDavysGrey,
                         ),
                       ),
                     ),

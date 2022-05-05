@@ -1,10 +1,10 @@
-import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/presentation/pages/on_the_air_tv_shows_page.dart';
 import 'package:ditonton/presentation/pages/popular_tv_shows_page.dart';
 import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/presentation/pages/top_rated_tv_shows_page.dart';
 import 'package:ditonton/presentation/provider/tv_show_notifiers/tv_show_list_notifier.dart';
 import 'package:ditonton/presentation/widgets/item_list.dart';
+import 'package:ditonton/presentation/widgets/subheading.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -38,7 +38,7 @@ class _TvShowsPageState extends State<TvShowsPage>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _buildSubHeading(
+          SubHeading(
             title: 'On The Air',
             onTap: () => Navigator.pushNamed(
               context,
@@ -63,7 +63,7 @@ class _TvShowsPageState extends State<TvShowsPage>
               );
             },
           ),
-          _buildSubHeading(
+          SubHeading(
             title: 'Popular',
             onTap: () => Navigator.pushNamed(
               context,
@@ -88,7 +88,7 @@ class _TvShowsPageState extends State<TvShowsPage>
               );
             },
           ),
-          _buildSubHeading(
+          SubHeading(
             title: 'Top Rated',
             onTap: () => Navigator.pushNamed(
               context,
@@ -112,37 +112,6 @@ class _TvShowsPageState extends State<TvShowsPage>
                 ),
               );
             },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Padding _buildSubHeading({
-    required String title,
-    required VoidCallback onTap,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 4, 0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text(
-            title,
-            style: kHeading6,
-          ),
-          InkWell(
-            onTap: onTap,
-            child: Row(
-              children: const <Widget>[
-                Text('See more'),
-                SizedBox(width: 4),
-                Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 16,
-                ),
-              ],
-            ),
           ),
         ],
       ),

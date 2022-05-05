@@ -4,6 +4,7 @@ import 'package:ditonton/presentation/pages/movies_page.dart';
 import 'package:ditonton/presentation/pages/tv_shows_page.dart';
 import 'package:ditonton/presentation/pages/search_movies_page.dart';
 import 'package:ditonton/presentation/provider/bottom_nav_notifier.dart';
+import 'package:ditonton/presentation/screens/watchlist_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,9 +16,9 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  final List<Widget> _pages = <Widget>[
-    const MoviesPage(),
-    const TvShowsPage(),
+  final List<Widget> _pages = const <Widget>[
+    MoviesPage(),
+    TvShowsPage(),
   ];
 
   late PageController _pageController;
@@ -76,7 +77,10 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () => Navigator.pushNamed(
+              context,
+              WatchlistScreen.routeName,
+            ),
             leading: const Icon(Icons.save_alt_rounded),
             title: Text(
               'Watchlist',
@@ -84,7 +88,10 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ),
           ListTile(
-            onTap: () => Navigator.pushNamed(context, AboutPage.routeName),
+            onTap: () => Navigator.pushNamed(
+              context,
+              AboutPage.routeName,
+            ),
             leading: const Icon(Icons.info_outline_rounded),
             title: Text(
               'About',
@@ -101,32 +108,35 @@ class _MainScreenState extends State<MainScreen> {
       title: Text(notifier.title),
       actions: <IconButton>[
         IconButton(
-          onPressed: () {
-            Navigator.pushNamed(context, SearchMoviesPage.routeName);
-          },
+          onPressed: () => Navigator.pushNamed(
+            context,
+            SearchMoviesPage.routeName,
+          ),
           icon: const Icon(Icons.search_rounded),
         )
       ],
     );
   }
 
-  Widget _buildBody(BottomNavNotifier notifier) {
-    return PageView(
-      physics: const NeverScrollableScrollPhysics(),
-      controller: _pageController,
-      children: _pages,
-      onPageChanged: (index) {
-        notifier.index = index;
+  SafeArea _buildBody(BottomNavNotifier notifier) {
+    return SafeArea(
+      child: PageView(
+        physics: const NeverScrollableScrollPhysics(),
+        controller: _pageController,
+        children: _pages,
+        onPageChanged: (index) {
+          notifier.index = index;
 
-        switch (index) {
-          case 0:
-            notifier.title = 'Ditonton Movies';
-            break;
-          case 1:
-            notifier.title = 'Ditonton Tv Shows';
-            break;
-        }
-      },
+          switch (index) {
+            case 0:
+              notifier.title = 'Ditonton Movies';
+              break;
+            case 1:
+              notifier.title = 'Ditonton Tv Shows';
+              break;
+          }
+        },
+      ),
     );
   }
 

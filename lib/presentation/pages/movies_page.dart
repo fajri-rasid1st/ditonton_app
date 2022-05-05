@@ -1,9 +1,9 @@
-import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/presentation/pages/popular_movies_page.dart';
 import 'package:ditonton/presentation/pages/top_rated_movies_page.dart';
 import 'package:ditonton/presentation/provider/movie_notifiers/movie_list_notifier.dart';
 import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/presentation/widgets/item_list.dart';
+import 'package:ditonton/presentation/widgets/subheading.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -37,12 +37,9 @@ class _MoviesPageState extends State<MoviesPage>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              'Now Playing',
-              style: kHeading6,
-            ),
+          const SubHeading(
+            title: 'Now Playing',
+            onTap: null,
           ),
           Consumer<MovieListNotifier>(
             builder: (context, provider, child) {
@@ -62,7 +59,7 @@ class _MoviesPageState extends State<MoviesPage>
               );
             },
           ),
-          _buildSubHeading(
+          SubHeading(
             title: 'Popular',
             onTap: () => Navigator.pushNamed(
               context,
@@ -87,7 +84,7 @@ class _MoviesPageState extends State<MoviesPage>
               );
             },
           ),
-          _buildSubHeading(
+          SubHeading(
             title: 'Top Rated',
             onTap: () => Navigator.pushNamed(
               context,
@@ -111,37 +108,6 @@ class _MoviesPageState extends State<MoviesPage>
                 ),
               );
             },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Padding _buildSubHeading({
-    required String title,
-    required VoidCallback onTap,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 4, 0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text(
-            title,
-            style: kHeading6,
-          ),
-          InkWell(
-            onTap: onTap,
-            child: Row(
-              children: const <Widget>[
-                Text('See more'),
-                SizedBox(width: 4),
-                Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 16,
-                ),
-              ],
-            ),
           ),
         ],
       ),

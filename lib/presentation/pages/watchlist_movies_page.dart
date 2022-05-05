@@ -51,19 +51,44 @@ class _WatchlistMoviesPageState extends State<WatchlistMoviesPage>
         if (provider.watchlistState == RequestState.loading) {
           return const Center(child: CircularProgressIndicator());
         } else if (provider.watchlistState == RequestState.loaded) {
-          return ListView.separated(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            itemBuilder: (context, index) {
-              return CardItem(movie: provider.watchlistMovies[index]);
-            },
-            itemCount: provider.watchlistMovies.length,
-            separatorBuilder: (context, index) => const SizedBox(height: 8),
-          );
+          return _buildSliverWatchlist(provider);
         }
 
         return Center(
           key: const Key('error_message'),
           child: Text(provider.message),
+        );
+      },
+    );
+  }
+
+  Builder _buildSliverWatchlist(WatchlistMoviesNotifier provider) {
+    return Builder(
+      builder: (context) {
+        return CustomScrollView(
+          slivers: <Widget>[
+            SliverOverlapInjector(
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    final count = provider.watchlistMovies.length;
+                    final hasSeparator = index != count - 1;
+                    final bottom = hasSeparator ? 8.0 : 0.0;
+
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: bottom),
+                      child: CardItem(movie: provider.watchlistMovies[index]),
+                    );
+                  },
+                  childCount: provider.watchlistMovies.length,
+                ),
+              ),
+            ),
+          ],
         );
       },
     );

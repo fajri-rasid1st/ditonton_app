@@ -52,7 +52,7 @@ class MovieDetailContent extends StatelessWidget {
           child: DraggableScrollableSheet(
             snap: true,
             snapSizes: const [0.5],
-            builder: (context, controller) {
+            builder: (context, scrollController) {
               return Container(
                 padding: const EdgeInsets.only(top: 16),
                 decoration: const BoxDecoration(
@@ -62,7 +62,7 @@ class MovieDetailContent extends StatelessWidget {
                 child: Stack(
                   children: <Widget>[
                     SingleChildScrollView(
-                      controller: controller,
+                      controller: scrollController,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

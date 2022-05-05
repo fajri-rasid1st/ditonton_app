@@ -25,24 +25,24 @@ class CustomNetworkImage extends StatelessWidget {
       fadeOutDuration: const Duration(milliseconds: 200),
       placeholder: (context, url) {
         return Center(
-          child: SizedBox(
-            width: placeHolderSize,
-            height: placeHolderSize,
-            child: const Padding(
-              padding: EdgeInsets.all(16),
-              child: CircularProgressIndicator(),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: SizedBox(
+              width: placeHolderSize,
+              height: placeHolderSize,
+              child: const CircularProgressIndicator(),
             ),
           ),
         );
       },
       errorWidget: (context, url, error) {
         return Center(
-          child: SizedBox(
-            width: placeHolderSize,
-            height: placeHolderSize,
-            child: const Padding(
-              padding: EdgeInsets.all(16),
-              child: Icon(Icons.motion_photos_off_outlined),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: SizedBox(
+              width: placeHolderSize,
+              height: placeHolderSize,
+              child: const Icon(Icons.motion_photos_off_outlined),
             ),
           ),
         );

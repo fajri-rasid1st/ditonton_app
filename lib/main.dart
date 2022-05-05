@@ -19,7 +19,9 @@ import 'package:ditonton/presentation/provider/tv_show_notifiers/on_the_air_tv_s
 import 'package:ditonton/presentation/provider/tv_show_notifiers/popular_tv_shows_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_show_notifiers/top_rated_tv_shows_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_show_notifiers/tv_show_list_notifier.dart';
+import 'package:ditonton/presentation/provider/tv_show_notifiers/watchlist_tv_shows_notifier.dart';
 import 'package:ditonton/presentation/screens/main_screen.dart';
+import 'package:ditonton/presentation/screens/watchlist_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -82,6 +84,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => di.locator<TopRatedTvShowsNotifier>(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => di.locator<WatchlistTvShowsNotifier>(),
+        ),
         ChangeNotifierProvider<BottomNavNotifier>(
           create: (_) => BottomNavNotifier(),
         ),
@@ -133,6 +138,10 @@ class MyApp extends StatelessWidget {
             case AboutPage.routeName:
               return MaterialPageRoute(builder: (_) {
                 return const AboutPage();
+              });
+            case WatchlistScreen.routeName:
+              return MaterialPageRoute(builder: (_) {
+                return const WatchlistScreen();
               });
             default:
               return MaterialPageRoute(builder: (_) {

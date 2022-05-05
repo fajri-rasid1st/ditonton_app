@@ -89,16 +89,23 @@ class MovieDetailContent extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: Text(_showGenres(movie.genres)),
+                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
+                            child: Text(
+                              _showGenres(movie.genres),
+                              style: kSubtitle,
+                            ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
-                            child: Text(_showDuration(movie.runtime)),
+                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                            child: Text(
+                              _showDuration(movie.runtime),
+                              style: kSubtitle,
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                             child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: <Widget>[
                                 RatingBarIndicator(
                                   rating: movie.voteAverage / 2,
@@ -113,14 +120,13 @@ class MovieDetailContent extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 4),
                                 Text(
-                                  '${movie.voteAverage}',
-                                  style: const TextStyle(fontSize: 16),
+                                  '${movie.voteAverage} (${movie.voteCount} votes)',
                                 ),
                               ],
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
+                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                             child: Text(
                               'Overview',
                               style: kHeading6,
@@ -220,7 +226,7 @@ class MovieDetailContent extends StatelessWidget {
         );
       },
       itemCount: recommendations.length,
-      separatorBuilder: (context, index) => const SizedBox(width: 8),
+      separatorBuilder: (context, index) => const SizedBox(width: 12),
     );
   }
 

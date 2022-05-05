@@ -9,6 +9,7 @@ import 'package:ditonton/presentation/pages/search_movies_page.dart';
 import 'package:ditonton/presentation/pages/search_tv_shows_page.dart';
 import 'package:ditonton/presentation/pages/top_rated_movies_page.dart';
 import 'package:ditonton/presentation/pages/top_rated_tv_shows_page.dart';
+import 'package:ditonton/presentation/pages/tv_show_detail_page.dart';
 import 'package:ditonton/presentation/provider/bottom_nav_notifier.dart';
 import 'package:ditonton/presentation/provider/movie_notifiers/movie_detail_notifier.dart';
 import 'package:ditonton/presentation/provider/movie_notifiers/movie_list_notifier.dart';
@@ -19,6 +20,7 @@ import 'package:ditonton/presentation/provider/movie_notifiers/watchlist_movies_
 import 'package:ditonton/presentation/provider/tv_show_notifiers/on_the_air_tv_shows_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_show_notifiers/popular_tv_shows_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_show_notifiers/top_rated_tv_shows_notifier.dart';
+import 'package:ditonton/presentation/provider/tv_show_notifiers/tv_show_detail_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_show_notifiers/tv_show_list_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_show_notifiers/tv_show_search_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_show_notifiers/watchlist_tv_shows_notifier.dart';
@@ -78,6 +80,9 @@ class MyApp extends StatelessWidget {
           create: (_) => di.locator<TvShowListNotifier>(),
         ),
         ChangeNotifierProvider(
+          create: (_) => di.locator<TvShowDetailNotifier>(),
+        ),
+        ChangeNotifierProvider(
           create: (_) => di.locator<TvShowSearchNotifier>(),
         ),
         ChangeNotifierProvider(
@@ -134,6 +139,13 @@ class MyApp extends StatelessWidget {
 
               return MaterialPageRoute(
                 builder: (_) => MovieDetailPage(id: id),
+                settings: settings,
+              );
+            case TvShowDetailPage.routeName:
+              final id = settings.arguments as int;
+
+              return MaterialPageRoute(
+                builder: (_) => TvShowDetailPage(id: id),
                 settings: settings,
               );
             case SearchMoviesPage.routeName:

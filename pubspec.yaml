@@ -64,6 +64,9 @@ dependencies:
     # for finding commonly used locations on the filesystem
     path_provider: ^2.0.9
 
+    # internationalization and localization
+    intl: ^0.17.0
+
 dev_dependencies:
     flutter_test:
         sdk: flutter

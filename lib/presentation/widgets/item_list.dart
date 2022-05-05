@@ -1,6 +1,7 @@
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/domain/entities/tv_show_entities/tv_show.dart';
 import 'package:ditonton/presentation/pages/movie_detail_page.dart';
+import 'package:ditonton/presentation/pages/tv_show_detail_page.dart';
 import 'package:ditonton/presentation/widgets/custom_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ditonton/domain/entities/movie_entities/movie.dart';
@@ -14,6 +15,8 @@ class ItemList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final itemsLength = movies?.length ?? tvShows!.length;
+    final routeName =
+        movies != null ? MovieDetailPage.routeName : TvShowDetailPage.routeName;
 
     return SizedBox(
       height: 200,
@@ -28,13 +31,11 @@ class ItemList extends StatelessWidget {
           return Container(
             padding: const EdgeInsets.all(8),
             child: InkWell(
-              onTap: () {
-                Navigator.pushNamed(
-                  context,
-                  MovieDetailPage.routeName,
-                  arguments: id,
-                );
-              },
+              onTap: () => Navigator.pushNamed(
+                context,
+                routeName,
+                arguments: id,
+              ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: CustomNetworkImage(

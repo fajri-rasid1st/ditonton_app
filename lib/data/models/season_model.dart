@@ -2,9 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:ditonton/domain/entities/season.dart';
 
 class SeasonModel extends Equatable {
-  final String airDate;
+  final String? airDate;
   final int episodeCount;
-  final String name;
+  final String? name;
   final String? overview;
   final String? posterPath;
   final int seasonNumber;
@@ -20,9 +20,9 @@ class SeasonModel extends Equatable {
 
   factory SeasonModel.fromJson(Map<String, dynamic> season) {
     return SeasonModel(
-      airDate: season['air_date'],
+      airDate: season['air_date'] ?? '',
       episodeCount: season['episode_count'],
-      name: season['name'],
+      name: season['name'] ?? '',
       overview: season['overview'] ?? '',
       posterPath: season['poster_path'] ?? '',
       seasonNumber: season['season_number'],
@@ -42,9 +42,9 @@ class SeasonModel extends Equatable {
 
   Season toEntity() {
     return Season(
-      airDate: airDate,
+      airDate: airDate ?? '',
       episodeCount: episodeCount,
-      name: name,
+      name: name ?? '',
       overview: overview ?? '',
       posterPath: posterPath ?? '',
       seasonNumber: seasonNumber,

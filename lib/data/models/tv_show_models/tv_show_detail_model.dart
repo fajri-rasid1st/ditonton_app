@@ -4,10 +4,10 @@ import 'package:ditonton/domain/entities/tv_show_entities/tv_show_detail.dart';
 import 'package:ditonton/data/models/genre_model.dart';
 
 class TvShowDetailModel extends Equatable {
-  final String? backdropPath;
-  final String firstAirDate;
+  final String? firstAirDate;
   final List<GenreModel> genres;
   final int id;
+  final String? lastAirDate;
   final String name;
   final int numberOfEpisodes;
   final int numberOfSeasons;
@@ -18,10 +18,10 @@ class TvShowDetailModel extends Equatable {
   final int voteCount;
 
   const TvShowDetailModel({
-    required this.backdropPath,
     required this.firstAirDate,
     required this.genres,
     required this.id,
+    required this.lastAirDate,
     required this.name,
     required this.numberOfEpisodes,
     required this.numberOfSeasons,
@@ -34,14 +34,14 @@ class TvShowDetailModel extends Equatable {
 
   factory TvShowDetailModel.fromJson(Map<String, dynamic> detail) {
     return TvShowDetailModel(
-      backdropPath: detail['backdrop_path'] ?? '',
-      firstAirDate: detail['first_air_date'],
+      firstAirDate: detail['first_air_date'] ?? '',
       genres: List<GenreModel>.from(
         detail['genres'].map(
           (genre) => GenreModel.fromJson(genre),
         ),
       ),
       id: detail['id'],
+      lastAirDate: detail['last_air_date'] ?? '',
       name: detail['name'],
       numberOfEpisodes: detail['number_of_episodes'],
       numberOfSeasons: detail['number_of_seasons'],
@@ -59,10 +59,10 @@ class TvShowDetailModel extends Equatable {
 
   Map<String, dynamic> toJson() {
     return {
-      'backdrop_path': backdropPath,
       'first_air_date': firstAirDate,
       'genres': List<dynamic>.from(genres.map((genre) => genre.toJson())),
       'id': id,
+      'last_air_date': lastAirDate,
       'name': name,
       'number_of_episodes': numberOfEpisodes,
       'number_of_seasons': numberOfSeasons,
@@ -76,10 +76,10 @@ class TvShowDetailModel extends Equatable {
 
   TvShowDetail toEntity() {
     return TvShowDetail(
-      backdropPath: backdropPath ?? '',
-      firstAirDate: firstAirDate,
+      firstAirDate: firstAirDate ?? '',
       genres: genres.map((genre) => genre.toEntity()).toList(),
       id: id,
+      lastAirDate: lastAirDate ?? '',
       name: name,
       numberOfEpisodes: numberOfEpisodes,
       numberOfSeasons: numberOfSeasons,
@@ -93,10 +93,10 @@ class TvShowDetailModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        backdropPath,
         firstAirDate,
         genres,
         id,
+        lastAirDate,
         name,
         numberOfEpisodes,
         numberOfSeasons,

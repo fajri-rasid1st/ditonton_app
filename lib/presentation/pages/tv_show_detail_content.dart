@@ -40,10 +40,7 @@ class TvShowDetailContent extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
-                colors: [
-                  Colors.black54,
-                  Colors.transparent,
-                ],
+                colors: [Colors.black54, Colors.transparent],
               ),
             ),
           ),
@@ -193,6 +190,10 @@ class TvShowDetailContent extends StatelessWidget {
                               style: kHeading6,
                             ),
                           ),
+                          SizedBox(
+                            height: 240,
+                            child: _buildSeasonList(),
+                          ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                             child: Text(
@@ -277,26 +278,95 @@ class TvShowDetailContent extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) {
-        final tvShow = tvShowRecommendations[index];
+        final season = tvShow.seasons[index];
 
-        return InkWell(
-          onTap: () {
-            Navigator.pushReplacementNamed(
-              context,
-              TvShowDetailPage.routeName,
-              arguments: tvShow.id,
-            );
-          },
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: CustomNetworkImage(
-              imgUrl: '$baseImageUrlW300${tvShow.posterPath}',
-              placeHolderSize: 40,
-            ),
+        return SizedBox(
+          width: 240,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                flex: 2,
+                child: InkWell(
+                  onTap: () {},
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Stack(
+                      alignment: Alignment.bottomLeft,
+                      children: <Widget>[
+                        CustomNetworkImage(
+                          imgUrl: '$baseImageUrlW500${season.posterPath}',
+                          placeHolderSize: 40,
+                          width: 240,
+                          fit: BoxFit.fitWidth,
+                        ),
+                        Positioned.fill(
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                                colors: [Colors.black87, Colors.transparent],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Text>[
+                              Text(
+                                'S${season.seasonNumber} ● ${season.episodeCount} Episodes',
+                                style: kSubtitle,
+                              ),
+                              Text(
+                                DateFormat('MMM dd, y')
+                                    .format(DateTime.parse(season.airDate)),
+                                style: const TextStyle(color: kDavysGrey),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 2),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Flexible(
+                        child: Text(
+                          season.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: kSubtitle.copyWith(color: kMikadoYellow),
+                        ),
+                      ),
+                      Flexible(
+                        child: Text(
+                          season.overview,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(color: kDavysGrey),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         );
       },
-      itemCount: tvShowRecommendations.length,
+      itemCount: tvShow.seasons.length,
       separatorBuilder: (context, index) => const SizedBox(width: 12),
     );
   }

@@ -28,7 +28,7 @@ class ItemList extends StatelessWidget {
           final posterPath =
               movies?[index].posterPath ?? tvShows![index].posterPath;
 
-          return Container(
+          return Padding(
             padding: const EdgeInsets.all(8),
             child: InkWell(
               onTap: () => Navigator.pushNamed(

@@ -39,10 +39,7 @@ class MovieDetailContent extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
-                colors: [
-                  Colors.black54,
-                  Colors.transparent,
-                ],
+                colors: [Colors.black54, Colors.transparent],
               ),
             ),
           ),

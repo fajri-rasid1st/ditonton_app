@@ -6,7 +6,6 @@ class EpisodeModel extends Equatable {
   final int episodeNumber;
   final String? name;
   final String? overview;
-  final int? runtime;
   final String? stillPath;
 
   const EpisodeModel({
@@ -14,7 +13,6 @@ class EpisodeModel extends Equatable {
     required this.episodeNumber,
     required this.name,
     required this.overview,
-    required this.runtime,
     required this.stillPath,
   });
 
@@ -24,7 +22,6 @@ class EpisodeModel extends Equatable {
       episodeNumber: episode['episode_number'],
       name: episode['name'] ?? '',
       overview: episode['overview'] ?? '',
-      runtime: episode['runtime'] ?? 0,
       stillPath: episode['still_path'] ?? '',
     );
   }
@@ -35,7 +32,6 @@ class EpisodeModel extends Equatable {
       'episode_number': episodeNumber,
       'name': name,
       'overview': overview,
-      'runtime': runtime,
       'still_path': stillPath,
     };
   }
@@ -46,7 +42,6 @@ class EpisodeModel extends Equatable {
       episodeNumber: episodeNumber,
       name: name ?? '',
       overview: overview ?? '',
-      runtime: runtime ?? 0,
       stillPath: stillPath ?? '',
     );
   }
@@ -57,7 +52,6 @@ class EpisodeModel extends Equatable {
         episodeNumber,
         name,
         overview,
-        runtime,
         stillPath,
       ];
 }

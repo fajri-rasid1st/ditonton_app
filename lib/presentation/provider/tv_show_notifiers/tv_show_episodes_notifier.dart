@@ -1,16 +1,16 @@
 import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/domain/entities/episode.dart';
-import 'package:ditonton/domain/usecases/tv_show_usecases/get_tv_show_episode_detail.dart';
+import 'package:ditonton/domain/usecases/tv_show_usecases/get_tv_show_episodes.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class TvShowEpisodeDetailNotifier extends ChangeNotifier {
-  final GetTvShowEpisodeDetail getTvShowEpisodeDetail;
+class TvShowEpisodesNotifier extends ChangeNotifier {
+  final GetTvShowEpisodes getTvShowEpisodeDetail;
 
-  TvShowEpisodeDetailNotifier({required this.getTvShowEpisodeDetail});
+  TvShowEpisodesNotifier({required this.getTvShowEpisodeDetail});
 
-  late Episode _episode;
-  Episode get episode => _episode;
+  List<Episode> _episodes = <Episode>[];
+  List<Episode> get episodes => _episodes;
 
   RequestState _state = RequestState.empty;
   RequestState get state => _state;
@@ -18,19 +18,11 @@ class TvShowEpisodeDetailNotifier extends ChangeNotifier {
   String _message = '';
   String get message => _message;
 
-  Future<void> fetchTvShowEpisode(
-    int id,
-    int seasonNumber,
-    int episodeNumber,
-  ) async {
+  Future<void> fetchTvShowEpisode(int id, int seasonNumber) async {
     _state = RequestState.loading;
     notifyListeners();
 
-    final result = await getTvShowEpisodeDetail.execute(
-      id,
-      seasonNumber,
-      episodeNumber,
-    );
+    final result = await getTvShowEpisodeDetail.execute(id, seasonNumber);
 
     result.fold(
       (failure) {
@@ -38,8 +30,8 @@ class TvShowEpisodeDetailNotifier extends ChangeNotifier {
         _state = RequestState.error;
         notifyListeners();
       },
-      (episode) {
-        _episode = episode;
+      (episodes) {
+        _episodes = episodes;
         _state = RequestState.loaded;
         notifyListeners();
       },

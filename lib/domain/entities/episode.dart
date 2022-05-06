@@ -5,7 +5,6 @@ class Episode extends Equatable {
   final int episodeNumber;
   final String name;
   final String overview;
-  final int runtime;
   final String stillPath;
 
   const Episode({
@@ -13,7 +12,6 @@ class Episode extends Equatable {
     required this.episodeNumber,
     required this.name,
     required this.overview,
-    required this.runtime,
     required this.stillPath,
   });
 
@@ -23,7 +21,6 @@ class Episode extends Equatable {
         episodeNumber,
         name,
         overview,
-        runtime,
         stillPath,
       ];
 }

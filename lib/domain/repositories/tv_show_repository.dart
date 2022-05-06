@@ -17,10 +17,9 @@ abstract class TvShowRepository {
 
   Future<Either<Failure, List<TvShow>>> searchTvShows(String query);
 
-  Future<Either<Failure, Episode>> getTvShowEpisodeDetail(
+  Future<Either<Failure, List<Episode>>> getTvShowEpisodes(
     int id,
     int seasonNumber,
-    int episodeNumber,
   );
 
   Future<Either<Failure, String>> addTvShowWatchlist(TvShowDetail tvShow);

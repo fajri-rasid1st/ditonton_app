@@ -4,6 +4,7 @@ import 'package:ditonton/domain/entities/genre.dart';
 import 'package:ditonton/domain/entities/tv_show_entities/tv_show.dart';
 import 'package:ditonton/domain/entities/tv_show_entities/tv_show_detail.dart';
 import 'package:ditonton/presentation/pages/tv_show_detail_page.dart';
+import 'package:ditonton/presentation/pages/tv_show_season_detail.dart';
 import 'package:ditonton/presentation/provider/tv_show_notifiers/tv_show_detail_notifier.dart';
 import 'package:ditonton/presentation/widgets/custom_network_image.dart';
 import 'package:flutter/material.dart';
@@ -289,17 +290,28 @@ class TvShowDetailContent extends StatelessWidget {
               Expanded(
                 flex: 2,
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    if (season.seasonNumber != 0) {
+                      Navigator.pushNamed(
+                        context,
+                        TvShowSeasonDetail.routeName,
+                        arguments: TvShowSeasonDetailArgs(tvShow.id, season),
+                      );
+                    }
+                  },
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Stack(
                       alignment: Alignment.bottomLeft,
                       children: <Widget>[
-                        CustomNetworkImage(
-                          imgUrl: '$baseImageUrlW500${season.posterPath}',
-                          placeHolderSize: 40,
-                          width: 240,
-                          fit: BoxFit.fitWidth,
+                        Hero(
+                          tag: season.seasonNumber,
+                          child: CustomNetworkImage(
+                            imgUrl: '$baseImageUrlW500${season.posterPath}',
+                            placeHolderSize: 40,
+                            width: 240,
+                            fit: BoxFit.fitWidth,
+                          ),
                         ),
                         Positioned.fill(
                           child: Container(
@@ -312,20 +324,37 @@ class TvShowDetailContent extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Column(
+                        ListTile(
+                          isThreeLine: season.seasonNumber != 0 ? true : false,
+                          title: Text(
+                            'S${season.seasonNumber} ● ${season.episodeCount} Episodes',
+                            style: kSubtitle,
+                          ),
+                          subtitle: Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Text>[
-                              Text(
-                                'S${season.seasonNumber} ● ${season.episodeCount} Episodes',
-                                style: kSubtitle,
-                              ),
+                            children: <Widget>[
                               Text(
                                 _showSeasonAirDate(season.airDate),
                                 style: const TextStyle(color: kDavysGrey),
                               ),
+                              if (season.seasonNumber != 0) ...[
+                                const SizedBox(height: 4),
+                                Row(
+                                  children: const <Widget>[
+                                    Text(
+                                      'Show details',
+                                      style: TextStyle(color: kMikadoYellow),
+                                    ),
+                                    SizedBox(width: 2),
+                                    Icon(
+                                      Icons.keyboard_double_arrow_right_rounded,
+                                      size: 18,
+                                      color: kMikadoYellow,
+                                    )
+                                  ],
+                                ),
+                              ]
                             ],
                           ),
                         ),
@@ -347,7 +376,7 @@ class TvShowDetailContent extends StatelessWidget {
                           season.name,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: kSubtitle.copyWith(color: kMikadoYellow),
+                          style: kSubtitle,
                         ),
                       ),
                       Flexible(

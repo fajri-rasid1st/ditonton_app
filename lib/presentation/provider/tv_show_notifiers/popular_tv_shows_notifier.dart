@@ -11,7 +11,7 @@ class PopularTvShowsNotifier extends ChangeNotifier {
   RequestState _state = RequestState.empty;
   RequestState get state => _state;
 
-  List<TvShow> _tvShows = [];
+  List<TvShow> _tvShows = <TvShow>[];
   List<TvShow> get tvShows => _tvShows;
 
   String _message = '';

@@ -98,19 +98,14 @@ class TvShowRepositoryImpl implements TvShowRepository {
   }
 
   @override
-  Future<Either<Failure, Episode>> getTvShowEpisodeDetail(
+  Future<Either<Failure, List<Episode>>> getTvShowEpisodes(
     int id,
     int seasonNumber,
-    int episodeNumber,
   ) async {
     try {
-      final result = await remoteDataSource.getTvShowEpisodeDetail(
-        id,
-        seasonNumber,
-        episodeNumber,
-      );
+      final result = await remoteDataSource.getTvShowEpisodes(id, seasonNumber);
 
-      return Right(result.toEntity());
+      return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException {
       return const Left(ServerFailure('Failed to connect to the server'));
     } on SocketException {

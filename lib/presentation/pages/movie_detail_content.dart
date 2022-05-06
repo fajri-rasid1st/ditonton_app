@@ -51,6 +51,7 @@ class MovieDetailContent extends StatelessWidget {
             snapSizes: const [0.5],
             builder: (context, scrollController) {
               return Container(
+                padding: const EdgeInsets.only(top: 24),
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                   color: kRichBlack,
@@ -59,7 +60,7 @@ class MovieDetailContent extends StatelessWidget {
                   children: <Widget>[
                     SingleChildScrollView(
                       controller: scrollController,
-                      padding: const EdgeInsets.only(top: 32, bottom: 16),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -171,7 +172,6 @@ class MovieDetailContent extends StatelessWidget {
                     Align(
                       alignment: Alignment.topCenter,
                       child: Container(
-                        margin: const EdgeInsets.only(top: 16),
                         width: 48,
                         height: 4,
                         decoration: BoxDecoration(
@@ -206,20 +206,20 @@ class MovieDetailContent extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) {
-        final movie = movieRecommendations[index];
+        final recommendation = movieRecommendations[index];
 
         return InkWell(
           onTap: () {
             Navigator.pushReplacementNamed(
               context,
               MovieDetailPage.routeName,
-              arguments: movie.id,
+              arguments: recommendation.id,
             );
           },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: CustomNetworkImage(
-              imgUrl: '$baseImageUrlW300${movie.posterPath}',
+              imgUrl: '$baseImageUrlW300${recommendation.posterPath}',
               placeHolderSize: 40,
             ),
           ),

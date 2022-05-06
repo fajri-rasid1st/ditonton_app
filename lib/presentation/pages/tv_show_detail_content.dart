@@ -52,6 +52,7 @@ class TvShowDetailContent extends StatelessWidget {
             snapSizes: const [0.5],
             builder: (context, scrollController) {
               return Container(
+                padding: const EdgeInsets.only(top: 24),
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                   color: kRichBlack,
@@ -60,7 +61,7 @@ class TvShowDetailContent extends StatelessWidget {
                   children: <Widget>[
                     SingleChildScrollView(
                       controller: scrollController,
-                      padding: const EdgeInsets.only(top: 32, bottom: 16),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -129,7 +130,7 @@ class TvShowDetailContent extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: <Widget>[
                                 Column(
@@ -243,7 +244,6 @@ class TvShowDetailContent extends StatelessWidget {
                     Align(
                       alignment: Alignment.topCenter,
                       child: Container(
-                        margin: const EdgeInsets.only(top: 16),
                         width: 48,
                         height: 4,
                         decoration: BoxDecoration(
@@ -278,11 +278,12 @@ class TvShowDetailContent extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) {
-        final season = tvShow.seasons[index];
+        final season = tvShow.seasons.reversed.toList()[index];
 
         return SizedBox(
           width: 240,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Expanded(
@@ -322,8 +323,7 @@ class TvShowDetailContent extends StatelessWidget {
                                 style: kSubtitle,
                               ),
                               Text(
-                                DateFormat('MMM dd, y')
-                                    .format(DateTime.parse(season.airDate)),
+                                _showSeasonAirDate(season.airDate),
                                 style: const TextStyle(color: kDavysGrey),
                               ),
                             ],
@@ -376,20 +376,20 @@ class TvShowDetailContent extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) {
-        final tvShow = tvShowRecommendations[index];
+        final recommendation = tvShowRecommendations[index];
 
         return InkWell(
           onTap: () {
             Navigator.pushReplacementNamed(
               context,
               TvShowDetailPage.routeName,
-              arguments: tvShow.id,
+              arguments: recommendation.id,
             );
           },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: CustomNetworkImage(
-              imgUrl: '$baseImageUrlW300${tvShow.posterPath}',
+              imgUrl: '$baseImageUrlW300${recommendation.posterPath}',
               placeHolderSize: 40,
             ),
           ),
@@ -455,5 +455,13 @@ class TvShowDetailContent extends StatelessWidget {
         : DateFormat('MMM dd, y').format(DateTime.parse(lastAirDate));
 
     return '$firstAirDateParse to $lastAirDateParse';
+  }
+
+  String _showSeasonAirDate(String airDate) {
+    final airDateParse = airDate.isEmpty
+        ? '?'
+        : DateFormat('MMM dd, y').format(DateTime.parse(airDate));
+
+    return airDateParse;
   }
 }

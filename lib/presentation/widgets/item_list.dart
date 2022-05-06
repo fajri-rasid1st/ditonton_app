@@ -14,9 +14,10 @@ class ItemList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final itemsLength = movies?.length ?? tvShows!.length;
     final routeName =
         movies != null ? MovieDetailPage.routeName : TvShowDetailPage.routeName;
+
+    final itemsLength = movies?.length ?? tvShows!.length;
 
     return SizedBox(
       height: 200,

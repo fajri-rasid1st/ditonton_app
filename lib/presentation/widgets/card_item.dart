@@ -16,6 +16,7 @@ class CardItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final routeName =
         movie != null ? MovieDetailPage.routeName : TvShowDetailPage.routeName;
+
     final id = movie?.id ?? tvShow!.id;
     final titleName = movie?.title ?? tvShow!.name;
     final overview = movie?.overview ?? tvShow!.overview;

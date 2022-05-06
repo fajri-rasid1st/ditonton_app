@@ -52,7 +52,11 @@ class _TvShowsPageState extends State<TvShowsPage>
               if (state == RequestState.loading) {
                 return const Center(child: CircularProgressIndicator());
               } else if (state == RequestState.loaded) {
-                return ItemList(tvShows: provider.onTheAirTvShows);
+                return ItemList(
+                  tvShows: provider.onTheAirTvShows,
+                  height: 200,
+                  separatorWidth: 12,
+                );
               }
 
               return const SizedBox(
@@ -77,7 +81,11 @@ class _TvShowsPageState extends State<TvShowsPage>
               if (state == RequestState.loading) {
                 return const Center(child: CircularProgressIndicator());
               } else if (state == RequestState.loaded) {
-                return ItemList(tvShows: provider.popularTvShows);
+                return ItemList(
+                  tvShows: provider.popularTvShows,
+                  height: 200,
+                  separatorWidth: 12,
+                );
               }
 
               return const SizedBox(
@@ -102,7 +110,11 @@ class _TvShowsPageState extends State<TvShowsPage>
               if (state == RequestState.loading) {
                 return const Center(child: CircularProgressIndicator());
               } else if (state == RequestState.loaded) {
-                return ItemList(tvShows: provider.topRatedTvShows);
+                return ItemList(
+                  tvShows: provider.topRatedTvShows,
+                  height: 200,
+                  separatorWidth: 12,
+                );
               }
 
               return const SizedBox(

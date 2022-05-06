@@ -1,4 +1,4 @@
-import 'package:ditonton/presentation/pages/tv_show_detail_content.dart';
+import 'package:ditonton/presentation/widgets/tv_show_detail_content.dart';
 import 'package:ditonton/presentation/provider/tv_show_notifiers/tv_show_detail_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

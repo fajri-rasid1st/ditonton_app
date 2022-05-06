@@ -119,12 +119,12 @@ class _TvShowSeasonDetailPageState extends State<TvShowSeasonDetailPage> {
                             widget.season.overview,
                             trimLines: 4,
                             trimMode: TrimMode.Line,
+                            delimiter: ' ',
                             trimCollapsedText: '...Show more',
                             trimExpandedText: 'Show less',
                             style: const TextStyle(color: kDavysGrey),
                             lessStyle: const TextStyle(color: Colors.white),
                             moreStyle: const TextStyle(color: Colors.white),
-                            delimiter: ' ',
                           ),
                         ],
                       ),
@@ -160,7 +160,7 @@ class _TvShowSeasonDetailPageState extends State<TvShowSeasonDetailPage> {
                     CustomNetworkImage(
                       imgUrl: '$baseImageUrlW500${episode.stillPath}',
                       width: double.infinity,
-                      height: 120,
+                      height: 140,
                       placeHolderSize: 40,
                     ),
                     Positioned.fill(

@@ -48,7 +48,11 @@ class _MoviesPageState extends State<MoviesPage>
               if (state == RequestState.loading) {
                 return const Center(child: CircularProgressIndicator());
               } else if (state == RequestState.loaded) {
-                return ItemList(movies: provider.nowPlayingMovies);
+                return ItemList(
+                  movies: provider.nowPlayingMovies,
+                  height: 200,
+                  separatorWidth: 12,
+                );
               }
 
               return const SizedBox(
@@ -73,7 +77,11 @@ class _MoviesPageState extends State<MoviesPage>
               if (state == RequestState.loading) {
                 return const Center(child: CircularProgressIndicator());
               } else if (state == RequestState.loaded) {
-                return ItemList(movies: provider.popularMovies);
+                return ItemList(
+                  movies: provider.popularMovies,
+                  height: 200,
+                  separatorWidth: 12,
+                );
               }
 
               return const SizedBox(
@@ -92,13 +100,17 @@ class _MoviesPageState extends State<MoviesPage>
             ),
           ),
           Consumer<MovieListNotifier>(
-            builder: (context, proivider, child) {
-              final state = proivider.topRatedMoviesState;
+            builder: (context, provider, child) {
+              final state = provider.topRatedMoviesState;
 
               if (state == RequestState.loading) {
                 return const Center(child: CircularProgressIndicator());
               } else if (state == RequestState.loaded) {
-                return ItemList(movies: proivider.topRatedMovies);
+                return ItemList(
+                  movies: provider.topRatedMovies,
+                  height: 200,
+                  separatorWidth: 12,
+                );
               }
 
               return const SizedBox(

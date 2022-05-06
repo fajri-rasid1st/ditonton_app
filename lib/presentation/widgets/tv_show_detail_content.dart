@@ -3,10 +3,10 @@ import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/domain/entities/genre.dart';
 import 'package:ditonton/domain/entities/tv_show_entities/tv_show.dart';
 import 'package:ditonton/domain/entities/tv_show_entities/tv_show_detail.dart';
-import 'package:ditonton/presentation/pages/tv_show_detail_page.dart';
 import 'package:ditonton/presentation/pages/tv_show_season_detail_page.dart';
 import 'package:ditonton/presentation/provider/tv_show_notifiers/tv_show_detail_notifier.dart';
 import 'package:ditonton/presentation/widgets/custom_network_image.dart';
+import 'package:ditonton/presentation/widgets/item_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
@@ -237,9 +237,10 @@ class TvShowDetailContent extends StatelessWidget {
                                   child: Text(provider.message),
                                 );
                               } else if (state == RequestState.loaded) {
-                                return SizedBox(
+                                return ItemList(
+                                  tvShows: tvShowRecommendations,
                                   height: 160,
-                                  child: _buildRecommendationList(),
+                                  separatorWidth: 12,
                                 );
                               }
 
@@ -390,35 +391,6 @@ class TvShowDetailContent extends StatelessWidget {
       },
       separatorBuilder: (context, index) => const SizedBox(width: 12),
       itemCount: tvShow.seasons.length,
-    );
-  }
-
-  ListView _buildRecommendationList() {
-    return ListView.separated(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      scrollDirection: Axis.horizontal,
-      itemBuilder: (context, index) {
-        final recommendation = tvShowRecommendations[index];
-
-        return InkWell(
-          onTap: () {
-            Navigator.pushReplacementNamed(
-              context,
-              TvShowDetailPage.routeName,
-              arguments: recommendation.id,
-            );
-          },
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: CustomNetworkImage(
-              imgUrl: '$baseImageUrlW300${recommendation.posterPath}',
-              placeHolderSize: 40,
-            ),
-          ),
-        );
-      },
-      separatorBuilder: (context, index) => const SizedBox(width: 12),
-      itemCount: tvShowRecommendations.length,
     );
   }
 

@@ -1,9 +1,9 @@
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/domain/entities/genre.dart';
-import 'package:ditonton/presentation/pages/movie_detail_page.dart';
 import 'package:ditonton/presentation/provider/movie_notifiers/movie_detail_notifier.dart';
 import 'package:ditonton/presentation/widgets/custom_network_image.dart';
+import 'package:ditonton/presentation/widgets/item_list.dart';
 import 'package:flutter/material.dart';
 import 'package:ditonton/domain/entities/movie_entities/movie.dart';
 import 'package:ditonton/domain/entities/movie_entities/movie_detail.dart';
@@ -105,13 +105,13 @@ class MovieDetailContent extends StatelessWidget {
                               children: <Widget>[
                                 RatingBarIndicator(
                                   rating: movie.voteAverage / 2,
-                                  itemCount: 5,
                                   itemBuilder: (context, index) {
                                     return const Icon(
                                       Icons.star,
                                       color: kMikadoYellow,
                                     );
                                   },
+                                  itemCount: 5,
                                   itemSize: 24,
                                 ),
                                 const SizedBox(width: 4),
@@ -162,9 +162,10 @@ class MovieDetailContent extends StatelessWidget {
                                   child: Text(provider.message),
                                 );
                               } else if (state == RequestState.loaded) {
-                                return SizedBox(
+                                return ItemList(
+                                  movies: movieRecommendations,
                                   height: 160,
-                                  child: _buildRecommendationList(),
+                                  separatorWidth: 12,
                                 );
                               }
 
@@ -204,35 +205,6 @@ class MovieDetailContent extends StatelessWidget {
           ),
         )
       ],
-    );
-  }
-
-  ListView _buildRecommendationList() {
-    return ListView.separated(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      scrollDirection: Axis.horizontal,
-      itemBuilder: (context, index) {
-        final recommendation = movieRecommendations[index];
-
-        return InkWell(
-          onTap: () {
-            Navigator.pushReplacementNamed(
-              context,
-              MovieDetailPage.routeName,
-              arguments: recommendation.id,
-            );
-          },
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: CustomNetworkImage(
-              imgUrl: '$baseImageUrlW300${recommendation.posterPath}',
-              placeHolderSize: 40,
-            ),
-          ),
-        );
-      },
-      separatorBuilder: (context, index) => const SizedBox(width: 12),
-      itemCount: movieRecommendations.length,
     );
   }
 

@@ -161,10 +161,6 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(
                 builder: (_) => const SearchTvShowsPage(),
               );
-            case AboutPage.routeName:
-              return MaterialPageRoute(
-                builder: (_) => const AboutPage(),
-              );
             case TvShowSeasonDetailPage.routeName:
               final arguments = settings.arguments as TvShowSeasonDetailArgs;
 
@@ -178,13 +174,15 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(
                 builder: (_) => const WatchlistScreen(),
               );
+            case AboutPage.routeName:
+              return MaterialPageRoute(
+                builder: (_) => const AboutPage(),
+              );
             default:
               return MaterialPageRoute(
                 builder: (_) {
                   return const Scaffold(
-                    body: Center(
-                      child: Text('Page not found :('),
-                    ),
+                    body: Center(child: Text('Page not found :(')),
                   );
                 },
               );

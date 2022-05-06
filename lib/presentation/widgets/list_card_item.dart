@@ -21,8 +21,8 @@ class ListCardItem extends StatelessWidget {
           tvShow: tvShows?[index],
         );
       },
-      itemCount: itemsLength,
       separatorBuilder: (context, index) => const SizedBox(height: 8),
+      itemCount: itemsLength,
     );
   }
 }

@@ -4,13 +4,14 @@ import 'package:ditonton/domain/entities/genre.dart';
 import 'package:ditonton/domain/entities/tv_show_entities/tv_show.dart';
 import 'package:ditonton/domain/entities/tv_show_entities/tv_show_detail.dart';
 import 'package:ditonton/presentation/pages/tv_show_detail_page.dart';
-import 'package:ditonton/presentation/pages/tv_show_season_detail.dart';
+import 'package:ditonton/presentation/pages/tv_show_season_detail_page.dart';
 import 'package:ditonton/presentation/provider/tv_show_notifiers/tv_show_detail_notifier.dart';
 import 'package:ditonton/presentation/widgets/custom_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:readmore/readmore.dart';
 
 class TvShowDetailContent extends StatelessWidget {
   final TvShowDetail tvShow;
@@ -102,7 +103,6 @@ class TvShowDetailContent extends StatelessWidget {
                                 tvShow.firstAirDate,
                                 tvShow.lastAirDate,
                               ),
-                              style: kSubtitle,
                             ),
                           ),
                           Padding(
@@ -205,9 +205,16 @@ class TvShowDetailContent extends StatelessWidget {
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                            child: Text(
+                            child: ReadMoreText(
                               tvShow.overview,
+                              trimLines: 4,
+                              trimMode: TrimMode.Line,
+                              trimCollapsedText: '...Show more',
+                              trimExpandedText: 'Show less',
                               style: const TextStyle(color: kDavysGrey),
+                              lessStyle: const TextStyle(color: Colors.white),
+                              moreStyle: const TextStyle(color: Colors.white),
+                              delimiter: ' ',
                             ),
                           ),
                           Padding(
@@ -265,8 +272,9 @@ class TvShowDetailContent extends StatelessWidget {
             backgroundColor: kRichBlack,
             foregroundColor: Colors.white,
             child: IconButton(
-              icon: const Icon(Icons.arrow_back_rounded),
               onPressed: () => Navigator.pop(context),
+              icon: const Icon(Icons.arrow_back_rounded),
+              tooltip: 'Back',
             ),
           ),
         )
@@ -294,7 +302,7 @@ class TvShowDetailContent extends StatelessWidget {
                     if (season.seasonNumber != 0) {
                       Navigator.pushNamed(
                         context,
-                        TvShowSeasonDetail.routeName,
+                        TvShowSeasonDetailPage.routeName,
                         arguments: TvShowSeasonDetailArgs(tvShow.id, season),
                       );
                     }
@@ -304,14 +312,11 @@ class TvShowDetailContent extends StatelessWidget {
                     child: Stack(
                       alignment: Alignment.bottomLeft,
                       children: <Widget>[
-                        Hero(
-                          tag: season.seasonNumber,
-                          child: CustomNetworkImage(
-                            imgUrl: '$baseImageUrlW500${season.posterPath}',
-                            placeHolderSize: 40,
-                            width: 240,
-                            fit: BoxFit.fitWidth,
-                          ),
+                        CustomNetworkImage(
+                          imgUrl: '$baseImageUrlW500${season.posterPath}',
+                          width: 240,
+                          placeHolderSize: 40,
+                          fit: BoxFit.fitWidth,
                         ),
                         Positioned.fill(
                           child: Container(
@@ -325,22 +330,12 @@ class TvShowDetailContent extends StatelessWidget {
                           ),
                         ),
                         ListTile(
-                          isThreeLine: season.seasonNumber != 0 ? true : false,
                           title: Text(
                             'S${season.seasonNumber} ● ${season.episodeCount} Episodes',
                             style: kSubtitle,
                           ),
-                          subtitle: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                _showSeasonAirDate(season.airDate),
-                                style: const TextStyle(color: kDavysGrey),
-                              ),
-                              if (season.seasonNumber != 0) ...[
-                                const SizedBox(height: 4),
-                                Row(
+                          subtitle: season.seasonNumber != 0
+                              ? Row(
                                   children: const <Widget>[
                                     Text(
                                       'Show details',
@@ -353,10 +348,8 @@ class TvShowDetailContent extends StatelessWidget {
                                       color: kMikadoYellow,
                                     )
                                   ],
-                                ),
-                              ]
-                            ],
-                          ),
+                                )
+                              : null,
                         ),
                       ],
                     ),
@@ -395,8 +388,8 @@ class TvShowDetailContent extends StatelessWidget {
           ),
         );
       },
-      itemCount: tvShow.seasons.length,
       separatorBuilder: (context, index) => const SizedBox(width: 12),
+      itemCount: tvShow.seasons.length,
     );
   }
 
@@ -424,8 +417,8 @@ class TvShowDetailContent extends StatelessWidget {
           ),
         );
       },
-      itemCount: tvShowRecommendations.length,
       separatorBuilder: (context, index) => const SizedBox(width: 12),
+      itemCount: tvShowRecommendations.length,
     );
   }
 
@@ -484,13 +477,5 @@ class TvShowDetailContent extends StatelessWidget {
         : DateFormat('MMM dd, y').format(DateTime.parse(lastAirDate));
 
     return '$firstAirDateParse to $lastAirDateParse';
-  }
-
-  String _showSeasonAirDate(String airDate) {
-    final airDateParse = airDate.isEmpty
-        ? '?'
-        : DateFormat('MMM dd, y').format(DateTime.parse(airDate));
-
-    return airDateParse;
   }
 }

@@ -9,6 +9,7 @@ import 'package:ditonton/domain/entities/movie_entities/movie.dart';
 import 'package:ditonton/domain/entities/movie_entities/movie_detail.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:readmore/readmore.dart';
 
 class MovieDetailContent extends StatelessWidget {
   final MovieDetail movie;
@@ -95,10 +96,7 @@ class MovieDetailContent extends StatelessWidget {
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                            child: Text(
-                              _showDuration(movie.runtime),
-                              style: kSubtitle,
-                            ),
+                            child: Text(_showDuration(movie.runtime)),
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
@@ -132,9 +130,16 @@ class MovieDetailContent extends StatelessWidget {
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                            child: Text(
+                            child: ReadMoreText(
                               movie.overview,
+                              trimLines: 4,
+                              trimMode: TrimMode.Line,
+                              trimCollapsedText: '...Show more',
+                              trimExpandedText: 'Show less',
                               style: const TextStyle(color: kDavysGrey),
+                              lessStyle: const TextStyle(color: Colors.white),
+                              moreStyle: const TextStyle(color: Colors.white),
+                              delimiter: ' ',
                             ),
                           ),
                           Padding(
@@ -192,8 +197,9 @@ class MovieDetailContent extends StatelessWidget {
             backgroundColor: kRichBlack,
             foregroundColor: Colors.white,
             child: IconButton(
-              icon: const Icon(Icons.arrow_back_rounded),
               onPressed: () => Navigator.pop(context),
+              icon: const Icon(Icons.arrow_back_rounded),
+              tooltip: 'Back',
             ),
           ),
         )
@@ -225,8 +231,8 @@ class MovieDetailContent extends StatelessWidget {
           ),
         );
       },
-      itemCount: movieRecommendations.length,
       separatorBuilder: (context, index) => const SizedBox(width: 12),
+      itemCount: movieRecommendations.length,
     );
   }
 

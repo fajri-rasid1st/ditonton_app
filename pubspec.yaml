@@ -67,6 +67,9 @@ dependencies:
     # internationalization and localization
     intl: ^0.17.0
 
+    # readmore text
+    readmore: ^2.1.0
+
 dev_dependencies:
     flutter_test:
         sdk: flutter

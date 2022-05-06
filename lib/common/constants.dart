@@ -9,11 +9,9 @@ const String apiKey = 'api_key=1f93a5b4410a2cf0e46efda561c514cf';
 
 // Colors
 const Color kRichBlack = Color(0xFF000814);
-const Color kOxfordBlue = Color(0xFF001D3D);
 const Color kPrussianBlue = Color(0xFF003566);
 const Color kMikadoYellow = Color(0xFFFFC300);
 const Color kDavysGrey = Color(0xFF687278);
-const Color kGrey = Color(0xFF303030);
 
 // Text style
 final TextStyle kHeading4 = GoogleFonts.poppins(

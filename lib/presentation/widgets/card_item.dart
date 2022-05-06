@@ -47,7 +47,7 @@ class CardItem extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       overview,
-                      maxLines: 3,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
@@ -60,8 +60,8 @@ class CardItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 child: CustomNetworkImage(
                   imgUrl: '$baseImageUrlW300$posterPath',
-                  placeHolderSize: 40,
                   width: 80,
+                  placeHolderSize: 32,
                 ),
               ),
             ),

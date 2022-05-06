@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 
 class CustomNetworkImage extends StatelessWidget {
   final String imgUrl;
-  final double placeHolderSize;
-  final BoxFit fit;
   final double? width;
   final double? height;
+  final double placeHolderSize;
+  final BoxFit fit;
 
   const CustomNetworkImage({
     Key? key,
     required this.imgUrl,
-    required this.placeHolderSize,
-    this.fit = BoxFit.cover,
     this.width,
     this.height,
+    required this.placeHolderSize,
+    this.fit = BoxFit.cover,
   }) : super(key: key);
 
   @override
@@ -24,8 +24,8 @@ class CustomNetworkImage extends StatelessWidget {
       width: width,
       height: height,
       fit: fit,
-      fadeInDuration: const Duration(milliseconds: 200),
-      fadeOutDuration: const Duration(milliseconds: 200),
+      fadeInDuration: const Duration(milliseconds: 300),
+      fadeOutDuration: const Duration(milliseconds: 300),
       placeholder: (context, url) {
         return Center(
           child: Padding(

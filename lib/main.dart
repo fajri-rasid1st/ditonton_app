@@ -10,6 +10,7 @@ import 'package:ditonton/presentation/pages/search_tv_shows_page.dart';
 import 'package:ditonton/presentation/pages/top_rated_movies_page.dart';
 import 'package:ditonton/presentation/pages/top_rated_tv_shows_page.dart';
 import 'package:ditonton/presentation/pages/tv_show_detail_page.dart';
+import 'package:ditonton/presentation/pages/tv_show_season_detail_page.dart';
 import 'package:ditonton/presentation/provider/bottom_nav_notifier.dart';
 import 'package:ditonton/presentation/provider/movie_notifiers/movie_detail_notifier.dart';
 import 'package:ditonton/presentation/provider/movie_notifiers/movie_list_notifier.dart';
@@ -21,6 +22,7 @@ import 'package:ditonton/presentation/provider/tv_show_notifiers/on_the_air_tv_s
 import 'package:ditonton/presentation/provider/tv_show_notifiers/popular_tv_shows_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_show_notifiers/top_rated_tv_shows_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_show_notifiers/tv_show_detail_notifier.dart';
+import 'package:ditonton/presentation/provider/tv_show_notifiers/tv_show_episodes_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_show_notifiers/tv_show_list_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_show_notifiers/tv_show_search_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_show_notifiers/watchlist_tv_shows_notifier.dart';
@@ -97,6 +99,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => di.locator<WatchlistTvShowsNotifier>(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => di.locator<TvShowEpisodesNotifier>(),
+        ),
         ChangeNotifierProvider<BottomNavNotifier>(
           create: (_) => BottomNavNotifier(),
         ),
@@ -159,6 +164,15 @@ class MyApp extends StatelessWidget {
             case AboutPage.routeName:
               return MaterialPageRoute(
                 builder: (_) => const AboutPage(),
+              );
+            case TvShowSeasonDetailPage.routeName:
+              final arguments = settings.arguments as TvShowSeasonDetailArgs;
+
+              return MaterialPageRoute(
+                builder: (_) => TvShowSeasonDetailPage(
+                  tvShowId: arguments.tvShowId,
+                  season: arguments.season,
+                ),
               );
             case WatchlistScreen.routeName:
               return MaterialPageRoute(

@@ -484,7 +484,7 @@ void main() {
       final result = await repository.isMovieAddedToWatchlist(tId);
 
       // assert
-      expect(result, false);
+      expect(result, const Right(false));
     });
 
     test('Should return DatabaseFailure when status checker failed', () async {

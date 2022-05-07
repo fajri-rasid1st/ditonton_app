@@ -77,6 +77,7 @@ class TvShowDetailContent extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
                             child: ElevatedButton.icon(
+                              key: const Key('watchlist_button'),
                               onPressed: () async {
                                 await _onPressedWatchlistButton(context);
                               },

@@ -46,7 +46,7 @@ void main() {
       getMovieWatchListStatus: mockGetMovieWatchListStatus,
       addMovieWatchlist: mockAddMovieWatchlist,
       deleteMovieWatchlist: mockDeleteMovieWatchlist,
-    )..addListener(() => listenerCallCount += 1);
+    )..addListener(() => listenerCallCount++);
   });
 
   const tId = 1;

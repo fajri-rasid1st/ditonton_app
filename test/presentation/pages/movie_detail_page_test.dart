@@ -77,7 +77,7 @@ void main() {
   );
 
   testWidgets(
-    'Watchlist button should display Snackbar when added to watchlist',
+    'Watchlist button should display Snackbar when added to watchlist successful',
     (WidgetTester tester) async {
       when(mockNotifier.movieState).thenReturn(RequestState.loaded);
       when(mockNotifier.movie).thenReturn(testMovieDetail);

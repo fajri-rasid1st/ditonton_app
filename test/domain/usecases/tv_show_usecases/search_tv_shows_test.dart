@@ -15,7 +15,7 @@ void main() {
     usecase = SearchTvShows(mockTvShowRepository);
   });
 
-  const tQuery = 'Spiderman';
+  const tQuery = 'Peaky Blinders';
   final tTvShows = <TvShow>[];
 
   test(

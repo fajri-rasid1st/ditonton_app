@@ -1,17 +1,16 @@
 import 'package:dartz/dartz.dart';
 import 'package:ditonton/common/failure.dart';
 import 'package:ditonton/common/state_enum.dart';
-import 'package:ditonton/domain/entities/movie_entities/movie.dart';
-import 'package:ditonton/domain/usecases/movie_usecases/get_now_playing_movies.dart';
-import 'package:ditonton/domain/usecases/movie_usecases/get_popular_movies.dart';
-import 'package:ditonton/domain/usecases/movie_usecases/get_top_rated_movies.dart';
+import 'package:ditonton/domain/entities/tv_show_entities/tv_show.dart';
 import 'package:ditonton/domain/usecases/tv_show_usecases/get_on_the_air_tv_shows.dart';
 import 'package:ditonton/domain/usecases/tv_show_usecases/get_popular_tv_shows.dart';
 import 'package:ditonton/domain/usecases/tv_show_usecases/get_top_rated_tv_shows.dart';
-import 'package:ditonton/presentation/provider/movie_notifiers/movie_list_notifier.dart';
+import 'package:ditonton/presentation/provider/tv_show_notifiers/tv_show_list_notifier.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+
+import 'tv_show_list_notifier_test.mocks.dart';
 
 @GenerateMocks([
   GetOnTheAirTvShows,
@@ -19,180 +18,180 @@ import 'package:mockito/mockito.dart';
   GetTopRatedTvShows,
 ])
 void main() {
-  // late MovieListNotifier provider;
-  // late MockGetNowPlayingMovies mockGetNowPlayingMovies;
-  // late MockGetPopularMovies mockGetPopularMovies;
-  // late MockGetTopRatedMovies mockGetTopRatedMovies;
-  // late int listenerCallCount;
+  late TvShowListNotifier provider;
+  late MockGetOnTheAirTvShows mockGetOnTheAirTvShows;
+  late MockGetPopularTvShows mockGetPopularTvShows;
+  late MockGetTopRatedTvShows mockGetTopRatedTvShows;
+  late int listenerCallCount;
 
-  // setUp(() {
-  //   listenerCallCount = 0;
+  setUp(() {
+    listenerCallCount = 0;
 
-  //   mockGetNowPlayingMovies = MockGetNowPlayingMovies();
-  //   mockGetPopularMovies = MockGetPopularMovies();
-  //   mockGetTopRatedMovies = MockGetTopRatedMovies();
+    mockGetOnTheAirTvShows = MockGetOnTheAirTvShows();
+    mockGetPopularTvShows = MockGetPopularTvShows();
+    mockGetTopRatedTvShows = MockGetTopRatedTvShows();
 
-  //   provider = MovieListNotifier(
-  //     getNowPlayingMovies: mockGetNowPlayingMovies,
-  //     getPopularMovies: mockGetPopularMovies,
-  //     getTopRatedMovies: mockGetTopRatedMovies,
-  //   )..addListener(() => listenerCallCount++);
-  // });
+    provider = TvShowListNotifier(
+      getOnTheAirTvShows: mockGetOnTheAirTvShows,
+      getPopularTvShows: mockGetPopularTvShows,
+      getTopRatedTvShows: mockGetTopRatedTvShows,
+    )..addListener(() => listenerCallCount++);
+  });
 
-  // const tMovie = Movie(
-  //   id: 1,
-  //   title: 'title',
-  //   overview: 'overview',
-  //   posterPath: 'posterPath',
-  // );
+  const tTvShow = TvShow(
+    id: 1,
+    name: 'name',
+    overview: 'overview',
+    posterPath: 'posterPath',
+  );
 
-  // final tMovieList = <Movie>[tMovie];
+  final tTvShowList = <TvShow>[tTvShow];
 
-  // group('Now playing movies', () {
-  //   test('InitialState should be Empty', () {
-  //     expect(provider.nowPlayingMovieState, equals(RequestState.empty));
-  //   });
+  group('On the air tv shows', () {
+    test('InitialState should be Empty', () {
+      expect(provider.onTheAirTvShowsState, equals(RequestState.empty));
+    });
 
-  //   test('Should get data from the usecase', () async {
-  //     // arrange
-  //     when(mockGetNowPlayingMovies.execute())
-  //         .thenAnswer((_) async => Right(tMovieList));
+    test('Should get data from the usecase', () async {
+      // arrange
+      when(mockGetOnTheAirTvShows.execute())
+          .thenAnswer((_) async => Right(tTvShowList));
 
-  //     // act
-  //     provider.fetchNowPlayingMovies();
+      // act
+      provider.fetchOnTheAirTvShows();
 
-  //     // assert
-  //     verify(mockGetNowPlayingMovies.execute());
-  //   });
+      // assert
+      verify(mockGetOnTheAirTvShows.execute());
+    });
 
-  //   test('Should change state to Loading when usecase is called', () {
-  //     // arrange
-  //     when(mockGetNowPlayingMovies.execute())
-  //         .thenAnswer((_) async => Right(tMovieList));
+    test('Should change state to Loading when usecase is called', () {
+      // arrange
+      when(mockGetOnTheAirTvShows.execute())
+          .thenAnswer((_) async => Right(tTvShowList));
 
-  //     // act
-  //     provider.fetchNowPlayingMovies();
+      // act
+      provider.fetchOnTheAirTvShows();
 
-  //     // assert
-  //     expect(provider.nowPlayingMovieState, RequestState.loading);
-  //   });
+      // assert
+      expect(provider.onTheAirTvShowsState, RequestState.loading);
+    });
 
-  //   test('Should change movies when data is gotten successfully', () async {
-  //     // arrange
-  //     when(mockGetNowPlayingMovies.execute())
-  //         .thenAnswer((_) async => Right(tMovieList));
+    test('Should change tv shows when data is gotten successfully', () async {
+      // arrange
+      when(mockGetOnTheAirTvShows.execute())
+          .thenAnswer((_) async => Right(tTvShowList));
 
-  //     // act
-  //     await provider.fetchNowPlayingMovies();
+      // act
+      await provider.fetchOnTheAirTvShows();
 
-  //     // assert
-  //     expect(provider.nowPlayingMovieState, RequestState.loaded);
-  //     expect(provider.nowPlayingMovies, tMovieList);
-  //     expect(listenerCallCount, 2);
-  //   });
+      // assert
+      expect(provider.onTheAirTvShowsState, RequestState.loaded);
+      expect(provider.onTheAirTvShows, tTvShowList);
+      expect(listenerCallCount, 2);
+    });
 
-  //   test('Should return error when data is unsuccessful', () async {
-  //     // arrange
-  //     when(mockGetNowPlayingMovies.execute())
-  //         .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
+    test('Should return error when data is unsuccessful', () async {
+      // arrange
+      when(mockGetOnTheAirTvShows.execute())
+          .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
 
-  //     // act
-  //     await provider.fetchNowPlayingMovies();
+      // act
+      await provider.fetchOnTheAirTvShows();
 
-  //     // assert
-  //     expect(provider.nowPlayingMovieState, RequestState.error);
-  //     expect(provider.message, 'Server Failure');
-  //     expect(listenerCallCount, 2);
-  //   });
-  // });
+      // assert
+      expect(provider.onTheAirTvShowsState, RequestState.error);
+      expect(provider.message, 'Server Failure');
+      expect(listenerCallCount, 2);
+    });
+  });
 
-  // group('Popular movies', () {
-  //   test('Should change state to loading when usecase is called', () async {
-  //     // arrange
-  //     when(mockGetPopularMovies.execute())
-  //         .thenAnswer((_) async => Right(tMovieList));
+  group('Popular tv shows', () {
+    test('Should change state to loading when usecase is called', () async {
+      // arrange
+      when(mockGetPopularTvShows.execute())
+          .thenAnswer((_) async => Right(tTvShowList));
 
-  //     // act
-  //     provider.fetchPopularMovies();
+      // act
+      provider.fetchPopularTvShows();
 
-  //     // assert
-  //     expect(provider.popularMoviesState, RequestState.loading);
-  //   });
+      // assert
+      expect(provider.popularTvShowsState, RequestState.loading);
+    });
 
-  //   test(
-  //     'Should change movies data when data is gotten successfully',
-  //     () async {
-  //       // arrange
-  //       when(mockGetPopularMovies.execute())
-  //           .thenAnswer((_) async => Right(tMovieList));
+    test(
+      'Should change tv shows data when data is gotten successfully',
+      () async {
+        // arrange
+        when(mockGetPopularTvShows.execute())
+            .thenAnswer((_) async => Right(tTvShowList));
 
-  //       // act
-  //       await provider.fetchPopularMovies();
+        // act
+        await provider.fetchPopularTvShows();
 
-  //       // assert
-  //       expect(provider.popularMoviesState, RequestState.loaded);
-  //       expect(provider.popularMovies, tMovieList);
-  //       expect(listenerCallCount, 2);
-  //     },
-  //   );
+        // assert
+        expect(provider.popularTvShowsState, RequestState.loaded);
+        expect(provider.popularTvShows, tTvShowList);
+        expect(listenerCallCount, 2);
+      },
+    );
 
-  //   test('Should return error when data is unsuccessful', () async {
-  //     // arrange
-  //     when(mockGetPopularMovies.execute())
-  //         .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
+    test('Should return error when data is unsuccessful', () async {
+      // arrange
+      when(mockGetPopularTvShows.execute())
+          .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
 
-  //     // act
-  //     await provider.fetchPopularMovies();
+      // act
+      await provider.fetchPopularTvShows();
 
-  //     // assert
-  //     expect(provider.popularMoviesState, RequestState.error);
-  //     expect(provider.message, 'Server Failure');
-  //     expect(listenerCallCount, 2);
-  //   });
-  // });
+      // assert
+      expect(provider.popularTvShowsState, RequestState.error);
+      expect(provider.message, 'Server Failure');
+      expect(listenerCallCount, 2);
+    });
+  });
 
-  // group('Top rated movies', () {
-  //   test('Should change state to loading when usecase is called', () async {
-  //     // arrange
-  //     when(mockGetTopRatedMovies.execute())
-  //         .thenAnswer((_) async => Right(tMovieList));
+  group('Top rated tv shows', () {
+    test('Should change state to loading when usecase is called', () async {
+      // arrange
+      when(mockGetTopRatedTvShows.execute())
+          .thenAnswer((_) async => Right(tTvShowList));
 
-  //     // act
-  //     provider.fetchTopRatedMovies();
+      // act
+      provider.fetchTopRatedTvShows();
 
-  //     // assert
-  //     expect(provider.topRatedMoviesState, RequestState.loading);
-  //   });
+      // assert
+      expect(provider.topRatedTvShowsState, RequestState.loading);
+    });
 
-  //   test(
-  //     'Should change movies data when data is gotten successfully',
-  //     () async {
-  //       // arrange
-  //       when(mockGetTopRatedMovies.execute())
-  //           .thenAnswer((_) async => Right(tMovieList));
+    test(
+      'Should change tv shows data when data is gotten successfully',
+      () async {
+        // arrange
+        when(mockGetTopRatedTvShows.execute())
+            .thenAnswer((_) async => Right(tTvShowList));
 
-  //       // act
-  //       await provider.fetchTopRatedMovies();
+        // act
+        await provider.fetchTopRatedTvShows();
 
-  //       // assert
-  //       expect(provider.topRatedMoviesState, RequestState.loaded);
-  //       expect(provider.topRatedMovies, tMovieList);
-  //       expect(listenerCallCount, 2);
-  //     },
-  //   );
+        // assert
+        expect(provider.topRatedTvShowsState, RequestState.loaded);
+        expect(provider.topRatedTvShows, tTvShowList);
+        expect(listenerCallCount, 2);
+      },
+    );
 
-  //   test('Should return error when data is unsuccessful', () async {
-  //     // arrange
-  //     when(mockGetTopRatedMovies.execute())
-  //         .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
+    test('Should return error when data is unsuccessful', () async {
+      // arrange
+      when(mockGetTopRatedTvShows.execute())
+          .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
 
-  //     // act
-  //     await provider.fetchTopRatedMovies();
+      // act
+      await provider.fetchTopRatedTvShows();
 
-  //     // assert
-  //     expect(provider.topRatedMoviesState, RequestState.error);
-  //     expect(provider.message, 'Server Failure');
-  //     expect(listenerCallCount, 2);
-  //   });
-  // });
+      // assert
+      expect(provider.topRatedTvShowsState, RequestState.error);
+      expect(provider.message, 'Server Failure');
+      expect(listenerCallCount, 2);
+    });
+  });
 }

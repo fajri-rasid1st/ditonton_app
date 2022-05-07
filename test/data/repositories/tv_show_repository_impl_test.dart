@@ -370,7 +370,7 @@ void main() {
   });
 
   group('Seach tv shows', () {
-    const tQuery = 'Peaky Blinders';
+    const tQuery = 'Game';
 
     test(
       'Should return tv show list when call to data source is successful',

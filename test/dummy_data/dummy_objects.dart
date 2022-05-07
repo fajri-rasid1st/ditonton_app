@@ -1,8 +1,11 @@
 import 'package:ditonton/data/models/movie_models/movie_table.dart';
+import 'package:ditonton/data/models/tv_show_models/tv_show_table.dart';
 import 'package:ditonton/domain/entities/genre.dart';
 import 'package:ditonton/domain/entities/movie_entities/movie.dart';
 import 'package:ditonton/domain/entities/movie_entities/movie_detail.dart';
-// import 'package:ditonton/domain/entities/tv_show_entities/tv_show.dart';
+import 'package:ditonton/domain/entities/season.dart';
+import 'package:ditonton/domain/entities/tv_show_entities/tv_show.dart';
+import 'package:ditonton/domain/entities/tv_show_entities/tv_show_detail.dart';
 
 // Movie dummy objects
 const testMovie = Movie(
@@ -16,7 +19,7 @@ const testMovie = Movie(
 const testMovieList = <Movie>[testMovie];
 
 const testMovieDetail = MovieDetail(
-  genres: [Genre(name: 'Action')],
+  genres: <Genre>[Genre(name: 'Action')],
   id: 1,
   overview: 'overview',
   posterPath: 'posterPath',
@@ -29,31 +32,76 @@ const testMovieDetail = MovieDetail(
 const testWatchlistMovie = Movie.watchlist(
   id: 1,
   title: 'title',
-  posterPath: 'posterPath',
   overview: 'overview',
+  posterPath: 'posterPath',
 );
 
 const testMovieTable = MovieTable(
   id: 1,
   title: 'title',
-  posterPath: 'posterPath',
   overview: 'overview',
+  posterPath: 'posterPath',
 );
 
 const testMovieMap = {
   'id': 1,
+  'title': 'title',
   'overview': 'overview',
   'posterPath': 'posterPath',
-  'title': 'title',
 };
 
 // Tv show dummy objects
-// const testTvShow = TvShow(
-//   id: 1399,
-//   name: "Game of Thrones",
-//   overview:
-//       "Seven noble families fight for control of the mythical land of Westeros. Friction between the houses leads to full-scale war. All while a very ancient evil awakens in the farthest north. Amidst the war, a neglected military order of misfits, the Night's Watch, is all that stands between the realms of men and icy horrors beyond.",
-//   posterPath: '/u3bZgnGQ9T01sWNhyveQz0wH0Hl.jpg',
-// );
+const testTvShow = TvShow(
+  id: 1399,
+  name: "Game of Thrones",
+  overview:
+      "Seven noble families fight for control of the mythical land of Westeros. Friction between the houses leads to full-scale war. All while a very ancient evil awakens in the farthest north. Amidst the war, a neglected military order of misfits, the Night's Watch, is all that stands between the realms of men and icy horrors beyond.",
+  posterPath: '/u3bZgnGQ9T01sWNhyveQz0wH0Hl.jpg',
+);
 
-// const testTvShowList = [testTvShow];
+const testTvShowList = [testTvShow];
+
+const testTvShowDetail = TvShowDetail(
+  firstAirDate: '2011-04-17',
+  genres: <Genre>[Genre(name: 'Action')],
+  id: 1,
+  lastAirDate: '2019-05-19',
+  name: 'name',
+  numberOfEpisodes: 1,
+  numberOfSeasons: 1,
+  overview: 'overview',
+  posterPath: 'posterPath',
+  seasons: <Season>[
+    Season(
+      airDate: '2011-04-17',
+      episodeCount: 1,
+      name: 'name',
+      overview: 'overview',
+      posterPath: 'posterPath',
+      seasonNumber: 1,
+    )
+  ],
+  voteAverage: 1,
+  voteCount: 1,
+);
+
+const testWatchlistTvShow = TvShow.watchlist(
+  id: 1,
+  name: 'name',
+  overview: 'overview',
+  posterPath: 'posterPath',
+);
+
+const testTvShowTable = TvShowTable(
+  id: 1,
+  name: 'name',
+  overview: 'overview',
+  posterPath: 'posterPath',
+);
+
+const testTvShowMap = {
+  'id': 1,
+  'name': 'name',
+  'overview': 'overview',
+  'posterPath': 'posterPath',
+};

@@ -3,14 +3,14 @@ import 'package:ditonton/data/models/movie_models/movie_model.dart';
 import 'package:ditonton/data/models/movie_models/movie_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../json_reader.dart';
+import '../../../json_reader.dart';
 
 void main() {
   const tMovieModel = MovieModel(
     id: 1,
-    title: "Title",
-    overview: "Overview",
-    posterPath: "/path.jpg",
+    title: 'Title',
+    overview: 'Overview',
+    posterPath: '/path.jpg',
   );
 
   const tMovieResponseModel = MovieResponse(movies: <MovieModel>[tMovieModel]);
@@ -38,12 +38,12 @@ void main() {
 
       // assert
       final expectedJsonMap = {
-        "results": [
+        'results': [
           {
-            "id": 1,
-            "title": "Title",
-            "overview": "Overview",
-            "poster_path": "/path.jpg"
+            'id': 1,
+            'title': 'Title',
+            'overview': 'Overview',
+            'poster_path': '/path.jpg'
           }
         ],
       };

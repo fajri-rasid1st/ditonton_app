@@ -1,12 +1,13 @@
 import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:ditonton/data/models/genre_model.dart';
-import 'package:ditonton/data/models/movie_models/movie_detail_model.dart';
-import 'package:ditonton/data/models/movie_models/movie_model.dart';
-import 'package:ditonton/data/repositories/movie_repository_impl.dart';
+import 'package:ditonton/data/models/season_model.dart';
+import 'package:ditonton/data/models/tv_show_models/tv_show_detail_model.dart';
+import 'package:ditonton/data/models/tv_show_models/tv_show_model.dart';
 import 'package:ditonton/common/exception.dart';
 import 'package:ditonton/common/failure.dart';
-import 'package:ditonton/domain/entities/movie_entities/movie.dart';
+import 'package:ditonton/data/repositories/tv_show_repository_impl.dart';
+import 'package:ditonton/domain/entities/tv_show_entities/tv_show.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -14,118 +15,54 @@ import '../../dummy_data/dummy_objects.dart';
 import '../../helpers/test_helper.mocks.dart';
 
 void main() {
-  late MockMovieRemoteDataSource mockRemoteDataSource;
-  late MockMovieLocalDataSource mockLocalDataSource;
-  late MovieRepositoryImpl repository;
+  late MockTvShowRemoteDataSource mockRemoteDataSource;
+  late MockTvShowLocalDataSource mockLocalDataSource;
+  late TvShowRepositoryImpl repository;
 
   setUp(() {
-    mockRemoteDataSource = MockMovieRemoteDataSource();
-    mockLocalDataSource = MockMovieLocalDataSource();
-    repository = MovieRepositoryImpl(
+    mockRemoteDataSource = MockTvShowRemoteDataSource();
+    mockLocalDataSource = MockTvShowLocalDataSource();
+    repository = TvShowRepositoryImpl(
       remoteDataSource: mockRemoteDataSource,
       localDataSource: mockLocalDataSource,
     );
   });
 
-  const tMovieModel = MovieModel(
-    id: 557,
-    title: 'Spider-Man',
+  const tTvShowModel = TvShowModel(
+    id: 1399,
+    name: "Game of Thrones",
     overview:
-        'After being bitten by a genetically altered spider, nerdy high school student Peter Parker is endowed with amazing powers to become the Amazing superhero known as Spider-Man.',
-    posterPath: '/rweIrveL43TaxUN0akQEaAXL6x0.jpg',
+        "Seven noble families fight for control of the mythical land of Westeros. Friction between the houses leads to full-scale war. All while a very ancient evil awakens in the farthest north. Amidst the war, a neglected military order of misfits, the Night's Watch, is all that stands between the realms of men and icy horrors beyond.",
+    posterPath: '/u3bZgnGQ9T01sWNhyveQz0wH0Hl.jpg',
   );
 
-  const tMovie = Movie(
-    id: 557,
-    title: 'Spider-Man',
+  const tTvShow = TvShow(
+    id: 1399,
+    name: "Game of Thrones",
     overview:
-        'After being bitten by a genetically altered spider, nerdy high school student Peter Parker is endowed with amazing powers to become the Amazing superhero known as Spider-Man.',
-    posterPath: '/rweIrveL43TaxUN0akQEaAXL6x0.jpg',
+        "Seven noble families fight for control of the mythical land of Westeros. Friction between the houses leads to full-scale war. All while a very ancient evil awakens in the farthest north. Amidst the war, a neglected military order of misfits, the Night's Watch, is all that stands between the realms of men and icy horrors beyond.",
+    posterPath: '/u3bZgnGQ9T01sWNhyveQz0wH0Hl.jpg',
   );
 
-  final tMovieModelList = <MovieModel>[tMovieModel];
-  final tMovieList = <Movie>[tMovie];
+  final tTvShowModelList = <TvShowModel>[tTvShowModel];
+  final tTvShowList = <TvShow>[tTvShow];
 
-  group('Now playing movies', () {
+  group('On the air tv shows', () {
     test(
-      'Should return remote data when the call to remote data source is successful',
+      'Should return tv show list when call to data source is success',
       () async {
         // arrange
-        when(mockRemoteDataSource.getNowPlayingMovies())
-            .thenAnswer((_) async => tMovieModelList);
+        when(mockRemoteDataSource.getOnTheAirTvShows())
+            .thenAnswer((_) async => tTvShowModelList);
 
         // act
-        final result = await repository.getNowPlayingMovies();
-
-        // assert
-        verify(mockRemoteDataSource.getNowPlayingMovies());
-
-        /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
-        final resultList = result.getOrElse(() => []);
-
-        expect(resultList, tMovieList);
-      },
-    );
-
-    test(
-      'Should return server failure when the call to remote data source is unsuccessful',
-      () async {
-        // arrange
-        when(mockRemoteDataSource.getNowPlayingMovies())
-            .thenThrow(ServerException('Internal Server Error'));
-
-        // act
-        final result = await repository.getNowPlayingMovies();
-
-        // assert
-        verify(mockRemoteDataSource.getNowPlayingMovies());
-
-        expect(
-          result,
-          equals(const Left(ServerFailure('Failed to connect to the server'))),
-        );
-      },
-    );
-
-    test(
-      'Should return connection failure when the device is not connected to internet',
-      () async {
-        // arrange
-        when(mockRemoteDataSource.getNowPlayingMovies()).thenThrow(
-            const SocketException('Failed to connect to the network'));
-
-        // act
-        final result = await repository.getNowPlayingMovies();
-
-        // assert
-        verify(mockRemoteDataSource.getNowPlayingMovies());
-
-        expect(
-          result,
-          equals(
-            const Left(ConnectionFailure('Failed to connect to the network')),
-          ),
-        );
-      },
-    );
-  });
-
-  group('Popular movies', () {
-    test(
-      'Should return movie list when call to data source is success',
-      () async {
-        // arrange
-        when(mockRemoteDataSource.getPopularMovies())
-            .thenAnswer((_) async => tMovieModelList);
-
-        // act
-        final result = await repository.getPopularMovies();
+        final result = await repository.getOnTheAirTvShows();
 
         // assert
         /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
         final resultList = result.getOrElse(() => []);
 
-        expect(resultList, tMovieList);
+        expect(resultList, tTvShowList);
       },
     );
 
@@ -133,11 +70,11 @@ void main() {
       'Should return server failure when call to data source is unsuccessful',
       () async {
         // arrange
-        when(mockRemoteDataSource.getPopularMovies())
+        when(mockRemoteDataSource.getOnTheAirTvShows())
             .thenThrow(ServerException('Internal Server Error'));
 
         // act
-        final result = await repository.getPopularMovies();
+        final result = await repository.getOnTheAirTvShows();
 
         // assert
         expect(
@@ -151,11 +88,11 @@ void main() {
       'Should return connection failure when device is not connected to the internet',
       () async {
         // arrange
-        when(mockRemoteDataSource.getPopularMovies()).thenThrow(
+        when(mockRemoteDataSource.getOnTheAirTvShows()).thenThrow(
             const SocketException('Failed to connect to the network'));
 
         // act
-        final result = await repository.getPopularMovies();
+        final result = await repository.getOnTheAirTvShows();
 
         // assert
         expect(
@@ -166,22 +103,78 @@ void main() {
     );
   });
 
-  group('Top rated movies', () {
+  group('Popular tv shows', () {
     test(
-      'Should return movie list when call to data source is successful',
+      'Should return tv show list when call to data source is success',
       () async {
         // arrange
-        when(mockRemoteDataSource.getTopRatedMovies())
-            .thenAnswer((_) async => tMovieModelList);
+        when(mockRemoteDataSource.getPopularTvShows())
+            .thenAnswer((_) async => tTvShowModelList);
 
         // act
-        final result = await repository.getTopRatedMovies();
+        final result = await repository.getPopularTvShows();
 
         // assert
         /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
         final resultList = result.getOrElse(() => []);
 
-        expect(resultList, tMovieList);
+        expect(resultList, tTvShowList);
+      },
+    );
+
+    test(
+      'Should return server failure when call to data source is unsuccessful',
+      () async {
+        // arrange
+        when(mockRemoteDataSource.getPopularTvShows())
+            .thenThrow(ServerException('Internal Server Error'));
+
+        // act
+        final result = await repository.getPopularTvShows();
+
+        // assert
+        expect(
+          result,
+          const Left(ServerFailure('Failed to connect to the server')),
+        );
+      },
+    );
+
+    test(
+      'Should return connection failure when device is not connected to the internet',
+      () async {
+        // arrange
+        when(mockRemoteDataSource.getPopularTvShows()).thenThrow(
+            const SocketException('Failed to connect to the network'));
+
+        // act
+        final result = await repository.getPopularTvShows();
+
+        // assert
+        expect(
+          result,
+          const Left(ConnectionFailure('Failed to connect to the network')),
+        );
+      },
+    );
+  });
+
+  group('Top rated tv shows', () {
+    test(
+      'Should return tv show list when call to data source is successful',
+      () async {
+        // arrange
+        when(mockRemoteDataSource.getTopRatedTvShows())
+            .thenAnswer((_) async => tTvShowModelList);
+
+        // act
+        final result = await repository.getTopRatedTvShows();
+
+        // assert
+        /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
+        final resultList = result.getOrElse(() => []);
+
+        expect(resultList, tTvShowList);
       },
     );
 
@@ -189,11 +182,11 @@ void main() {
       'Should return ServerFailure when call to data source is unsuccessful',
       () async {
         // arrange
-        when(mockRemoteDataSource.getTopRatedMovies())
+        when(mockRemoteDataSource.getTopRatedTvShows())
             .thenThrow(ServerException('Internal Server Error'));
 
         // act
-        final result = await repository.getTopRatedMovies();
+        final result = await repository.getTopRatedTvShows();
 
         // assert
         expect(
@@ -207,11 +200,11 @@ void main() {
       'Should return ConnectionFailure when device is not connected to the internet',
       () async {
         // arrange
-        when(mockRemoteDataSource.getTopRatedMovies()).thenThrow(
+        when(mockRemoteDataSource.getTopRatedTvShows()).thenThrow(
             const SocketException('Failed to connect to the network'));
 
         // act
-        final result = await repository.getTopRatedMovies();
+        final result = await repository.getTopRatedTvShows();
 
         // assert
         expect(
@@ -222,34 +215,47 @@ void main() {
     );
   });
 
-  group('Get movie detail', () {
+  group('Get tv show detail', () {
     const tId = 1;
 
-    const tMovieResponse = MovieDetailModel(
+    const tTvShowResponse = TvShowDetailModel(
+      firstAirDate: '2011-04-17',
       genres: [GenreModel(name: 'Action')],
       id: 1,
+      lastAirDate: '2019-05-19',
+      name: 'name',
+      numberOfEpisodes: 1,
+      numberOfSeasons: 1,
       overview: 'overview',
       posterPath: 'posterPath',
-      runtime: 120,
-      title: 'title',
+      seasons: [
+        SeasonModel(
+          airDate: '2011-04-17',
+          episodeCount: 1,
+          name: 'name',
+          overview: 'overview',
+          posterPath: 'posterPath',
+          seasonNumber: 1,
+        )
+      ],
       voteAverage: 1,
       voteCount: 1,
     );
 
     test(
-      'Should return Movie data when the call to remote data source is successful',
+      'Should return Tv Show data when the call to remote data source is successful',
       () async {
         // arrange
-        when(mockRemoteDataSource.getMovieDetail(tId))
-            .thenAnswer((_) async => tMovieResponse);
+        when(mockRemoteDataSource.getTvShowDetail(tId))
+            .thenAnswer((_) async => tTvShowResponse);
 
         // act
-        final result = await repository.getMovieDetail(tId);
+        final result = await repository.getTvShowDetail(tId);
 
         // assert
-        verify(mockRemoteDataSource.getMovieDetail(tId));
+        verify(mockRemoteDataSource.getTvShowDetail(tId));
 
-        expect(result, equals(const Right(testMovieDetail)));
+        expect(result, equals(const Right(testTvShowDetail)));
       },
     );
 
@@ -257,14 +263,14 @@ void main() {
       'Should return Server Failure when the call to remote data source is unsuccessful',
       () async {
         // arrange
-        when(mockRemoteDataSource.getMovieDetail(tId))
+        when(mockRemoteDataSource.getTvShowDetail(tId))
             .thenThrow(ServerException('Internal Server Error'));
 
         // act
-        final result = await repository.getMovieDetail(tId);
+        final result = await repository.getTvShowDetail(tId);
 
         // assert
-        verify(mockRemoteDataSource.getMovieDetail(tId));
+        verify(mockRemoteDataSource.getTvShowDetail(tId));
 
         expect(
           result,
@@ -277,14 +283,14 @@ void main() {
       'Should return connection failure when the device is not connected to internet',
       () async {
         // arrange
-        when(mockRemoteDataSource.getMovieDetail(tId)).thenThrow(
+        when(mockRemoteDataSource.getTvShowDetail(tId)).thenThrow(
             const SocketException('Failed to connect to the network'));
 
         // act
-        final result = await repository.getMovieDetail(tId);
+        final result = await repository.getTvShowDetail(tId);
 
         // assert
-        verify(mockRemoteDataSource.getMovieDetail(tId));
+        verify(mockRemoteDataSource.getTvShowDetail(tId));
 
         expect(
           result,
@@ -296,28 +302,28 @@ void main() {
     );
   });
 
-  group('Get movie recommendations', () {
+  group('Get tv show recommendations', () {
     const tId = 1;
 
-    final tMovieList = <MovieModel>[];
+    final tTvShowList = <TvShowModel>[];
 
     test(
-      'Should return data (movie list) when the call is successful',
+      'Should return data (tv show list) when the call is successful',
       () async {
         // arrange
-        when(mockRemoteDataSource.getMovieRecommendations(tId))
-            .thenAnswer((_) async => tMovieList);
+        when(mockRemoteDataSource.getTvShowRecommendations(tId))
+            .thenAnswer((_) async => tTvShowList);
 
         // act
-        final result = await repository.getMovieRecommendations(tId);
+        final result = await repository.getTvShowRecommendations(tId);
 
         // assert
-        verify(mockRemoteDataSource.getMovieRecommendations(tId));
+        verify(mockRemoteDataSource.getTvShowRecommendations(tId));
 
         /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
         final resultList = result.getOrElse(() => []);
 
-        expect(resultList, equals(tMovieList));
+        expect(resultList, equals(tTvShowList));
       },
     );
 
@@ -325,14 +331,14 @@ void main() {
       'Should return server failure when call to remote data source is unsuccessful',
       () async {
         // arrange
-        when(mockRemoteDataSource.getMovieRecommendations(tId))
+        when(mockRemoteDataSource.getTvShowRecommendations(tId))
             .thenThrow(ServerException('Internal Server Error'));
 
         // act
-        final result = await repository.getMovieRecommendations(tId);
+        final result = await repository.getTvShowRecommendations(tId);
 
         // assert
-        verify(mockRemoteDataSource.getMovieRecommendations(tId));
+        verify(mockRemoteDataSource.getTvShowRecommendations(tId));
 
         expect(
           result,
@@ -345,14 +351,14 @@ void main() {
       'Should return connection failure when the device is not connected to the internet',
       () async {
         // arrange
-        when(mockRemoteDataSource.getMovieRecommendations(tId)).thenThrow(
+        when(mockRemoteDataSource.getTvShowRecommendations(tId)).thenThrow(
             const SocketException('Failed to connect to the network'));
 
         // act
-        final result = await repository.getMovieRecommendations(tId);
+        final result = await repository.getTvShowRecommendations(tId);
 
         // assert
-        verify(mockRemoteDataSource.getMovieRecommendations(tId));
+        verify(mockRemoteDataSource.getTvShowRecommendations(tId));
         expect(
           result,
           equals(
@@ -363,24 +369,24 @@ void main() {
     );
   });
 
-  group('Seach movies', () {
-    const tQuery = 'Spiderman';
+  group('Seach tv shows', () {
+    const tQuery = 'Peaky Blinders';
 
     test(
-      'Should return movie list when call to data source is successful',
+      'Should return tv show list when call to data source is successful',
       () async {
         // arrange
-        when(mockRemoteDataSource.searchMovies(tQuery))
-            .thenAnswer((_) async => tMovieModelList);
+        when(mockRemoteDataSource.searchTvShows(tQuery))
+            .thenAnswer((_) async => tTvShowModelList);
 
         // act
-        final result = await repository.searchMovies(tQuery);
+        final result = await repository.searchTvShows(tQuery);
 
         // assert
         /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
         final resultList = result.getOrElse(() => []);
 
-        expect(resultList, tMovieList);
+        expect(resultList, tTvShowList);
       },
     );
 
@@ -388,11 +394,11 @@ void main() {
       'Should return ServerFailure when call to data source is unsuccessful',
       () async {
         // arrange
-        when(mockRemoteDataSource.searchMovies(tQuery))
+        when(mockRemoteDataSource.searchTvShows(tQuery))
             .thenThrow(ServerException('Internal Server Error'));
 
         // act
-        final result = await repository.searchMovies(tQuery);
+        final result = await repository.searchTvShows(tQuery);
 
         // assert
         expect(
@@ -406,11 +412,11 @@ void main() {
       'Should return ConnectionFailure when device is not connected to the internet',
       () async {
         // arrange
-        when(mockRemoteDataSource.searchMovies(tQuery)).thenThrow(
+        when(mockRemoteDataSource.searchTvShows(tQuery)).thenThrow(
             const SocketException('Failed to connect to the network'));
 
         // act
-        final result = await repository.searchMovies(tQuery);
+        final result = await repository.searchTvShows(tQuery);
 
         // assert
         expect(
@@ -421,14 +427,14 @@ void main() {
     );
   });
 
-  group('Add movie watchlist', () {
+  group('Add tv show watchlist', () {
     test('Should return success message when saving successful', () async {
       // arrange
-      when(mockLocalDataSource.insertMovieWatchlist(testMovieTable))
+      when(mockLocalDataSource.insertTvShowWatchlist(testTvShowTable))
           .thenAnswer((_) async => 'Added to Watchlist');
 
       // act
-      final result = await repository.addMovieWatchlist(testMovieDetail);
+      final result = await repository.addTvShowWatchlist(testTvShowDetail);
 
       // assert
       expect(result, const Right('Added to Watchlist'));
@@ -436,25 +442,25 @@ void main() {
 
     test('Should return DatabaseFailure when saving unsuccessful', () async {
       // arrange
-      when(mockLocalDataSource.insertMovieWatchlist(testMovieTable))
+      when(mockLocalDataSource.insertTvShowWatchlist(testTvShowTable))
           .thenThrow(DatabaseException('Failed to add watchlist'));
 
       // act
-      final result = await repository.addMovieWatchlist(testMovieDetail);
+      final result = await repository.addTvShowWatchlist(testTvShowDetail);
 
       // assert
       expect(result, const Left(DatabaseFailure('Failed to add watchlist')));
     });
   });
 
-  group('Remove movie watchlist', () {
+  group('Remove tv show watchlist', () {
     test('Should return success message when remove successful', () async {
       // arrange
-      when(mockLocalDataSource.removeMovieWatchlist(testMovieTable))
+      when(mockLocalDataSource.removeTvShowWatchlist(testTvShowTable))
           .thenAnswer((_) async => 'Removed from watchlist');
 
       // act
-      final result = await repository.deleteMovieWatchlist(testMovieDetail);
+      final result = await repository.deleteTvShowWatchlist(testTvShowDetail);
 
       // assert
       expect(result, const Right('Removed from watchlist'));
@@ -462,26 +468,27 @@ void main() {
 
     test('Should return DatabaseFailure when remove unsuccessful', () async {
       // arrange
-      when(mockLocalDataSource.removeMovieWatchlist(testMovieTable))
+      when(mockLocalDataSource.removeTvShowWatchlist(testTvShowTable))
           .thenThrow(DatabaseException('Failed to remove watchlist'));
 
       // act
-      final result = await repository.deleteMovieWatchlist(testMovieDetail);
+      final result = await repository.deleteTvShowWatchlist(testTvShowDetail);
 
       // assert
       expect(result, const Left(DatabaseFailure('Failed to remove watchlist')));
     });
   });
 
-  group('Get movie watchlist status', () {
+  group('Get tv show watchlist status', () {
     test('Should return watchlist status whether data is found', () async {
       // arrange
       const tId = 1;
 
-      when(mockLocalDataSource.getMovieById(tId)).thenAnswer((_) async => null);
+      when(mockLocalDataSource.getTvShowById(tId))
+          .thenAnswer((_) async => null);
 
       // act
-      final result = await repository.isMovieAddedToWatchlist(tId);
+      final result = await repository.isTvShowAddedToWatchlist(tId);
 
       // assert
       expect(result, const Right(false));
@@ -491,11 +498,11 @@ void main() {
       // arrange
       const tId = 1;
 
-      when(mockLocalDataSource.getMovieById(tId))
+      when(mockLocalDataSource.getTvShowById(tId))
           .thenThrow(DatabaseException('Failed to get watchlist status'));
 
       // act
-      final result = await repository.isMovieAddedToWatchlist(tId);
+      final result = await repository.isTvShowAddedToWatchlist(tId);
 
       // assert
       expect(
@@ -505,35 +512,35 @@ void main() {
     });
   });
 
-  group('Get watchlist movies', () {
-    test('Should return list of Movies', () async {
+  group('Get watchlist tv shows', () {
+    test('Should return list of tv shows', () async {
       // arrange
-      when(mockLocalDataSource.getWatchlistMovies())
-          .thenAnswer((_) async => [testMovieTable]);
+      when(mockLocalDataSource.getWatchlistTvShows())
+          .thenAnswer((_) async => [testTvShowTable]);
 
       // act
-      final result = await repository.getWatchlistMovies();
+      final result = await repository.getWatchlistTvShows();
 
       // assert
       final resultList = result.getOrElse(() => []);
 
-      expect(resultList, <Movie>[testWatchlistMovie]);
+      expect(resultList, <TvShow>[testWatchlistTvShow]);
     });
 
     test(
-      'Should return DatabaseFailure when watchlist movies getter failed',
+      'Should return DatabaseFailure when watchlist tv shows getter failed',
       () async {
         // arrange
-        when(mockLocalDataSource.getWatchlistMovies())
-            .thenThrow(DatabaseException('Failed to get watchlist movies'));
+        when(mockLocalDataSource.getWatchlistTvShows())
+            .thenThrow(DatabaseException('Failed to get watchlist tv shows'));
 
         // act
-        final result = await repository.getWatchlistMovies();
+        final result = await repository.getWatchlistTvShows();
 
         // assert
         expect(
           result,
-          const Left(DatabaseFailure('Failed to get watchlist movies')),
+          const Left(DatabaseFailure('Failed to get watchlist tv shows')),
         );
       },
     );

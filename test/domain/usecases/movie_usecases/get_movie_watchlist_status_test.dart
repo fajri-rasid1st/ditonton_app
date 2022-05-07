@@ -3,7 +3,7 @@ import 'package:ditonton/domain/usecases/movie_usecases/get_movie_watchlist_stat
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../helpers/test_helper.mocks.dart';
+import '../../../helpers/test_helper.mocks.dart';
 
 void main() {
   late MockMovieRepository mockMovieRepository;

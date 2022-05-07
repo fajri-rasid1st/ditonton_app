@@ -1,32 +1,32 @@
 import 'package:dartz/dartz.dart';
 import 'package:ditonton/domain/entities/movie_entities/movie.dart';
-import 'package:ditonton/domain/usecases/movie_usecases/get_movie_recommendations.dart';
+import 'package:ditonton/domain/usecases/movie_usecases/search_movies.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../helpers/test_helper.mocks.dart';
+import '../../../helpers/test_helper.mocks.dart';
 
 void main() {
   late MockMovieRepository mockMovieRepository;
-  late GetMovieRecommendations usecase;
+  late SearchMovies usecase;
 
   setUp(() {
     mockMovieRepository = MockMovieRepository();
-    usecase = GetMovieRecommendations(mockMovieRepository);
+    usecase = SearchMovies(mockMovieRepository);
   });
 
-  const tId = 1;
+  const tQuery = 'Spiderman';
   final tMovies = <Movie>[];
 
   test(
-    'Should get list of movie recommendations from the repository',
+    'Should get list of movies from the repository according to query',
     () async {
       // arrange
-      when(mockMovieRepository.getMovieRecommendations(tId))
+      when(mockMovieRepository.searchMovies(tQuery))
           .thenAnswer((_) async => Right(tMovies));
 
       // act
-      final result = await usecase.execute(tId);
+      final result = await usecase.execute(tQuery);
 
       // assert
       expect(result, Right(tMovies));

@@ -44,7 +44,10 @@ class _TvShowDetailPageState extends State<TvShowDetailPage> {
             );
           }
 
-          return Center(child: Text(provider.message));
+          return Center(
+            key: const Key('error_message'),
+            child: Text(provider.message),
+          );
         },
       ),
     );

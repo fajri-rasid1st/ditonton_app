@@ -96,6 +96,17 @@ void main() {
       // assert
       expect(result, null);
     });
+
+    test('Should throw DatabaseException when failed', () async {
+      // arrange
+      when(mockDatabaseHelper.getTvShowById(tId)).thenThrow(Exception());
+
+      // act
+      final call = dataSource.getTvShowById(tId);
+
+      // assert
+      expect(() => call, throwsA(isA<DatabaseException>()));
+    });
   });
 
   group('Get watchlist tv shows', () {
@@ -109,6 +120,17 @@ void main() {
 
       // assert
       expect(result, [testTvShowTable]);
+    });
+
+    test('Should throw DatabaseException when failed', () async {
+      // arrange
+      when(mockDatabaseHelper.getWatchlistTvShows()).thenThrow(Exception());
+
+      // act
+      final call = dataSource.getWatchlistTvShows();
+
+      // assert
+      expect(() => call, throwsA(isA<DatabaseException>()));
     });
   });
 }

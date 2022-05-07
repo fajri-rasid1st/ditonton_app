@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:dartz/dartz.dart';
+import 'package:ditonton/data/models/episode_model.dart';
 import 'package:ditonton/data/models/genre_model.dart';
 import 'package:ditonton/data/models/season_model.dart';
 import 'package:ditonton/data/models/tv_show_models/tv_show_detail_model.dart';
@@ -7,6 +8,7 @@ import 'package:ditonton/data/models/tv_show_models/tv_show_model.dart';
 import 'package:ditonton/common/exception.dart';
 import 'package:ditonton/common/failure.dart';
 import 'package:ditonton/data/repositories/tv_show_repository_impl.dart';
+import 'package:ditonton/domain/entities/episode.dart';
 import 'package:ditonton/domain/entities/tv_show_entities/tv_show.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -36,6 +38,15 @@ void main() {
     posterPath: '/u3bZgnGQ9T01sWNhyveQz0wH0Hl.jpg',
   );
 
+  const tEpisodeModel = EpisodeModel(
+    airDate: "2013-09-12",
+    episodeNumber: 1,
+    name: "Episode 1",
+    overview:
+        "Birmingham, 1919. Thomas Shelby controls the Peaky Blinders, one of the city's most feared criminal organisations, but his ambitions go beyond running the streets. When a crate of guns goes missing, Thomas recognises an opportunity to move up in the world.",
+    stillPath: "/tplu6cXP312IN5rrT5K81zFZpMd.jpg",
+  );
+
   const tTvShow = TvShow(
     id: 1399,
     name: "Game of Thrones",
@@ -44,8 +55,19 @@ void main() {
     posterPath: '/u3bZgnGQ9T01sWNhyveQz0wH0Hl.jpg',
   );
 
+  const tEpisode = Episode(
+    airDate: "2013-09-12",
+    episodeNumber: 1,
+    name: "Episode 1",
+    overview:
+        "Birmingham, 1919. Thomas Shelby controls the Peaky Blinders, one of the city's most feared criminal organisations, but his ambitions go beyond running the streets. When a crate of guns goes missing, Thomas recognises an opportunity to move up in the world.",
+    stillPath: "/tplu6cXP312IN5rrT5K81zFZpMd.jpg",
+  );
+
   final tTvShowModelList = <TvShowModel>[tTvShowModel];
+  final tEpisodeModelList = <EpisodeModel>[tEpisodeModel];
   final tTvShowList = <TvShow>[tTvShow];
+  final tEpisodeList = <Episode>[tEpisode];
 
   group('On the air tv shows', () {
     test(
@@ -417,6 +439,67 @@ void main() {
 
         // act
         final result = await repository.searchTvShows(tQuery);
+
+        // assert
+        expect(
+          result,
+          const Left(ConnectionFailure('Failed to connect to the network')),
+        );
+      },
+    );
+  });
+
+  group('Get tv show episodes', () {
+    const tId = 1;
+    const tSeasonNumber = 1;
+
+    test(
+      'Should return episode list when call to data source is successful',
+      () async {
+        // arrange
+        when(mockRemoteDataSource.getTvShowEpisodes(tId, tSeasonNumber))
+            .thenAnswer((_) async => tEpisodeModelList);
+
+        // act
+        final result = await repository.getTvShowEpisodes(tId, tSeasonNumber);
+
+        // assert
+        /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
+        final resultList = result.getOrElse(() => []);
+
+        expect(resultList, tEpisodeList);
+      },
+    );
+
+    test(
+      'Should return ServerFailure when call to data source is unsuccessful',
+      () async {
+        // arrange
+        when(mockRemoteDataSource.getTvShowEpisodes(tId, tSeasonNumber))
+            .thenThrow(ServerException('Internal Server Error'));
+
+        // act
+        final result = await repository.getTvShowEpisodes(tId, tSeasonNumber);
+
+        // assert
+        expect(
+          result,
+          const Left(ServerFailure('Failed to connect to the server')),
+        );
+      },
+    );
+
+    test(
+      'Should return ConnectionFailure when device is not connected to the internet',
+      () async {
+        // arrange
+        when(mockRemoteDataSource.getTvShowEpisodes(
+          tId,
+          tSeasonNumber,
+        )).thenThrow(const SocketException('Failed to connect to the network'));
+
+        // act
+        final result = await repository.getTvShowEpisodes(tId, tSeasonNumber);
 
         // assert
         expect(

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/data/datasources/tv_show_datasources/tv_show_remote_data_source.dart';
 import 'package:ditonton/common/exception.dart';
+import 'package:ditonton/data/models/episode_response.dart';
 import 'package:ditonton/data/models/tv_show_models/tv_show_detail_model.dart';
 import 'package:ditonton/data/models/tv_show_models/tv_show_response.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -289,6 +290,54 @@ void main() {
 
         // act
         final call = dataSource.searchTvShows(tQuery);
+
+        // assert
+        expect(() => call, throwsA(isA<ServerException>()));
+      },
+    );
+  });
+
+  group('Get tv show episodes', () {
+    const tId = 1;
+    const tSeasonNumber = 1;
+
+    final tEpisodesResult = EpisodeResponse.fromJson(
+      json.decode(readJson('dummy_data/tv_show_season_detail.json')),
+    ).episodes;
+
+    test(
+      'Should return list of episodes when response code is 200',
+      () async {
+        // arrange
+        final uri = Uri.parse('$baseUrl/tv/$tId/season/$tSeasonNumber?$apiKey');
+
+        when(mockHttpClient.get(uri)).thenAnswer(
+          (_) async => http.Response(
+            readJson('dummy_data/tv_show_season_detail.json'),
+            200,
+          ),
+        );
+
+        // act
+        final result = await dataSource.getTvShowEpisodes(tId, tSeasonNumber);
+
+        // assert
+        expect(result, tEpisodesResult);
+      },
+    );
+
+    test(
+      'Should throw ServerException when response code is other than 200',
+      () async {
+        // arrange
+        final uri = Uri.parse('$baseUrl/tv/$tId/season/$tSeasonNumber?$apiKey');
+
+        when(mockHttpClient.get(uri)).thenAnswer(
+          (_) async => http.Response('Not Found', 404),
+        );
+
+        // act
+        final call = dataSource.getTvShowEpisodes(tId, tSeasonNumber);
 
         // assert
         expect(() => call, throwsA(isA<ServerException>()));

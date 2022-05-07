@@ -8,16 +8,16 @@ class TvShow extends Equatable {
 
   const TvShow({
     required this.id,
-    required this.posterPath,
     required this.name,
+    required this.posterPath,
     required this.overview,
   });
 
   const TvShow.watchlist({
     required this.id,
+    required this.name,
     required this.overview,
     required this.posterPath,
-    required this.name,
   });
 
   @override

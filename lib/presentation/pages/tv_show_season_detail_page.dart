@@ -47,7 +47,10 @@ class _TvShowSeasonDetailPageState extends State<TvShowSeasonDetailPage> {
             return _buildMainScreen(provider.episodes);
           }
 
-          return Center(child: Text(provider.message));
+          return Center(
+            key: const Key('error_message'),
+            child: Text(provider.message),
+          );
         },
       ),
     );

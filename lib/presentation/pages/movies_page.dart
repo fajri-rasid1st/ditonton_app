@@ -56,6 +56,7 @@ class _MoviesPageState extends State<MoviesPage>
               }
 
               return const SizedBox(
+                key: Key('error_message'),
                 height: 100,
                 child: Center(
                   child: Text('Failed to fetch now playing movies'),
@@ -85,6 +86,7 @@ class _MoviesPageState extends State<MoviesPage>
               }
 
               return const SizedBox(
+                key: Key('error_message'),
                 height: 100,
                 child: Center(
                   child: Text('Failed to fetch popular movies'),
@@ -114,6 +116,7 @@ class _MoviesPageState extends State<MoviesPage>
               }
 
               return const SizedBox(
+                key: Key('error_message'),
                 height: 100,
                 child: Center(
                   child: Text('Failed to fetch top rated movies'),

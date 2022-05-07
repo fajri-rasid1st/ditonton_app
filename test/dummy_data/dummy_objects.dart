@@ -1,5 +1,6 @@
 import 'package:ditonton/data/models/movie_models/movie_table.dart';
 import 'package:ditonton/data/models/tv_show_models/tv_show_table.dart';
+import 'package:ditonton/domain/entities/episode.dart';
 import 'package:ditonton/domain/entities/genre.dart';
 import 'package:ditonton/domain/entities/movie_entities/movie.dart';
 import 'package:ditonton/domain/entities/movie_entities/movie_detail.dart';
@@ -105,3 +106,21 @@ const testTvShowMap = {
   'overview': 'overview',
   'posterPath': 'posterPath',
 };
+
+// Season dummy objects
+const testSeason = Season(
+  airDate: '2011-04-17',
+  episodeCount: 1,
+  name: 'name',
+  overview: 'overview',
+  posterPath: 'posterPath',
+  seasonNumber: 1,
+);
+
+const testEpisode = Episode(
+  airDate: '2013-09-12',
+  episodeNumber: 1,
+  name: 'name',
+  overview: 'overview',
+  stillPath: 'stillPath',
+);

@@ -60,6 +60,7 @@ class _TvShowsPageState extends State<TvShowsPage>
               }
 
               return const SizedBox(
+                key: Key('error_message'),
                 height: 100,
                 child: Center(
                   child: Text('Failed to fetch on the air tv shows'),
@@ -89,6 +90,7 @@ class _TvShowsPageState extends State<TvShowsPage>
               }
 
               return const SizedBox(
+                key: Key('error_message'),
                 height: 100,
                 child: Center(
                   child: Text('Failed to fetch popular tv shows'),
@@ -118,6 +120,7 @@ class _TvShowsPageState extends State<TvShowsPage>
               }
 
               return const SizedBox(
+                key: Key('error_message'),
                 height: 100,
                 child: Center(
                   child: Text('Failed to fetch top rated tv shows'),

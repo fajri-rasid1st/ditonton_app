@@ -37,11 +37,12 @@ const testWatchlistMovie = Movie.watchlist(
   posterPath: 'posterPath',
 );
 
-const testMovieTable = MovieTable(
+final testMovieTable = MovieTable(
   id: 1,
   title: 'title',
   overview: 'overview',
   posterPath: 'posterPath',
+  createdAt: DateTime.utc(1969, 7, 20, 20, 18, 04),
 );
 
 const testMovieMap = {
@@ -93,11 +94,12 @@ const testWatchlistTvShow = TvShow.watchlist(
   posterPath: 'posterPath',
 );
 
-const testTvShowTable = TvShowTable(
+final testTvShowTable = TvShowTable(
   id: 1,
   name: 'name',
   overview: 'overview',
   posterPath: 'posterPath',
+  createdAt: DateTime.utc(1969, 7, 20, 20, 18, 04),
 );
 
 const testTvShowMap = {

@@ -5,4 +5,5 @@ class TvShowWatchlistFields {
   static const String name = 'name';
   static const String overview = 'overview';
   static const String posterPath = 'posterPath';
+  static const String createdAt = 'createdAt';
 }

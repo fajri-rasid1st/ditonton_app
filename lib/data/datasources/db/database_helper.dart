@@ -38,7 +38,8 @@ class DatabaseHelper {
         ${MovieWatchlistFields.id} INTEGER PRIMARY KEY,
         ${MovieWatchlistFields.title} TEXT,
         ${MovieWatchlistFields.overview} TEXT,
-        ${MovieWatchlistFields.posterPath} TEXT)
+        ${MovieWatchlistFields.posterPath} TEXT,
+        ${MovieWatchlistFields.createdAt} TEXT NOT NULL)
         ''');
 
     await db.execute('''
@@ -46,7 +47,8 @@ class DatabaseHelper {
         ${TvShowWatchlistFields.id} INTEGER PRIMARY KEY,
         ${TvShowWatchlistFields.name} TEXT,
         ${TvShowWatchlistFields.overview} TEXT,
-        ${TvShowWatchlistFields.posterPath} TEXT)
+        ${TvShowWatchlistFields.posterPath} TEXT,
+        ${TvShowWatchlistFields.createdAt} TEXT NOT NULL)
         ''');
   }
 
@@ -109,12 +111,18 @@ class DatabaseHelper {
   Future<List<Map<String, dynamic>>> getWatchlistMovies() async {
     final db = await database;
 
-    return await db.query(movieWatchlistTable);
+    return await db.query(
+      movieWatchlistTable,
+      orderBy: '${MovieWatchlistFields.createdAt} DESC',
+    );
   }
 
   Future<List<Map<String, dynamic>>> getWatchlistTvShows() async {
     final db = await database;
 
-    return await db.query(tvShowWatchlistTable);
+    return await db.query(
+      tvShowWatchlistTable,
+      orderBy: '${TvShowWatchlistFields.createdAt} DESC',
+    );
   }
 }

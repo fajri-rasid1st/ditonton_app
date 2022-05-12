@@ -61,6 +61,7 @@ class _TvShowSeasonDetailPageState extends State<TvShowSeasonDetailPage> {
       headerSliverBuilder: (context, isScrolled) {
         return [
           SliverAppBar(
+            forceElevated: isScrolled,
             pinned: true,
             expandedHeight: 260,
             title: Text(widget.season.name),

@@ -16,6 +16,7 @@ void main() {
         'name': 'name',
         'overview': 'overview',
         'posterPath': 'posterPath',
+        'createdAt': '1969-07-20T20:18:04.000Z',
       };
 
       expect(result, expectedJsonMap);

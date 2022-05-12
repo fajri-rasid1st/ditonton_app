@@ -5,4 +5,5 @@ class MovieWatchlistFields {
   static const String title = 'title';
   static const String overview = 'overview';
   static const String posterPath = 'posterPath';
+  static const String createdAt = 'createdAt';
 }

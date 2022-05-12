@@ -34,7 +34,7 @@ class _TvShowsPageState extends State<TvShowsPage>
     super.build(context);
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

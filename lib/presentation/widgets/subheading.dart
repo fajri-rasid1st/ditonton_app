@@ -1,3 +1,4 @@
+import 'package:ditonton/common/constants.dart';
 import 'package:flutter/material.dart';
 
 class SubHeading extends StatelessWidget {
@@ -19,7 +20,7 @@ class SubHeading extends StatelessWidget {
         children: <Widget>[
           Text(
             title,
-            style: Theme.of(context).textTheme.headline6,
+            style: kHeading6,
           ),
           if (onTap != null) ...[
             InkWell(

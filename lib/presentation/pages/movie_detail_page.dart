@@ -35,12 +35,10 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           if (provider.movieState == RequestState.loading) {
             return const Center(child: CircularProgressIndicator());
           } else if (provider.movieState == RequestState.loaded) {
-            return SafeArea(
-              child: MovieDetailContent(
-                movie: provider.movie,
-                movieRecommendations: provider.movieRecommendations,
-                isAddedWatchlist: provider.isAddedToWatchlist,
-              ),
+            return MovieDetailContent(
+              movie: provider.movie,
+              movieRecommendations: provider.movieRecommendations,
+              isAddedWatchlist: provider.isAddedToWatchlist,
             );
           }
 

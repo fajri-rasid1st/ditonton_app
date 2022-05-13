@@ -35,12 +35,10 @@ class _TvShowDetailPageState extends State<TvShowDetailPage> {
           if (provider.tvShowState == RequestState.loading) {
             return const Center(child: CircularProgressIndicator());
           } else if (provider.tvShowState == RequestState.loaded) {
-            return SafeArea(
-              child: TvShowDetailContent(
-                tvShow: provider.tvShow,
-                tvShowRecommendations: provider.tvShowRecommendations,
-                isAddedWatchlist: provider.isAddedToWatchlist,
-              ),
+            return TvShowDetailContent(
+              tvShow: provider.tvShow,
+              tvShowRecommendations: provider.tvShowRecommendations,
+              isAddedWatchlist: provider.isAddedToWatchlist,
             );
           }
 

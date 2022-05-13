@@ -27,13 +27,10 @@ class TvShowDetailContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-
     return Stack(
       children: <Widget>[
         CustomNetworkImage(
           imgUrl: '$baseImageUrlW500${tvShow.posterPath}',
-          width: screenWidth,
           placeHolderSize: 100,
         ),
         Positioned.fill(
@@ -48,10 +45,11 @@ class TvShowDetailContent extends StatelessWidget {
           ),
         ),
         Container(
-          margin: const EdgeInsets.only(top: 48 + 8),
+          margin: const EdgeInsets.only(top: kToolbarHeight + 32),
           child: DraggableScrollableSheet(
             snap: true,
             snapSizes: const [0.5],
+            minChildSize: 0.3,
             builder: (context, scrollController) {
               return Container(
                 padding: const EdgeInsets.only(top: 24),

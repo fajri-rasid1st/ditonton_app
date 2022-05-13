@@ -71,7 +71,7 @@ class TvShowDetailContent extends StatelessWidget {
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
                             child: Text(
                               tvShow.name,
-                              style: kHeading5,
+                              style: Theme.of(context).textTheme.headline5,
                             ),
                           ),
                           Padding(
@@ -86,7 +86,10 @@ class TvShowDetailContent extends StatelessWidget {
                                   : const Icon(Icons.add_rounded),
                               label: Text(
                                 'Watchlist',
-                                style: kSubtitle,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1
+                                    ?.copyWith(color: kRichBlack),
                               ),
                             ),
                           ),
@@ -94,7 +97,7 @@ class TvShowDetailContent extends StatelessWidget {
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
                             child: Text(
                               _showGenres(tvShow.genres),
-                              style: kSubtitle,
+                              style: Theme.of(context).textTheme.subtitle1,
                             ),
                           ),
                           Padding(
@@ -139,13 +142,15 @@ class TvShowDetailContent extends StatelessWidget {
                                   children: <Text>[
                                     Text(
                                       '${tvShow.numberOfSeasons}',
-                                      style: kHeading4,
+                                      style:
+                                          Theme.of(context).textTheme.headline4,
                                     ),
                                     Text(
                                       'Total Season',
-                                      style: kSubtitle.copyWith(
-                                        color: kMikadoYellow,
-                                      ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle1
+                                          ?.copyWith(color: kMikadoYellow),
                                     ),
                                   ],
                                 ),
@@ -173,13 +178,15 @@ class TvShowDetailContent extends StatelessWidget {
                                   children: <Text>[
                                     Text(
                                       '${tvShow.numberOfEpisodes}',
-                                      style: kHeading4,
+                                      style:
+                                          Theme.of(context).textTheme.headline4,
                                     ),
                                     Text(
                                       'Total Episode',
-                                      style: kSubtitle.copyWith(
-                                        color: kMikadoYellow,
-                                      ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle1
+                                          ?.copyWith(color: kMikadoYellow),
                                     ),
                                   ],
                                 ),
@@ -190,7 +197,7 @@ class TvShowDetailContent extends StatelessWidget {
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                             child: Text(
                               'Seasons',
-                              style: kHeading6,
+                              style: Theme.of(context).textTheme.headline6,
                             ),
                           ),
                           SizedBox(
@@ -201,7 +208,7 @@ class TvShowDetailContent extends StatelessWidget {
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                             child: Text(
                               'Overview',
-                              style: kHeading6,
+                              style: Theme.of(context).textTheme.headline6,
                             ),
                           ),
                           Padding(
@@ -222,7 +229,7 @@ class TvShowDetailContent extends StatelessWidget {
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                             child: Text(
                               'Recommendations',
-                              style: kHeading6,
+                              style: Theme.of(context).textTheme.headline6,
                             ),
                           ),
                           Consumer<TvShowDetailNotifier>(
@@ -334,7 +341,7 @@ class TvShowDetailContent extends StatelessWidget {
                         ListTile(
                           title: Text(
                             'S${season.seasonNumber} ● ${season.episodeCount} Episodes',
-                            style: kSubtitle,
+                            style: Theme.of(context).textTheme.subtitle1,
                           ),
                           subtitle: season.seasonNumber != 0
                               ? Row(
@@ -371,7 +378,7 @@ class TvShowDetailContent extends StatelessWidget {
                           season.name,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: kSubtitle,
+                          style: Theme.of(context).textTheme.subtitle1,
                         ),
                       ),
                       Flexible(

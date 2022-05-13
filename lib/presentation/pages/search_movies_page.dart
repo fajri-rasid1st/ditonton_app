@@ -1,4 +1,3 @@
-import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/presentation/provider/movie_notifiers/movie_search_notifier.dart';
 import 'package:ditonton/presentation/widgets/list_card_item.dart';
@@ -37,7 +36,7 @@ class SearchMoviesPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               'Search result',
-              style: kHeading6,
+              style: Theme.of(context).textTheme.headline6,
             ),
           ),
           const SizedBox(height: 8),

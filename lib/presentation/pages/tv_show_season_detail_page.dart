@@ -111,12 +111,15 @@ class _TvShowSeasonDetailPageState extends State<TvShowSeasonDetailPage> {
                         children: <Widget>[
                           Text(
                             'S${widget.season.seasonNumber} ● ${widget.season.episodeCount} Episodes',
-                            style: kHeading5,
+                            style: Theme.of(context).textTheme.headline5,
                           ),
                           const SizedBox(height: 4),
                           Text(
                             _showEpisodeAirDate(widget.season.airDate),
-                            style: kSubtitle.copyWith(color: kMikadoYellow),
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle1
+                                ?.copyWith(color: kMikadoYellow),
                           ),
                           const SizedBox(height: 4),
                           ReadMoreText(
@@ -181,7 +184,7 @@ class _TvShowSeasonDetailPageState extends State<TvShowSeasonDetailPage> {
                     ListTile(
                       title: Text(
                         'Episode ${episode.episodeNumber}',
-                        style: kHeading6,
+                        style: Theme.of(context).textTheme.headline6,
                       ),
                       subtitle: Text(
                         _showEpisodeAirDate(episode.airDate),
@@ -203,7 +206,7 @@ class _TvShowSeasonDetailPageState extends State<TvShowSeasonDetailPage> {
                     episode.name,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: kSubtitle,
+                    style: Theme.of(context).textTheme.subtitle1,
                   ),
                   ReadMoreText(
                     episode.overview,

@@ -42,7 +42,7 @@ class CardItem extends StatelessWidget {
                       titleName,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: kHeading6,
+                      style: Theme.of(context).textTheme.headline6,
                     ),
                     const SizedBox(height: 4),
                     Text(

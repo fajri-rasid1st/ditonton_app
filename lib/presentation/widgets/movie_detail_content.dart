@@ -69,7 +69,7 @@ class MovieDetailContent extends StatelessWidget {
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
                             child: Text(
                               movie.title,
-                              style: kHeading5,
+                              style: Theme.of(context).textTheme.headline5,
                             ),
                           ),
                           Padding(
@@ -84,7 +84,10 @@ class MovieDetailContent extends StatelessWidget {
                                   : const Icon(Icons.add_rounded),
                               label: Text(
                                 'Watchlist',
-                                style: kSubtitle,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1
+                                    ?.copyWith(color: kRichBlack),
                               ),
                             ),
                           ),
@@ -92,7 +95,7 @@ class MovieDetailContent extends StatelessWidget {
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
                             child: Text(
                               _showGenres(movie.genres),
-                              style: kSubtitle,
+                              style: Theme.of(context).textTheme.subtitle1,
                             ),
                           ),
                           Padding(
@@ -126,7 +129,7 @@ class MovieDetailContent extends StatelessWidget {
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                             child: Text(
                               'Overview',
-                              style: kHeading6,
+                              style: Theme.of(context).textTheme.headline6,
                             ),
                           ),
                           Padding(
@@ -147,7 +150,7 @@ class MovieDetailContent extends StatelessWidget {
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                             child: Text(
                               'Recommendations',
-                              style: kHeading6,
+                              style: Theme.of(context).textTheme.headline6,
                             ),
                           ),
                           Consumer<MovieDetailNotifier>(

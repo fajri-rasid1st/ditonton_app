@@ -1,12 +1,13 @@
+import 'package:ditonton/presentation/bloc/on_the_air_tv_shows_bloc/on_the_air_tv_shows_bloc.dart';
+import 'package:ditonton/presentation/bloc/popular_tv_shows_bloc/popular_tv_shows_bloc.dart';
+import 'package:ditonton/presentation/bloc/top_rated_tv_shows_bloc/top_rated_tv_shows_bloc.dart';
 import 'package:ditonton/presentation/pages/on_the_air_tv_shows_page.dart';
 import 'package:ditonton/presentation/pages/popular_tv_shows_page.dart';
-import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/presentation/pages/top_rated_tv_shows_page.dart';
-import 'package:ditonton/presentation/provider/tv_show_notifiers/tv_show_list_notifier.dart';
 import 'package:ditonton/presentation/widgets/item_list.dart';
 import 'package:ditonton/presentation/widgets/subheading.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TvShowsPage extends StatefulWidget {
   const TvShowsPage({Key? key}) : super(key: key);
@@ -21,12 +22,11 @@ class _TvShowsPageState extends State<TvShowsPage>
   void initState() {
     super.initState();
 
-    Future.microtask(
-      () => Provider.of<TvShowListNotifier>(context, listen: false)
-        ..fetchOnTheAirTvShows()
-        ..fetchPopularTvShows()
-        ..fetchTopRatedTvShows(),
-    );
+    Future.microtask(() {
+      context.read<OnTheAirTvShowsBloc>().add(FetchOnTheAirTvShows());
+      context.read<PopularTvShowsBloc>().add(FetchPopularTvShows());
+      context.read<TopRatedTvShowsBloc>().add(FetchTopRatedTvShows());
+    });
   }
 
   @override
@@ -45,28 +45,23 @@ class _TvShowsPageState extends State<TvShowsPage>
               OnTheAirTvShowsPage.routeName,
             ),
           ),
-          Consumer<TvShowListNotifier>(
-            builder: (context, provider, child) {
-              final state = provider.onTheAirTvShowsState;
-
-              if (state == RequestState.loading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state == RequestState.loaded) {
+          BlocBuilder<OnTheAirTvShowsBloc, OnTheAirTvShowsState>(
+            builder: ((context, state) {
+              if (state is OnTheAirTvShowsHasData) {
                 return ItemList(
-                  tvShows: provider.onTheAirTvShows,
-                  height: 200,
+                  tvShows: state.tvShows,
+                  height: 180,
                   separatorWidth: 12,
+                );
+              } else if (state is OnTheAirTvShowsError) {
+                return Center(
+                  key: const Key('error_message'),
+                  child: Text(state.message),
                 );
               }
 
-              return const SizedBox(
-                key: Key('error_message'),
-                height: 100,
-                child: Center(
-                  child: Text('Failed to fetch on the air tv shows'),
-                ),
-              );
-            },
+              return const Center(child: CircularProgressIndicator());
+            }),
           ),
           SubHeading(
             title: 'Popular',
@@ -75,28 +70,23 @@ class _TvShowsPageState extends State<TvShowsPage>
               PopularTvShowsPage.routeName,
             ),
           ),
-          Consumer<TvShowListNotifier>(
-            builder: (context, provider, child) {
-              final state = provider.popularTvShowsState;
-
-              if (state == RequestState.loading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state == RequestState.loaded) {
+          BlocBuilder<PopularTvShowsBloc, PopularTvShowsState>(
+            builder: ((context, state) {
+              if (state is PopularTvShowsHasData) {
                 return ItemList(
-                  tvShows: provider.popularTvShows,
-                  height: 200,
+                  tvShows: state.tvShows,
+                  height: 180,
                   separatorWidth: 12,
+                );
+              } else if (state is PopularTvShowsError) {
+                return Center(
+                  key: const Key('error_message'),
+                  child: Text(state.message),
                 );
               }
 
-              return const SizedBox(
-                key: Key('error_message'),
-                height: 100,
-                child: Center(
-                  child: Text('Failed to fetch popular tv shows'),
-                ),
-              );
-            },
+              return const Center(child: CircularProgressIndicator());
+            }),
           ),
           SubHeading(
             title: 'Top Rated',
@@ -105,28 +95,23 @@ class _TvShowsPageState extends State<TvShowsPage>
               TopRatedTvShowsPage.routeName,
             ),
           ),
-          Consumer<TvShowListNotifier>(
-            builder: (context, provider, child) {
-              final state = provider.topRatedTvShowsState;
-
-              if (state == RequestState.loading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state == RequestState.loaded) {
+          BlocBuilder<TopRatedTvShowsBloc, TopRatedTvShowsState>(
+            builder: ((context, state) {
+              if (state is TopRatedTvShowsHasData) {
                 return ItemList(
-                  tvShows: provider.topRatedTvShows,
-                  height: 200,
+                  tvShows: state.tvShows,
+                  height: 180,
                   separatorWidth: 12,
+                );
+              } else if (state is TopRatedTvShowsError) {
+                return Center(
+                  key: const Key('error_message'),
+                  child: Text(state.message),
                 );
               }
 
-              return const SizedBox(
-                key: Key('error_message'),
-                height: 100,
-                child: Center(
-                  child: Text('Failed to fetch top rated tv shows'),
-                ),
-              );
-            },
+              return const Center(child: CircularProgressIndicator());
+            }),
           ),
         ],
       ),

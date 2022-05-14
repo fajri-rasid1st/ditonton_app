@@ -56,13 +56,22 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                   title: const Text('Watchlist'),
                   bottom: TabBar(
                     controller: _tabController,
-                    indicatorSize: TabBarIndicatorSize.tab,
                     indicatorColor: kMikadoYellow,
                     labelColor: kMikadoYellow,
                     unselectedLabelColor: kDavysGrey,
                     tabs: <Tab>[
-                      Tab(child: Text('Movie', style: kDefaultText)),
-                      Tab(child: Text('Tv Show', style: kDefaultText)),
+                      Tab(
+                        text: 'Movie',
+                        icon: _tabController.index == 0
+                            ? const Icon(Icons.movie)
+                            : const Icon(Icons.movie_outlined),
+                      ),
+                      Tab(
+                        text: 'Tv Show',
+                        icon: _tabController.index != 0
+                            ? const Icon(Icons.smart_display)
+                            : const Icon(Icons.smart_display_outlined),
+                      ),
                     ],
                   ),
                 ),

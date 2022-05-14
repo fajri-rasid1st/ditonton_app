@@ -1,9 +1,8 @@
-import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/common/utils.dart';
-import 'package:ditonton/presentation/provider/tv_show_notifiers/watchlist_tv_shows_notifier.dart';
+import 'package:ditonton/presentation/bloc/watchlist_tv_shows_bloc/watchlist_tv_shows_bloc.dart';
 import 'package:ditonton/presentation/widgets/sliver_list_card_item.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WatchlistTvShowsPage extends StatefulWidget {
   const WatchlistTvShowsPage({Key? key}) : super(key: key);
@@ -18,10 +17,9 @@ class _WatchlistTvShowsPageState extends State<WatchlistTvShowsPage>
   void initState() {
     super.initState();
 
-    Future.microtask(
-      () => Provider.of<WatchlistTvShowsNotifier>(context, listen: false)
-          .fetchWatchlistTvShows(),
-    );
+    Future.microtask(() {
+      context.read<WatchlistTvShowsBloc>().add(FetchWatchlistTvShows());
+    });
   }
 
   @override
@@ -33,8 +31,7 @@ class _WatchlistTvShowsPageState extends State<WatchlistTvShowsPage>
 
   @override
   void didPopNext() {
-    Provider.of<WatchlistTvShowsNotifier>(context, listen: false)
-        .fetchWatchlistTvShows();
+    context.read<WatchlistTvShowsBloc>().add(FetchWatchlistTvShows());
   }
 
   @override
@@ -46,19 +43,19 @@ class _WatchlistTvShowsPageState extends State<WatchlistTvShowsPage>
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<WatchlistTvShowsNotifier>(
-      builder: (context, provider, child) {
-        if (provider.watchlistState == RequestState.loading) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (provider.watchlistState == RequestState.loaded) {
-          return SliverListCardItem(tvShows: provider.watchlistTvShows);
+    return BlocBuilder<WatchlistTvShowsBloc, WatchlistTvShowsState>(
+      builder: ((context, state) {
+        if (state is WatchlistTvShowsHasData) {
+          return SliverListCardItem(tvShows: state.tvShows);
+        } else if (state is WatchlistTvShowsError) {
+          return Center(
+            key: const Key('error_message'),
+            child: Text(state.message),
+          );
         }
 
-        return Center(
-          key: const Key('error_message'),
-          child: Text(provider.message),
-        );
-      },
+        return const Center(child: CircularProgressIndicator());
+      }),
     );
   }
 }

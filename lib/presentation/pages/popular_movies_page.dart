@@ -1,8 +1,7 @@
-import 'package:ditonton/common/state_enum.dart';
-import 'package:ditonton/presentation/provider/movie_notifiers/popular_movies_notifier.dart';
+import 'package:ditonton/presentation/bloc/popular_movies_bloc/popular_movies_bloc.dart';
 import 'package:ditonton/presentation/widgets/list_card_item.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PopularMoviesPage extends StatefulWidget {
   static const routeName = '/popular-movie';
@@ -18,29 +17,28 @@ class _PopularMoviesPageState extends State<PopularMoviesPage> {
   void initState() {
     super.initState();
 
-    Future.microtask(
-      () => Provider.of<PopularMoviesNotifier>(context, listen: false)
-          .fetchPopularMovies(),
-    );
+    Future.microtask(() {
+      context.read<PopularMoviesBloc>().add(FetchPopularMovies());
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Popular Movies')),
-      body: Consumer<PopularMoviesNotifier>(
-        builder: (context, provider, child) {
-          if (provider.state == RequestState.loading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (provider.state == RequestState.loaded) {
-            return ListCardItem(movies: provider.movies);
+      body: BlocBuilder<PopularMoviesBloc, PopularMoviesState>(
+        builder: ((context, state) {
+          if (state is PopularMoviesHasData) {
+            return ListCardItem(movies: state.movies);
+          } else if (state is PopularMoviesError) {
+            return Center(
+              key: const Key('error_message'),
+              child: Text(state.message),
+            );
           }
 
-          return Center(
-            key: const Key('error_message'),
-            child: Text(provider.message),
-          );
-        },
+          return const Center(child: CircularProgressIndicator());
+        }),
       ),
     );
   }

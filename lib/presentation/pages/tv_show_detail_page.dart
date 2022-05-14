@@ -1,8 +1,9 @@
+import 'package:ditonton/common/constants.dart';
+import 'package:ditonton/presentation/bloc/tv_show_detail_bloc/tv_show_detail_bloc.dart';
+import 'package:ditonton/presentation/bloc/tv_show_watchlist_bloc/tv_show_watchlist_bloc.dart';
 import 'package:ditonton/presentation/widgets/tv_show_detail_content.dart';
-import 'package:ditonton/presentation/provider/tv_show_notifiers/tv_show_detail_notifier.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:ditonton/common/state_enum.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TvShowDetailPage extends StatefulWidget {
   static const routeName = '/tv-show-detail';
@@ -16,37 +17,66 @@ class TvShowDetailPage extends StatefulWidget {
 }
 
 class _TvShowDetailPageState extends State<TvShowDetailPage> {
+  bool _isWatchlist = false;
+
   @override
   void initState() {
     super.initState();
 
-    Future.microtask(
-      () => Provider.of<TvShowDetailNotifier>(context, listen: false)
-        ..fetchTvShowDetail(widget.id)
-        ..loadTvShowWatchlistStatus(widget.id),
-    );
+    Future.microtask(() {
+      context.read<TvShowDetailBloc>().add(FetchTvShowDetail(widget.id));
+      context
+          .read<TvShowWatchlistBloc>()
+          .add(LoadTvShowWatchlistStatus(widget.id));
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<TvShowDetailNotifier>(
-        builder: (context, provider, child) {
-          if (provider.tvShowState == RequestState.loading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (provider.tvShowState == RequestState.loaded) {
-            return TvShowDetailContent(
-              tvShow: provider.tvShow,
-              tvShowRecommendations: provider.tvShowRecommendations,
-              isAddedWatchlist: provider.isAddedToWatchlist,
-            );
+      body: BlocListener<TvShowWatchlistBloc, TvShowWatchlistState>(
+        listener: (context, state) {
+          if (state is TvShowWatchlistStatusHasData) {
+            _isWatchlist = state.isWatchlist;
           }
 
-          return Center(
-            key: const Key('error_message'),
-            child: Text(provider.message),
-          );
+          if (state is InsertOrRemoveTvShowWatchlistSuccess) {
+            final SnackBar snackBar = SnackBar(
+              content: Text(state.successMessage, style: kDefaultText),
+              backgroundColor: kMikadoYellow,
+              duration: const Duration(seconds: 3),
+            );
+
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(snackBar);
+          } else if (state is InsertOrRemoveTvShowWatchlistFailed) {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(content: Text(state.failureMessage));
+              },
+            );
+          }
         },
+        child: BlocBuilder<TvShowDetailBloc, TvShowDetailState>(
+          builder: (context, state) {
+            if (state is TvShowDetailHasData) {
+              return TvShowDetailContent(
+                tvShow: state.tvShowDetail,
+                recommendations: state.recommendations,
+                isWatchlist: _isWatchlist,
+              );
+            } else if (state is TvShowDetailError) {
+              return Center(
+                key: const Key('error_message'),
+                child: Text(state.message),
+              );
+            }
+
+            return const Center(child: CircularProgressIndicator());
+          },
+        ),
       ),
     );
   }

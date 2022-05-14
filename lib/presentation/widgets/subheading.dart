@@ -27,7 +27,7 @@ class SubHeading extends StatelessWidget {
               onTap: onTap,
               child: Row(
                 children: const <Widget>[
-                  Text('See more'),
+                  Text('Show more'),
                   SizedBox(width: 4),
                   Icon(
                     Icons.arrow_forward_ios_rounded,

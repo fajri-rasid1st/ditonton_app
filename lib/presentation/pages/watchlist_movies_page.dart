@@ -1,9 +1,8 @@
-import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/common/utils.dart';
-import 'package:ditonton/presentation/provider/movie_notifiers/watchlist_movies_notifier.dart';
+import 'package:ditonton/presentation/bloc/watchlist_movies_bloc/watchlist_movies_bloc.dart';
 import 'package:ditonton/presentation/widgets/sliver_list_card_item.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WatchlistMoviesPage extends StatefulWidget {
   const WatchlistMoviesPage({Key? key}) : super(key: key);
@@ -18,10 +17,9 @@ class _WatchlistMoviesPageState extends State<WatchlistMoviesPage>
   void initState() {
     super.initState();
 
-    Future.microtask(
-      () => Provider.of<WatchlistMoviesNotifier>(context, listen: false)
-          .fetchWatchlistMovies(),
-    );
+    Future.microtask(() {
+      context.read<WatchlistMoviesBloc>().add(FetchWatchlistMovies());
+    });
   }
 
   @override
@@ -33,8 +31,7 @@ class _WatchlistMoviesPageState extends State<WatchlistMoviesPage>
 
   @override
   void didPopNext() {
-    Provider.of<WatchlistMoviesNotifier>(context, listen: false)
-        .fetchWatchlistMovies();
+    context.read<WatchlistMoviesBloc>().add(FetchWatchlistMovies());
   }
 
   @override
@@ -46,19 +43,19 @@ class _WatchlistMoviesPageState extends State<WatchlistMoviesPage>
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<WatchlistMoviesNotifier>(
-      builder: (context, provider, child) {
-        if (provider.watchlistState == RequestState.loading) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (provider.watchlistState == RequestState.loaded) {
-          return SliverListCardItem(movies: provider.watchlistMovies);
+    return BlocBuilder<WatchlistMoviesBloc, WatchlistMoviesState>(
+      builder: ((context, state) {
+        if (state is WatchlistMoviesHasData) {
+          return SliverListCardItem(movies: state.movies);
+        } else if (state is WatchlistMoviesError) {
+          return Center(
+            key: const Key('error_message'),
+            child: Text(state.message),
+          );
         }
 
-        return Center(
-          key: const Key('error_message'),
-          child: Text(provider.message),
-        );
-      },
+        return const Center(child: CircularProgressIndicator());
+      }),
     );
   }
 }

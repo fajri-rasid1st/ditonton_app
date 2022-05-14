@@ -1,10 +1,9 @@
 import 'package:ditonton/common/constants.dart';
-import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/domain/entities/genre.dart';
 import 'package:ditonton/domain/entities/tv_show_entities/tv_show.dart';
 import 'package:ditonton/domain/entities/tv_show_entities/tv_show_detail.dart';
+import 'package:ditonton/presentation/bloc/tv_show_watchlist_bloc/tv_show_watchlist_bloc.dart';
 import 'package:ditonton/presentation/pages/tv_show_season_detail_page.dart';
-import 'package:ditonton/presentation/provider/tv_show_notifiers/tv_show_detail_notifier.dart';
 import 'package:ditonton/presentation/widgets/custom_network_image.dart';
 import 'package:ditonton/presentation/widgets/item_list.dart';
 import 'package:flutter/material.dart';
@@ -15,14 +14,14 @@ import 'package:readmore/readmore.dart';
 
 class TvShowDetailContent extends StatelessWidget {
   final TvShowDetail tvShow;
-  final List<TvShow> tvShowRecommendations;
-  final bool isAddedWatchlist;
+  final List<TvShow> recommendations;
+  final bool isWatchlist;
 
   const TvShowDetailContent({
     Key? key,
     required this.tvShow,
-    required this.tvShowRecommendations,
-    required this.isAddedWatchlist,
+    required this.recommendations,
+    required this.isWatchlist,
   }) : super(key: key);
 
   @override
@@ -76,10 +75,10 @@ class TvShowDetailContent extends StatelessWidget {
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
                             child: ElevatedButton.icon(
                               key: const Key('watchlist_button'),
-                              onPressed: () async {
-                                await _onPressedWatchlistButton(context);
+                              onPressed: () {
+                                _onPressedWatchlistButton(context);
                               },
-                              icon: isAddedWatchlist
+                              icon: isWatchlist
                                   ? const Icon(Icons.check_rounded)
                                   : const Icon(Icons.add_rounded),
                               label: Text(
@@ -216,36 +215,20 @@ class TvShowDetailContent extends StatelessWidget {
                               delimiter: ' ',
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                            child: Text(
-                              'Recommendations',
-                              style: kHeading6,
+                          if (recommendations.isNotEmpty) ...[
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                              child: Text(
+                                'Similar Tv Shows',
+                                style: kHeading6,
+                              ),
                             ),
-                          ),
-                          Consumer<TvShowDetailNotifier>(
-                            builder: (context, provider, child) {
-                              final state = provider.recommendationState;
-
-                              if (state == RequestState.loading) {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              } else if (state == RequestState.error) {
-                                return Center(
-                                  child: Text(provider.message),
-                                );
-                              } else if (state == RequestState.loaded) {
-                                return ItemList(
-                                  tvShows: tvShowRecommendations,
-                                  height: 160,
-                                  separatorWidth: 12,
-                                );
-                              }
-
-                              return Container();
-                            },
-                          ),
+                            ItemList(
+                              tvShows: recommendations,
+                              height: 160,
+                              separatorWidth: 12,
+                            ),
+                          ]
                         ],
                       ),
                     ),
@@ -395,36 +378,11 @@ class TvShowDetailContent extends StatelessWidget {
     );
   }
 
-  Future<void> _onPressedWatchlistButton(BuildContext context) async {
-    if (!isAddedWatchlist) {
-      await Provider.of<TvShowDetailNotifier>(context, listen: false)
-          .addTvShowToWatchlist(tvShow);
+  void _onPressedWatchlistButton(BuildContext context) {
+    if (isWatchlist) {
+      context.read<TvShowWatchlistBloc>().add(RemoveTvShowWatchList(tvShow));
     } else {
-      await Provider.of<TvShowDetailNotifier>(context, listen: false)
-          .removeTvShowFromWatchlist(tvShow);
-    }
-
-    final message = Provider.of<TvShowDetailNotifier>(context, listen: false)
-        .watchlistMessage;
-
-    if (message == TvShowDetailNotifier.watchlistAddSuccessMessage ||
-        message == TvShowDetailNotifier.watchlistRemoveSuccessMessage) {
-      final SnackBar snackBar = SnackBar(
-        content: Text(
-          message,
-          style: kDefaultText,
-        ),
-        backgroundColor: kMikadoYellow,
-      );
-
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(snackBar);
-    } else {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(content: Text(message)),
-      );
+      context.read<TvShowWatchlistBloc>().add(InsertTvShowWatchlist(tvShow));
     }
   }
 

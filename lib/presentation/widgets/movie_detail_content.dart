@@ -1,7 +1,6 @@
 import 'package:ditonton/common/constants.dart';
-import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/domain/entities/genre.dart';
-import 'package:ditonton/presentation/provider/movie_notifiers/movie_detail_notifier.dart';
+import 'package:ditonton/presentation/bloc/movie_watchlist_bloc/movie_watchlist_bloc.dart';
 import 'package:ditonton/presentation/widgets/custom_network_image.dart';
 import 'package:ditonton/presentation/widgets/item_list.dart';
 import 'package:flutter/material.dart';
@@ -13,14 +12,14 @@ import 'package:readmore/readmore.dart';
 
 class MovieDetailContent extends StatelessWidget {
   final MovieDetail movie;
-  final List<Movie> movieRecommendations;
-  final bool isAddedWatchlist;
+  final List<Movie> recommendations;
+  final bool isWatchlist;
 
   const MovieDetailContent({
     Key? key,
     required this.movie,
-    required this.movieRecommendations,
-    required this.isAddedWatchlist,
+    required this.recommendations,
+    required this.isWatchlist,
   }) : super(key: key);
 
   @override
@@ -74,10 +73,10 @@ class MovieDetailContent extends StatelessWidget {
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
                             child: ElevatedButton.icon(
                               key: const Key('watchlist_button'),
-                              onPressed: () async {
-                                await _onPressedWatchlistButton(context);
+                              onPressed: () {
+                                _onPressedWatchlistButton(context);
                               },
-                              icon: isAddedWatchlist
+                              icon: isWatchlist
                                   ? const Icon(Icons.check_rounded)
                                   : const Icon(Icons.add_rounded),
                               label: Text(
@@ -141,36 +140,20 @@ class MovieDetailContent extends StatelessWidget {
                               delimiter: ' ',
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                            child: Text(
-                              'Recommendations',
-                              style: kHeading6,
+                          if (recommendations.isNotEmpty) ...[
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                              child: Text(
+                                'Similar Movies',
+                                style: kHeading6,
+                              ),
                             ),
-                          ),
-                          Consumer<MovieDetailNotifier>(
-                            builder: (context, provider, child) {
-                              final state = provider.recommendationState;
-
-                              if (state == RequestState.loading) {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              } else if (state == RequestState.error) {
-                                return Center(
-                                  child: Text(provider.message),
-                                );
-                              } else if (state == RequestState.loaded) {
-                                return ItemList(
-                                  movies: movieRecommendations,
-                                  height: 160,
-                                  separatorWidth: 12,
-                                );
-                              }
-
-                              return Container();
-                            },
-                          ),
+                            ItemList(
+                              movies: recommendations,
+                              height: 160,
+                              separatorWidth: 12,
+                            ),
+                          ]
                         ],
                       ),
                     ),
@@ -209,36 +192,11 @@ class MovieDetailContent extends StatelessWidget {
     );
   }
 
-  Future<void> _onPressedWatchlistButton(BuildContext context) async {
-    if (!isAddedWatchlist) {
-      await Provider.of<MovieDetailNotifier>(context, listen: false)
-          .addMovieToWatchlist(movie);
+  void _onPressedWatchlistButton(BuildContext context) {
+    if (isWatchlist) {
+      context.read<MovieWatchlistBloc>().add(RemoveMovieWatchList(movie));
     } else {
-      await Provider.of<MovieDetailNotifier>(context, listen: false)
-          .removeMovieFromWatchlist(movie);
-    }
-
-    final message = Provider.of<MovieDetailNotifier>(context, listen: false)
-        .watchlistMessage;
-
-    if (message == MovieDetailNotifier.watchlistAddSuccessMessage ||
-        message == MovieDetailNotifier.watchlistRemoveSuccessMessage) {
-      final SnackBar snackBar = SnackBar(
-        content: Text(
-          message,
-          style: kDefaultText,
-        ),
-        backgroundColor: kMikadoYellow,
-      );
-
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(snackBar);
-    } else {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(content: Text(message)),
-      );
+      context.read<MovieWatchlistBloc>().add(InsertMovieWatchlist(movie));
     }
   }
 

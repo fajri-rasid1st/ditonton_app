@@ -1,12 +1,11 @@
 import 'package:ditonton/common/constants.dart';
-import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/domain/entities/episode.dart';
 import 'package:ditonton/domain/entities/season.dart';
-import 'package:ditonton/presentation/provider/tv_show_notifiers/tv_show_episodes_notifier.dart';
+import 'package:ditonton/presentation/bloc/tv_show_episodes_bloc/tv_show_episodes_bloc.dart';
 import 'package:ditonton/presentation/widgets/custom_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 
 class TvShowSeasonDetailPage extends StatefulWidget {
@@ -30,27 +29,27 @@ class _TvShowSeasonDetailPageState extends State<TvShowSeasonDetailPage> {
   void initState() {
     super.initState();
 
-    Future.microtask(
-      () => Provider.of<TvShowEpisodesNotifier>(context, listen: false)
-          .fetchTvShowEpisode(widget.tvShowId, widget.season.seasonNumber),
-    );
+    Future.microtask(() {
+      context.read<TvShowEpisodesBloc>().add(
+          FetchTvShowEpisodes(widget.tvShowId, widget.season.seasonNumber));
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<TvShowEpisodesNotifier>(
-        builder: (context, provider, child) {
-          if (provider.state == RequestState.loading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (provider.state == RequestState.loaded) {
-            return _buildMainScreen(provider.episodes);
+      body: BlocBuilder<TvShowEpisodesBloc, TvShowEpisodesState>(
+        builder: (context, state) {
+          if (state is TvShowEpisodesHasData) {
+            return _buildMainScreen(state.episodes);
+          } else if (state is TvShowEpisodesError) {
+            return Center(
+              key: const Key('error_message'),
+              child: Text(state.message),
+            );
           }
 
-          return Center(
-            key: const Key('error_message'),
-            child: Text(provider.message),
-          );
+          return const Center(child: CircularProgressIndicator());
         },
       ),
     );

@@ -38,7 +38,7 @@ dependencies:
     http: ^0.13.4
 
     # a state management approach
-    provider: ^6.0.2
+    flutter_bloc: ^8.0.1
 
     # for implementing functional programming
     dartz: ^0.10.1
@@ -55,7 +55,7 @@ dependencies:
     # to get image from network that implement caching
     cached_network_image: ^3.2.0
 
-    # a simple direct Service Locator
+    # a simple direct service locator
     get_it: ^7.2.0
 
     # to create local database
@@ -70,6 +70,12 @@ dependencies:
     # readmore text
     readmore: ^2.1.0
 
+    # for asynchronous programming
+    rxdart: ^0.27.3
+
+    # for SVG rendering and widget picture
+    flutter_svg: ^1.0.3
+
 dev_dependencies:
     flutter_test:
         sdk: flutter
@@ -77,6 +83,7 @@ dev_dependencies:
     # for testing
     mockito: ^5.1.0
     build_runner: ^2.1.8
+    bloc_test: ^9.0.3
 
     # The "flutter_lints" package below contains a set of recommended lints to
     # encourage good coding practices. The lint set provided by the package is

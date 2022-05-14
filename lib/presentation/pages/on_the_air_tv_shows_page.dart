@@ -1,8 +1,7 @@
-import 'package:ditonton/common/state_enum.dart';
-import 'package:ditonton/presentation/provider/tv_show_notifiers/on_the_air_tv_shows_notifier.dart';
+import 'package:ditonton/presentation/bloc/on_the_air_tv_shows_bloc/on_the_air_tv_shows_bloc.dart';
 import 'package:ditonton/presentation/widgets/list_card_item.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OnTheAirTvShowsPage extends StatefulWidget {
   static const routeName = '/on-the-air-tv-show';
@@ -18,29 +17,28 @@ class _OnTheAirTvShowsPageState extends State<OnTheAirTvShowsPage> {
   void initState() {
     super.initState();
 
-    Future.microtask(
-      () => Provider.of<OnTheAirTvShowsNotifier>(context, listen: false)
-          .fetchOnTheAirTvShows(),
-    );
+    Future.microtask(() {
+      context.read<OnTheAirTvShowsBloc>().add(FetchOnTheAirTvShows());
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('On The Air Tv Shows')),
-      body: Consumer<OnTheAirTvShowsNotifier>(
-        builder: (context, provider, child) {
-          if (provider.state == RequestState.loading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (provider.state == RequestState.loaded) {
-            return ListCardItem(tvShows: provider.tvShows);
+      body: BlocBuilder<OnTheAirTvShowsBloc, OnTheAirTvShowsState>(
+        builder: ((context, state) {
+          if (state is OnTheAirTvShowsHasData) {
+            return ListCardItem(tvShows: state.tvShows);
+          } else if (state is OnTheAirTvShowsError) {
+            return Center(
+              key: const Key('error_message'),
+              child: Text(state.message),
+            );
           }
 
-          return Center(
-            key: const Key('error_message'),
-            child: Text(provider.message),
-          );
-        },
+          return const Center(child: CircularProgressIndicator());
+        }),
       ),
     );
   }

@@ -1,11 +1,12 @@
+import 'package:ditonton/presentation/bloc/now_playing_movies_bloc/now_playing_movies_bloc.dart';
+import 'package:ditonton/presentation/bloc/popular_movies_bloc/popular_movies_bloc.dart';
+import 'package:ditonton/presentation/bloc/top_rated_movies_bloc/top_rated_movies_bloc.dart';
 import 'package:ditonton/presentation/pages/popular_movies_page.dart';
 import 'package:ditonton/presentation/pages/top_rated_movies_page.dart';
-import 'package:ditonton/presentation/provider/movie_notifiers/movie_list_notifier.dart';
-import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/presentation/widgets/item_list.dart';
 import 'package:ditonton/presentation/widgets/subheading.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MoviesPage extends StatefulWidget {
   const MoviesPage({Key? key}) : super(key: key);
@@ -20,12 +21,11 @@ class _MoviesPageState extends State<MoviesPage>
   void initState() {
     super.initState();
 
-    Future.microtask(
-      () => Provider.of<MovieListNotifier>(context, listen: false)
-        ..fetchNowPlayingMovies()
-        ..fetchPopularMovies()
-        ..fetchTopRatedMovies(),
-    );
+    Future.microtask(() {
+      context.read<NowPlayingMoviesBloc>().add(FetchNowPlayingMovies());
+      context.read<PopularMoviesBloc>().add(FetchPopularMovies());
+      context.read<TopRatedMoviesBloc>().add(FetchTopRatedMovies());
+    });
   }
 
   @override
@@ -41,28 +41,23 @@ class _MoviesPageState extends State<MoviesPage>
             title: 'Now Playing',
             onTap: null,
           ),
-          Consumer<MovieListNotifier>(
-            builder: (context, provider, child) {
-              final state = provider.nowPlayingMovieState;
-
-              if (state == RequestState.loading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state == RequestState.loaded) {
+          BlocBuilder<NowPlayingMoviesBloc, NowPlayingMoviesState>(
+            builder: ((context, state) {
+              if (state is NowPlayingMoviesHasData) {
                 return ItemList(
-                  movies: provider.nowPlayingMovies,
-                  height: 200,
+                  movies: state.movies,
+                  height: 180,
                   separatorWidth: 12,
+                );
+              } else if (state is NowPlayingMoviesError) {
+                return Center(
+                  key: const Key('error_message'),
+                  child: Text(state.message),
                 );
               }
 
-              return const SizedBox(
-                key: Key('error_message'),
-                height: 100,
-                child: Center(
-                  child: Text('Failed to fetch now playing movies'),
-                ),
-              );
-            },
+              return const Center(child: CircularProgressIndicator());
+            }),
           ),
           SubHeading(
             title: 'Popular',
@@ -71,28 +66,23 @@ class _MoviesPageState extends State<MoviesPage>
               PopularMoviesPage.routeName,
             ),
           ),
-          Consumer<MovieListNotifier>(
-            builder: (context, provider, child) {
-              final state = provider.popularMoviesState;
-
-              if (state == RequestState.loading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state == RequestState.loaded) {
+          BlocBuilder<PopularMoviesBloc, PopularMoviesState>(
+            builder: ((context, state) {
+              if (state is PopularMoviesHasData) {
                 return ItemList(
-                  movies: provider.popularMovies,
-                  height: 200,
+                  movies: state.movies,
+                  height: 180,
                   separatorWidth: 12,
+                );
+              } else if (state is PopularMoviesError) {
+                return Center(
+                  key: const Key('error_message'),
+                  child: Text(state.message),
                 );
               }
 
-              return const SizedBox(
-                key: Key('error_message'),
-                height: 100,
-                child: Center(
-                  child: Text('Failed to fetch popular movies'),
-                ),
-              );
-            },
+              return const Center(child: CircularProgressIndicator());
+            }),
           ),
           SubHeading(
             title: 'Top Rated',
@@ -101,28 +91,23 @@ class _MoviesPageState extends State<MoviesPage>
               TopRatedMoviesPage.routeName,
             ),
           ),
-          Consumer<MovieListNotifier>(
-            builder: (context, provider, child) {
-              final state = provider.topRatedMoviesState;
-
-              if (state == RequestState.loading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state == RequestState.loaded) {
+          BlocBuilder<TopRatedMoviesBloc, TopRatedMoviesState>(
+            builder: ((context, state) {
+              if (state is TopRatedMoviesHasData) {
                 return ItemList(
-                  movies: provider.topRatedMovies,
-                  height: 200,
+                  movies: state.movies,
+                  height: 180,
                   separatorWidth: 12,
+                );
+              } else if (state is TopRatedMoviesError) {
+                return Center(
+                  key: const Key('error_message'),
+                  child: Text(state.message),
                 );
               }
 
-              return const SizedBox(
-                key: Key('error_message'),
-                height: 100,
-                child: Center(
-                  child: Text('Failed to fetch top rated movies'),
-                ),
-              );
-            },
+              return const Center(child: CircularProgressIndicator());
+            }),
           ),
         ],
       ),

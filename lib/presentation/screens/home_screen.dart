@@ -1,12 +1,12 @@
 import 'package:ditonton/common/constants.dart';
+import 'package:ditonton/presentation/cubit/bottom_nav_cubit.dart';
 import 'package:ditonton/presentation/pages/collection_page.dart';
 import 'package:ditonton/presentation/pages/movies_page.dart';
 import 'package:ditonton/presentation/pages/search_tv_shows_page.dart';
 import 'package:ditonton/presentation/pages/tv_shows_page.dart';
 import 'package:ditonton/presentation/pages/search_movies_page.dart';
-import 'package:ditonton/presentation/provider/bottom_nav_notifier.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -40,26 +40,26 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<BottomNavNotifier>(
-      builder: ((context, provider, child) {
+    return BlocBuilder<BottomNavCubit, BottomNavState>(
+      builder: ((context, state) {
         return Scaffold(
-          appBar: _buildAppBar(provider, context),
-          body: _buildBody(provider),
-          bottomNavigationBar: _buildBottomNavBar(provider),
+          appBar: _buildAppBar(state, context),
+          body: _buildBody(state),
+          bottomNavigationBar: _buildBottomNavBar(state),
         );
       }),
     );
   }
 
-  AppBar _buildAppBar(BottomNavNotifier provider, BuildContext context) {
+  AppBar _buildAppBar(BottomNavState state, BuildContext context) {
     return AppBar(
-      title: Text(provider.title),
+      title: Text(state.title),
       actions: <Widget>[
-        if (provider.index != 2) ...[
+        if (state.index != 2) ...[
           IconButton(
             onPressed: () => Navigator.pushNamed(
               context,
-              provider.index == 0
+              state.index == 0
                   ? SearchMoviesPage.routeName
                   : SearchTvShowsPage.routeName,
             ),
@@ -81,24 +81,28 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  SafeArea _buildBody(BottomNavNotifier provider) {
+  SafeArea _buildBody(BottomNavState state) {
     return SafeArea(
       child: PageView(
         physics: const NeverScrollableScrollPhysics(),
         controller: _pageController,
         children: _pages,
         onPageChanged: (index) {
-          provider.index = index;
-
           switch (index) {
             case 0:
-              provider.title = 'Movies';
+              context
+                  .read<BottomNavCubit>()
+                  .getBottomNavItem(BottomNavItem.movie);
               break;
             case 1:
-              provider.title = 'Tv Shows';
+              context
+                  .read<BottomNavCubit>()
+                  .getBottomNavItem(BottomNavItem.tvShow);
               break;
             case 2:
-              provider.title = 'Collections';
+              context
+                  .read<BottomNavCubit>()
+                  .getBottomNavItem(BottomNavItem.collection);
               break;
           }
         },
@@ -106,9 +110,9 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  BottomNavigationBar _buildBottomNavBar(BottomNavNotifier provider) {
+  BottomNavigationBar _buildBottomNavBar(BottomNavState state) {
     return BottomNavigationBar(
-      currentIndex: provider.index,
+      currentIndex: state.index,
       backgroundColor: kRichBlack,
       selectedFontSize: 10,
       selectedItemColor: kMikadoYellow,

@@ -1,9 +1,8 @@
 import 'package:ditonton/common/constants.dart';
-import 'package:ditonton/common/state_enum.dart';
-import 'package:ditonton/presentation/provider/movie_notifiers/movie_search_notifier.dart';
+import 'package:ditonton/presentation/bloc/movie_search_bloc/movie_search_bloc.dart';
 import 'package:ditonton/presentation/widgets/list_card_item.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SearchMoviesPage extends StatelessWidget {
   static const routeName = '/search-movie';
@@ -20,10 +19,9 @@ class SearchMoviesPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: TextField(
-              onSubmitted: (query) {
-                Provider.of<MovieSearchNotifier>(context, listen: false)
-                    .fetchMovieSearch(query);
-              },
+              onChanged: (query) => context
+                  .read<MovieSearchBloc>()
+                  .add(OnMovieQueryChanged(query)),
               decoration: const InputDecoration(
                 hintText: 'Search movie...',
                 prefixIcon: Icon(Icons.search_rounded),
@@ -41,13 +39,22 @@ class SearchMoviesPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          Consumer<MovieSearchNotifier>(
-            builder: (context, provider, child) {
-              if (provider.state == RequestState.loading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (provider.state == RequestState.loaded) {
+          BlocBuilder<MovieSearchBloc, MovieSearchState>(
+            builder: (context, state) {
+              if (state is MovieSearchLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state is MovieSearchHasData) {
                 return Expanded(
-                  child: ListCardItem(movies: provider.searchResult),
+                  child: ListCardItem(movies: state.movies),
+                );
+              } else if (state is MovieSearchError) {
+                return Expanded(
+                  child: Center(
+                    key: const Key('error_message'),
+                    child: Text(state.message),
+                  ),
                 );
               }
 

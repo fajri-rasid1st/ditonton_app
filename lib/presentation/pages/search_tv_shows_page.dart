@@ -1,9 +1,8 @@
 import 'package:ditonton/common/constants.dart';
-import 'package:ditonton/common/state_enum.dart';
-import 'package:ditonton/presentation/provider/tv_show_notifiers/tv_show_search_notifier.dart';
+import 'package:ditonton/presentation/bloc/tv_show_search_bloc/tv_show_search_bloc.dart';
 import 'package:ditonton/presentation/widgets/list_card_item.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SearchTvShowsPage extends StatelessWidget {
   static const routeName = '/search-tv-show';
@@ -20,10 +19,9 @@ class SearchTvShowsPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: TextField(
-              onSubmitted: (query) {
-                Provider.of<TvShowSearchNotifier>(context, listen: false)
-                    .fetchTvShowSearch(query);
-              },
+              onChanged: (query) => context
+                  .read<TvShowSearchBloc>()
+                  .add(OnTvShowQueryChanged(query)),
               decoration: const InputDecoration(
                 hintText: 'Search tv show...',
                 prefixIcon: Icon(Icons.search_rounded),
@@ -41,13 +39,22 @@ class SearchTvShowsPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          Consumer<TvShowSearchNotifier>(
-            builder: (context, provider, child) {
-              if (provider.state == RequestState.loading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (provider.state == RequestState.loaded) {
+          BlocBuilder<TvShowSearchBloc, TvShowSearchState>(
+            builder: (context, state) {
+              if (state is TvShowSearchLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state is TvShowSearchHasData) {
                 return Expanded(
-                  child: ListCardItem(tvShows: provider.searchResult),
+                  child: ListCardItem(tvShows: state.tvShows),
+                );
+              } else if (state is TvShowSearchError) {
+                return Expanded(
+                  child: Center(
+                    key: const Key('error_message'),
+                    child: Text(state.message),
+                  ),
                 );
               }
 

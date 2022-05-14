@@ -45,12 +45,12 @@ void main() {
       'Should emit HasData when tv show watchlist status is gotten successfully',
       build: () {
         when(mockGetTvShowWatchListStatus.execute(tId))
-            .thenAnswer((_) async => const Right(false));
+            .thenAnswer((_) async => const Right(true));
 
         return tvShowWatchlistBloc;
       },
       act: (bloc) => bloc.add(const LoadTvShowWatchlistStatus(tId)),
-      expect: () => const TvShowWatchlistStatusHasData(false),
+      expect: () => [const TvShowWatchlistStatusHasData(true)],
       verify: (_) => verify(mockGetTvShowWatchListStatus.execute(tId)),
     );
 
@@ -63,7 +63,7 @@ void main() {
         return tvShowWatchlistBloc;
       },
       act: (bloc) => bloc.add(const LoadTvShowWatchlistStatus(tId)),
-      expect: () => const TvShowWatchlistStatusError('Database Failure'),
+      expect: () => [const TvShowWatchlistStatusError('Database Failure')],
       verify: (_) => verify(mockGetTvShowWatchListStatus.execute(tId)),
     );
   });
@@ -75,11 +75,18 @@ void main() {
         when(mockAddTvShowWatchlist.execute(testTvShowDetail))
             .thenAnswer((_) async => const Right('Added Tv Show to Watchlist'));
 
+        when(mockGetTvShowWatchListStatus.execute(testTvShowDetail.id))
+            .thenAnswer((_) async => const Right(true));
+
         return tvShowWatchlistBloc;
       },
       act: (bloc) => bloc.add(const InsertTvShowWatchlist(testTvShowDetail)),
-      expect: () => const InsertOrRemoveTvShowWatchlistSuccess(
-          'Added Tv Show to Watchlist'),
+      expect: () => [
+        const InsertOrRemoveTvShowWatchlistSuccess(
+          'Added Tv Show to Watchlist',
+        ),
+        const TvShowWatchlistStatusHasData(true),
+      ],
       verify: (_) => verify(mockAddTvShowWatchlist.execute(testTvShowDetail)),
     );
 
@@ -89,11 +96,16 @@ void main() {
         when(mockAddTvShowWatchlist.execute(testTvShowDetail)).thenAnswer(
             (_) async => const Left(DatabaseFailure('Database Failure')));
 
+        when(mockGetTvShowWatchListStatus.execute(testTvShowDetail.id))
+            .thenAnswer((_) async => const Right(false));
+
         return tvShowWatchlistBloc;
       },
       act: (bloc) => bloc.add(const InsertTvShowWatchlist(testTvShowDetail)),
-      expect: () =>
-          const InsertOrRemoveTvShowWatchlistFailed('Database Failure'),
+      expect: () => [
+        const InsertOrRemoveTvShowWatchlistFailed('Database Failure'),
+        const TvShowWatchlistStatusHasData(false),
+      ],
       verify: (_) => verify(mockAddTvShowWatchlist.execute(testTvShowDetail)),
     );
   });
@@ -105,12 +117,18 @@ void main() {
         when(mockDeleteTvShowWatchlist.execute(testTvShowDetail)).thenAnswer(
             (_) async => const Right('Remove Tv Show from Watchlist'));
 
+        when(mockGetTvShowWatchListStatus.execute(testTvShowDetail.id))
+            .thenAnswer((_) async => const Right(false));
+
         return tvShowWatchlistBloc;
       },
       act: (bloc) => bloc.add(const RemoveTvShowWatchList(testTvShowDetail)),
-      expect: () => const InsertOrRemoveTvShowWatchlistSuccess(
-        'Remove Tv Show from Watchlist',
-      ),
+      expect: () => [
+        const InsertOrRemoveTvShowWatchlistSuccess(
+          'Remove Tv Show from Watchlist',
+        ),
+        const TvShowWatchlistStatusHasData(false),
+      ],
       verify: (_) =>
           verify(mockDeleteTvShowWatchlist.execute(testTvShowDetail)),
     );
@@ -121,11 +139,16 @@ void main() {
         when(mockDeleteTvShowWatchlist.execute(testTvShowDetail)).thenAnswer(
             (_) async => const Left(DatabaseFailure('Database Failure')));
 
+        when(mockGetTvShowWatchListStatus.execute(testTvShowDetail.id))
+            .thenAnswer((_) async => const Right(false));
+
         return tvShowWatchlistBloc;
       },
       act: (bloc) => bloc.add(const RemoveTvShowWatchList(testTvShowDetail)),
-      expect: () =>
-          const InsertOrRemoveTvShowWatchlistFailed('Database Failure'),
+      expect: () => [
+        const InsertOrRemoveTvShowWatchlistFailed('Database Failure'),
+        const TvShowWatchlistStatusHasData(false),
+      ],
       verify: (_) =>
           verify(mockDeleteTvShowWatchlist.execute(testTvShowDetail)),
     );

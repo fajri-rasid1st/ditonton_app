@@ -50,7 +50,7 @@ void main() {
         return movieWatchlistBloc;
       },
       act: (bloc) => bloc.add(const LoadMovieWatchlistStatus(tId)),
-      expect: () => const MovieWatchlistStatusHasData(true),
+      expect: () => [const MovieWatchlistStatusHasData(true)],
       verify: (_) => verify(mockGetMovieWatchListStatus.execute(tId)),
     );
 
@@ -63,7 +63,7 @@ void main() {
         return movieWatchlistBloc;
       },
       act: (bloc) => bloc.add(const LoadMovieWatchlistStatus(tId)),
-      expect: () => const MovieWatchlistStatusError('Database Failure'),
+      expect: () => [const MovieWatchlistStatusError('Database Failure')],
       verify: (_) => verify(mockGetMovieWatchListStatus.execute(tId)),
     );
   });
@@ -75,11 +75,16 @@ void main() {
         when(mockAddMovieWatchlist.execute(testMovieDetail))
             .thenAnswer((_) async => const Right('Added Movie to Watchlist'));
 
+        when(mockGetMovieWatchListStatus.execute(testMovieDetail.id))
+            .thenAnswer((_) async => const Right(true));
+
         return movieWatchlistBloc;
       },
       act: (bloc) => bloc.add(const InsertMovieWatchlist(testMovieDetail)),
-      expect: () =>
-          const InsertOrRemoveMovieWatchlistSuccess('Added Movie to Watchlist'),
+      expect: () => [
+        const InsertOrRemoveMovieWatchlistSuccess('Added Movie to Watchlist'),
+        const MovieWatchlistStatusHasData(true),
+      ],
       verify: (_) => verify(mockAddMovieWatchlist.execute(testMovieDetail)),
     );
 
@@ -89,11 +94,16 @@ void main() {
         when(mockAddMovieWatchlist.execute(testMovieDetail)).thenAnswer(
             (_) async => const Left(DatabaseFailure('Database Failure')));
 
+        when(mockGetMovieWatchListStatus.execute(testMovieDetail.id))
+            .thenAnswer((_) async => const Right(false));
+
         return movieWatchlistBloc;
       },
       act: (bloc) => bloc.add(const InsertMovieWatchlist(testMovieDetail)),
-      expect: () =>
-          const InsertOrRemoveMovieWatchlistFailed('Database Failure'),
+      expect: () => [
+        const InsertOrRemoveMovieWatchlistFailed('Database Failure'),
+        const MovieWatchlistStatusHasData(false),
+      ],
       verify: (_) => verify(mockAddMovieWatchlist.execute(testMovieDetail)),
     );
   });
@@ -105,12 +115,18 @@ void main() {
         when(mockDeleteMovieWatchlist.execute(testMovieDetail)).thenAnswer(
             (_) async => const Right('Remove Movie from Watchlist'));
 
+        when(mockGetMovieWatchListStatus.execute(testMovieDetail.id))
+            .thenAnswer((_) async => const Right(false));
+
         return movieWatchlistBloc;
       },
       act: (bloc) => bloc.add(const RemoveMovieWatchList(testMovieDetail)),
-      expect: () => const InsertOrRemoveMovieWatchlistSuccess(
-        'Remove Movie from Watchlist',
-      ),
+      expect: () => [
+        const InsertOrRemoveMovieWatchlistSuccess(
+          'Remove Movie from Watchlist',
+        ),
+        const MovieWatchlistStatusHasData(false),
+      ],
       verify: (_) => verify(mockDeleteMovieWatchlist.execute(testMovieDetail)),
     );
 
@@ -120,11 +136,16 @@ void main() {
         when(mockDeleteMovieWatchlist.execute(testMovieDetail)).thenAnswer(
             (_) async => const Left(DatabaseFailure('Database Failure')));
 
+        when(mockGetMovieWatchListStatus.execute(testMovieDetail.id))
+            .thenAnswer((_) async => const Right(false));
+
         return movieWatchlistBloc;
       },
       act: (bloc) => bloc.add(const RemoveMovieWatchList(testMovieDetail)),
-      expect: () =>
-          const InsertOrRemoveMovieWatchlistFailed('Database Failure'),
+      expect: () => [
+        const InsertOrRemoveMovieWatchlistFailed('Database Failure'),
+        const MovieWatchlistStatusHasData(false),
+      ],
       verify: (_) => verify(mockDeleteMovieWatchlist.execute(testMovieDetail)),
     );
   });

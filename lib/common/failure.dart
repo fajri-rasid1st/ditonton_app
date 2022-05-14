@@ -1,5 +1,3 @@
-// coverage:ignore-file
-
 import 'package:equatable/equatable.dart';
 
 /// A base Failure class.

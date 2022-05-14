@@ -30,6 +30,7 @@ import 'package:ditonton/presentation/pages/tv_show_detail_page.dart';
 import 'package:ditonton/presentation/pages/tv_show_season_detail_page.dart';
 import 'package:ditonton/presentation/screens/home_screen.dart';
 import 'package:ditonton/presentation/pages/watchlist_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,9 +38,6 @@ import 'package:ditonton/injection.dart' as di;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Initialize ssl pinning
-  await HttpSslPinning.init();
 
   // Prevent landscape orientation
   SystemChrome.setPreferredOrientations(<DeviceOrientation>[
@@ -53,6 +51,13 @@ void main() async {
     systemNavigationBarIconBrightness: Brightness.light,
   ));
 
+  // Initialize ssl pinning
+  await HttpSslPinning.init();
+
+  // Initialize firebase
+  await Firebase.initializeApp();
+
+  // Initialize injector
   di.init();
 
   runApp(const MyApp());
@@ -180,9 +185,9 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(
                 builder: (_) => const AboutPage(),
               );
-            case WatchlistScreen.routeName:
+            case WatchlistPage.routeName:
               return MaterialPageRoute(
-                builder: (_) => const WatchlistScreen(),
+                builder: (_) => const WatchlistPage(),
               );
             default:
               return MaterialPageRoute(

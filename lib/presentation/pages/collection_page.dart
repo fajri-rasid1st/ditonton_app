@@ -27,7 +27,7 @@ class _CollectionPageState extends State<CollectionPage>
           ListTile(
             onTap: () => Navigator.pushNamed(
               context,
-              WatchlistScreen.routeName,
+              WatchlistPage.routeName,
             ),
             leading: const Icon(Icons.save_alt_rounded),
             title: const Text('Watchlist'),

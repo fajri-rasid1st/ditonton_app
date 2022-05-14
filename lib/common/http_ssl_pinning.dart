@@ -1,5 +1,3 @@
-// coverage:ignore-file
-
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/services.dart';
@@ -44,7 +42,7 @@ class HttpSslPinning {
 
     final ioClient = IOClient(client);
 
-    return ioClient;
+    return ioClient;      
   }
 
   static bool rejectBadCertificate(

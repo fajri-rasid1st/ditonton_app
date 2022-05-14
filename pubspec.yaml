@@ -29,58 +29,62 @@ environment:
 dependencies:
     flutter:
         sdk: flutter
+    
+    # Firebase plugins
+    firebase_core: ^1.17.0
+    firebase_crashlytics: ^2.8.0
 
     # The following adds the Cupertino Icons font to your application.
     # Use with the CupertinoIcons class for iOS style icons.
     cupertino_icons: ^1.0.2
 
-    # for implementing http request
+    # For implementing http request
     http: ^0.13.4
 
-    # a state management approach
+    # A state management approach
     flutter_bloc: ^8.0.1
 
-    # for implementing functional programming
+    # For implementing functional programming
     dartz: ^0.10.1
 
-    # to implement value based equality
+    # To implement value based equality
     equatable: ^2.0.3
 
-    # to get some font from google
+    # To get some font from google
     google_fonts: ^2.3.2
 
-    # a simple yet fully customizable ratingbar
+    # A simple yet fully customizable ratingbar
     flutter_rating_bar: ^4.0.0
 
-    # to get image from network that implement caching
+    # To get image from network that implement caching
     cached_network_image: ^3.2.0
 
-    # a simple direct service locator
+    # A simple direct service locator
     get_it: ^7.2.0
 
-    # to create local database with embended password
+    # To create local database with embended password
     sqflite_sqlcipher: ^2.1.0
 
-    # for finding commonly used locations on the filesystem
+    # For finding commonly used locations on the filesystem
     path_provider: ^2.0.9
 
-    # internationalization and localization
+    # Internationalization and localization
     intl: ^0.17.0
 
-    # readmore text
+    # Readmore text
     readmore: ^2.1.0
 
-    # for asynchronous programming
+    # For asynchronous programming
     rxdart: ^0.27.3
 
-    # implement cryptography encrypt
+    # Implement cryptography encrypt
     encrypt: ^5.0.1
 
 dev_dependencies:
     flutter_test:
         sdk: flutter
 
-    # for testing
+    # For testing
     mockito: ^5.1.0
     build_runner: ^2.1.8
     bloc_test: ^9.0.3

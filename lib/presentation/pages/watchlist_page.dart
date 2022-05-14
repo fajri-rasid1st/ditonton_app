@@ -3,16 +3,16 @@ import 'package:ditonton/presentation/pages/watchlist_movies_page.dart';
 import 'package:ditonton/presentation/pages/watchlist_tv_shows_page.dart';
 import 'package:flutter/material.dart';
 
-class WatchlistScreen extends StatefulWidget {
+class WatchlistPage extends StatefulWidget {
   static const routeName = '/watchlist';
 
-  const WatchlistScreen({Key? key}) : super(key: key);
+  const WatchlistPage({Key? key}) : super(key: key);
 
   @override
-  State<WatchlistScreen> createState() => _WatchlistScreenState();
+  State<WatchlistPage> createState() => _WatchlistPageState();
 }
 
-class _WatchlistScreenState extends State<WatchlistScreen>
+class _WatchlistPageState extends State<WatchlistPage>
     with SingleTickerProviderStateMixin {
   final List<Widget> _pages = const <Widget>[
     WatchlistMoviesPage(),

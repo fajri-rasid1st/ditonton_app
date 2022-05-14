@@ -30,6 +30,7 @@ class CardItem extends StatelessWidget {
           alignment: Alignment.bottomLeft,
           children: <Widget>[
             Card(
+              color: kDavysGrey.withOpacity(0.5),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -42,12 +43,12 @@ class CardItem extends StatelessWidget {
                       titleName,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: kHeading6,
+                      style: kHeading6.copyWith(color: kMikadoYellow),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       overview,
-                      maxLines: 2,
+                      maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],

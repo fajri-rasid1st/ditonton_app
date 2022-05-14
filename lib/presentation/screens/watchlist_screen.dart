@@ -61,16 +61,14 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                     unselectedLabelColor: kDavysGrey,
                     tabs: <Tab>[
                       Tab(
-                        text: 'Movie',
-                        icon: _tabController.index == 0
-                            ? const Icon(Icons.movie)
-                            : const Icon(Icons.movie_outlined),
+                        icon: const Icon(Icons.movie_outlined),
+                        iconMargin: const EdgeInsets.only(bottom: 0),
+                        child: Text('Movie', style: kDefaultText),
                       ),
                       Tab(
-                        text: 'Tv Show',
-                        icon: _tabController.index != 0
-                            ? const Icon(Icons.smart_display)
-                            : const Icon(Icons.smart_display_outlined),
+                        icon: const Icon(Icons.smart_display_outlined),
+                        iconMargin: const EdgeInsets.only(bottom: 0),
+                        child: Text('Tv Show', style: kDefaultText),
                       ),
                     ],
                   ),

@@ -17,8 +17,6 @@ class MovieDetailPage extends StatefulWidget {
 }
 
 class _MovieDetailPageState extends State<MovieDetailPage> {
-  bool _isWatchlist = false;
-
   @override
   void initState() {
     super.initState();
@@ -33,13 +31,11 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final _isWatchlist = _getWatchlistStatus(context);
+
     return Scaffold(
       body: BlocListener<MovieWatchlistBloc, MovieWatchlistState>(
         listener: (context, state) {
-          if (state is MovieWatchlistStatusHasData) {
-            _isWatchlist = state.isWatchlist;
-          }
-
           if (state is InsertOrRemoveMovieWatchlistSuccess) {
             final SnackBar snackBar = SnackBar(
               content: Text(state.successMessage, style: kDefaultText),
@@ -79,5 +75,15 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
         ),
       ),
     );
+  }
+
+  bool _getWatchlistStatus(BuildContext context) {
+    final state = context.watch<MovieWatchlistBloc>().state;
+
+    if (state is MovieWatchlistStatusHasData) {
+      return state.isWatchlist;
+    }
+
+    return false;
   }
 }

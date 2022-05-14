@@ -17,8 +17,6 @@ class TvShowDetailPage extends StatefulWidget {
 }
 
 class _TvShowDetailPageState extends State<TvShowDetailPage> {
-  bool _isWatchlist = false;
-
   @override
   void initState() {
     super.initState();
@@ -33,13 +31,11 @@ class _TvShowDetailPageState extends State<TvShowDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final _isWatchlist = _getWatchlistStatus(context);
+
     return Scaffold(
       body: BlocListener<TvShowWatchlistBloc, TvShowWatchlistState>(
         listener: (context, state) {
-          if (state is TvShowWatchlistStatusHasData) {
-            _isWatchlist = state.isWatchlist;
-          }
-
           if (state is InsertOrRemoveTvShowWatchlistSuccess) {
             final SnackBar snackBar = SnackBar(
               content: Text(state.successMessage, style: kDefaultText),
@@ -79,5 +75,15 @@ class _TvShowDetailPageState extends State<TvShowDetailPage> {
         ),
       ),
     );
+  }
+
+  bool _getWatchlistStatus(BuildContext context) {
+    final state = context.watch<TvShowWatchlistBloc>().state;
+
+    if (state is TvShowWatchlistStatusHasData) {
+      return state.isWatchlist;
+    }
+
+    return false;
   }
 }

@@ -1,17 +1,11 @@
 part of 'tv_show_search_bloc.dart';
 
-abstract class TvShowSearchEvent extends Equatable {
+abstract class TvShowSearchEvent {
   const TvShowSearchEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 class OnTvShowQueryChanged extends TvShowSearchEvent {
   final String query;
 
   const OnTvShowQueryChanged(this.query);
-
-  @override
-  List<Object> get props => [query];
 }

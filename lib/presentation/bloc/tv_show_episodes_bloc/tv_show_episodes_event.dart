@@ -1,10 +1,7 @@
 part of 'tv_show_episodes_bloc.dart';
 
-abstract class TvShowEpisodesEvent extends Equatable {
+abstract class TvShowEpisodesEvent {
   const TvShowEpisodesEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 class FetchTvShowEpisodes extends TvShowEpisodesEvent {
@@ -12,7 +9,4 @@ class FetchTvShowEpisodes extends TvShowEpisodesEvent {
   final int seasonNumber;
 
   const FetchTvShowEpisodes(this.id, this.seasonNumber);
-
-  @override
-  List<Object> get props => [id];
 }

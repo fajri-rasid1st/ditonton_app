@@ -1,8 +1,8 @@
-import 'package:ditonton/common/utils.dart';
 import 'package:ditonton/domain/entities/movie_entities/movie.dart';
 import 'package:ditonton/domain/usecases/movie_usecases/search_movies.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'movie_search_event.dart';
 part 'movie_search_state.dart';
@@ -22,5 +22,10 @@ class MovieSearchBloc extends Bloc<MovieSearchEvent, MovieSearchState> {
         (movies) => emit(MovieSearchHasData(movies)),
       );
     }, transformer: debounce(const Duration(milliseconds: 500)));
+  }
+
+  // Function to create debouncer of search
+  EventTransformer<T> debounce<T>(Duration duration) {
+    return (events, mapper) => events.debounceTime(duration).flatMap(mapper);
   }
 }

@@ -1,3 +1,5 @@
+// coverage:ignore-file
+
 import 'package:flutter/widgets.dart';
 
 // Register the RouteObserver as a navigation observer.

@@ -80,9 +80,7 @@ class _TvShowDetailPageState extends State<TvShowDetailPage> {
   bool _getWatchlistStatus(BuildContext context) {
     final state = context.watch<TvShowWatchlistBloc>().state;
 
-    if (state is TvShowWatchlistStatusHasData) {
-      return state.isWatchlist;
-    }
+    if (state is TvShowWatchlistStatusHasData) return state.isWatchlist;
 
     return false;
   }

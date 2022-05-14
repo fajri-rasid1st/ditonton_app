@@ -1,10 +1,13 @@
+// coverage:ignore-file
+
 import 'dart:async';
-import 'package:sqflite/sqflite.dart';
+import 'package:ditonton/common/encrypt.dart';
 import 'package:path/path.dart';
 import 'package:ditonton/data/models/movie_models/movie_table.dart';
 import 'package:ditonton/data/models/movie_models/movie_watchlist.dart';
 import 'package:ditonton/data/models/tv_show_models/tv_show_table.dart';
 import 'package:ditonton/data/models/tv_show_models/tv_show_watchlist.dart';
+import 'package:sqflite_sqlcipher/sqflite.dart';
 
 class DatabaseHelper {
   static DatabaseHelper? _databaseHelper;
@@ -28,7 +31,12 @@ class DatabaseHelper {
     final databasesPath = await getDatabasesPath();
     final path = join(databasesPath, file);
 
-    return await openDatabase(path, version: 1, onCreate: _onCreate);
+    return await openDatabase(
+      path,
+      version: 1,
+      onCreate: _onCreate,
+      password: encrypt('db_password'),
+    );
   }
 
   /// Create database table.

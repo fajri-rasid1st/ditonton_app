@@ -58,8 +58,8 @@ dependencies:
     # a simple direct service locator
     get_it: ^7.2.0
 
-    # to create local database
-    sqflite: ^2.0.2+1
+    # to create local database with embended password
+    sqflite_sqlcipher: ^2.1.0
 
     # for finding commonly used locations on the filesystem
     path_provider: ^2.0.9
@@ -73,8 +73,8 @@ dependencies:
     # for asynchronous programming
     rxdart: ^0.27.3
 
-    # for SVG rendering and widget picture
-    flutter_svg: ^1.0.3
+    # implement cryptography encrypt
+    encrypt: ^5.0.1
 
 dev_dependencies:
     flutter_test:
@@ -105,6 +105,7 @@ flutter:
     # To add assets to your application, add an assets section, like this:
     assets:
         - assets/
+        - certificates/
 
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware.

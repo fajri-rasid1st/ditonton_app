@@ -80,9 +80,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   bool _getWatchlistStatus(BuildContext context) {
     final state = context.watch<MovieWatchlistBloc>().state;
 
-    if (state is MovieWatchlistStatusHasData) {
-      return state.isWatchlist;
-    }
+    if (state is MovieWatchlistStatusHasData) return state.isWatchlist;
 
     return false;
   }

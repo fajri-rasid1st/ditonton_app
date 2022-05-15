@@ -1,5 +1,3 @@
-// coverage:ignore-file
-
 // Function to encrypt text
 import 'package:encrypt/encrypt.dart';
 

@@ -18,11 +18,16 @@ dependencies:
     database:
         path: ../database
     
+    firebase_core: ^1.17.0
+    firebase_crashlytics: ^2.8.0
     equatable: ^2.0.3
     http: ^0.13.4
     flutter_bloc: ^8.0.1
     dartz: ^0.10.1
     rxdart: ^0.27.3
+    readmore: ^2.1.0
+    flutter_rating_bar: ^4.0.0
+    intl: ^0.17.0
 
 dev_dependencies:
     flutter_test:

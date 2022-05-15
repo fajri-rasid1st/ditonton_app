@@ -1,3 +1,5 @@
+// coverage:ignore-file
+
 import 'package:core/presentation/widgets/list_card_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

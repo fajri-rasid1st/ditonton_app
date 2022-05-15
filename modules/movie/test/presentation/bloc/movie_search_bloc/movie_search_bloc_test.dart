@@ -58,4 +58,21 @@ void main() {
     ],
     verify: (_) => verify(mockSearchMovies.execute(tQuery)),
   );
+
+  blocTest<MovieSearchBloc, MovieSearchState>(
+    'Should emit [Loading, Error] when get search is unsuccessful (query is empty)',
+    build: () {
+      when(mockSearchMovies.execute(''))
+          .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
+
+      return searchBloc;
+    },
+    act: (bloc) => bloc.add(const OnMovieQueryChanged('')),
+    wait: const Duration(milliseconds: 500),
+    expect: () => [
+      MovieSearchLoading(),
+      const MovieSearchError('Search results will appear here.'),
+    ],
+    verify: (_) => verify(mockSearchMovies.execute('')),
+  );
 }

@@ -36,6 +36,5 @@ dev_dependencies:
     mockito: ^5.1.0
     build_runner: ^2.1.8
     bloc_test: ^9.0.3
-    test_cov_console: ^0.2.2
 
 flutter:

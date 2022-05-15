@@ -58,4 +58,21 @@ void main() {
     ],
     verify: (bloc) => verify(mockSearchTvShows.execute(tQuery)),
   );
+
+  blocTest<TvShowSearchBloc, TvShowSearchState>(
+    'Should emit [Loading, Error] when get search is unsuccessful (query is empty)',
+    build: () {
+      when(mockSearchTvShows.execute(''))
+          .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
+
+      return searchBloc;
+    },
+    act: (bloc) => bloc.add(const OnTvShowQueryChanged('')),
+    wait: const Duration(milliseconds: 500),
+    expect: () => [
+      TvShowSearchLoading(),
+      const TvShowSearchError('Search results will appear here.'),
+    ],
+    verify: (bloc) => verify(mockSearchTvShows.execute('')),
+  );
 }

@@ -1,15 +1,14 @@
 import 'package:about/about.dart';
 import 'package:core/core.dart';
+import 'package:ditonton/firebase_options.dart';
+import 'package:ditonton/injection.dart' as di;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ditonton/injection.dart' as di;
 import 'package:movie/movie.dart';
 import 'package:tv_show/tvshow.dart';
-
-import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

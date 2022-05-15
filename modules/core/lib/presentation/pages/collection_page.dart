@@ -1,24 +1,11 @@
 import 'package:core/utils/routes.dart';
 import 'package:flutter/material.dart';
 
-class CollectionPage extends StatefulWidget {
+class CollectionPage extends StatelessWidget {
   const CollectionPage({Key? key}) : super(key: key);
 
   @override
-  _CollectionPageState createState() => _CollectionPageState();
-}
-
-class _CollectionPageState extends State<CollectionPage>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    super.build(context);
-
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,7 +24,4 @@ class _CollectionPageState extends State<CollectionPage>
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

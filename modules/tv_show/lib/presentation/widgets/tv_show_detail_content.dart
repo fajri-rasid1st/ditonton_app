@@ -1,8 +1,8 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:tv_show/tvshow.dart';
 

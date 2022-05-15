@@ -1,6 +1,6 @@
-// Function to encrypt text
 import 'package:encrypt/encrypt.dart';
 
+// Function to encrypt text
 String encrypt(String plainText) {
   final key = Key.fromLength(32);
   final iv = IV.fromLength(8);

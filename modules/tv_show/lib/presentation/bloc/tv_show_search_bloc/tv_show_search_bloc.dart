@@ -17,7 +17,13 @@ class TvShowSearchBloc extends Bloc<TvShowSearchEvent, TvShowSearchState> {
       final result = await searchTvShows.execute(query);
 
       result.fold(
-        (failure) => emit(TvShowSearchError(failure.message)),
+        (failure) {
+          if (query.isEmpty) {
+            emit(const TvShowSearchError('Search results will appear here.'));
+          } else {
+            emit(TvShowSearchError(failure.message));
+          }
+        },
         (tvShows) => emit(TvShowSearchHasData(tvShows)),
       );
     }, transformer: debounce(const Duration(milliseconds: 500)));

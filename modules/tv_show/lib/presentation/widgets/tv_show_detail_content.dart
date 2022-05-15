@@ -221,6 +221,7 @@ class TvShowDetailContent extends StatelessWidget {
                               tvShows: recommendations,
                               height: 160,
                               separatorWidth: 12,
+                              replaceRouteWhenItemTapped: true,
                             ),
                           ]
                         ],

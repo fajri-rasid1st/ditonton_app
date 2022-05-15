@@ -147,6 +147,7 @@ class MovieDetailContent extends StatelessWidget {
                               movies: recommendations,
                               height: 160,
                               separatorWidth: 12,
+                              replaceRouteWhenItemTapped: true,
                             ),
                           ]
                         ],

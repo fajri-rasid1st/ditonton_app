@@ -8,6 +8,7 @@ class ItemList extends StatelessWidget {
   final List<TvShow>? tvShows;
   final double height;
   final double separatorWidth;
+  final bool replaceRouteWhenItemTapped;
 
   const ItemList({
     Key? key,
@@ -15,6 +16,7 @@ class ItemList extends StatelessWidget {
     this.tvShows,
     required this.height,
     required this.separatorWidth,
+    this.replaceRouteWhenItemTapped = false,
   }) : super(key: key);
 
   @override
@@ -34,7 +36,21 @@ class ItemList extends StatelessWidget {
               movies?[index].posterPath ?? tvShows![index].posterPath;
 
           return InkWell(
-            onTap: () => Navigator.pushNamed(context, routeName, arguments: id),
+            onTap: () {
+              if (replaceRouteWhenItemTapped) {
+                Navigator.pushReplacementNamed(
+                  context,
+                  routeName,
+                  arguments: id,
+                );
+              } else {
+                Navigator.pushNamed(
+                  context,
+                  routeName,
+                  arguments: id,
+                );
+              }
+            },
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: CustomNetworkImage(

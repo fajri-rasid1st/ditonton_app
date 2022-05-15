@@ -1,0 +1,22 @@
+library core;
+
+export 'styles/colors.dart';
+export 'styles/text_styles.dart';
+export 'utils/constants.dart';
+export 'utils/exception.dart';
+export 'utils/failure.dart';
+export 'utils/observer.dart';
+export 'utils/routes.dart';
+export 'utils/http_ssl_pinning.dart';
+export 'presentation/cubit/bottom_nav_cubit.dart';
+export 'presentation/pages/collection_page.dart';
+export 'presentation/screens/home_screen.dart';
+export 'presentation/screens/watchlist_screen.dart';
+export 'presentation/widgets/card_item.dart';
+export 'presentation/widgets/custom_network_image.dart';
+export 'presentation/widgets/item_list.dart';
+export 'presentation/widgets/list_card_item.dart';
+export 'presentation/widgets/sliver_list_card_item.dart';
+export 'presentation/widgets/subheading.dart';
+export 'data/models/genre_model.dart';
+export 'domain/entities/genre.dart';

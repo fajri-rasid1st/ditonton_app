@@ -1,0 +1,80 @@
+{
+	"_id": "52fe6328c3a36818f40097c2",
+	"air_date": "2013-09-12",
+	"episodes": [
+		{
+			"air_date": "2013-09-12",
+			"episode_number": 1,
+			"crew": [
+				{
+					"job": "Writer",
+					"department": "Writing",
+					"credit_id": "55eb2465c3a3682c7000acf8",
+					"adult": false,
+					"gender": 2,
+					"id": 23227,
+					"known_for_department": "Writing",
+					"name": "Steven Knight",
+					"original_name": "Steven Knight",
+					"popularity": 11.218,
+					"profile_path": "/vmM9j2yXI8A3AccX3YgOEZHQWcO.jpg"
+				},
+				{
+					"job": "Director",
+					"department": "Directing",
+					"credit_id": "55eb245892514106d6003f63",
+					"adult": false,
+					"gender": 2,
+					"id": 128276,
+					"known_for_department": "Directing",
+					"name": "Otto Bathurst",
+					"original_name": "Otto Bathurst",
+					"popularity": 3.537,
+					"profile_path": "/vojDKrTe52mnPrYSKUTOLWotEIN.jpg"
+				}
+			],
+			"guest_stars": [
+				{
+					"character": "Danny Whizz-Bang",
+					"credit_id": "5c0db64092514147980aa5b2",
+					"order": 6,
+					"adult": false,
+					"gender": 0,
+					"id": 1459247,
+					"known_for_department": "Acting",
+					"name": "Samuel Edward-Cook",
+					"original_name": "Samuel Edward-Cook",
+					"popularity": 1.4,
+					"profile_path": null
+				},
+				{
+					"character": "Harry Fenton",
+					"credit_id": "5d39493d172d7f0012d80303",
+					"order": 26,
+					"adult": false,
+					"gender": 2,
+					"id": 178629,
+					"known_for_department": "Acting",
+					"name": "Neil Bell",
+					"original_name": "Neil Bell",
+					"popularity": 5.424,
+					"profile_path": "/pidZ4zM5KyGv35ErckTKYqReJDZ.jpg"
+				}
+			],
+			"id": 972056,
+			"name": "Episode 1",
+			"overview": "Birmingham, 1919. Thomas Shelby controls the Peaky Blinders, one of the city's most feared criminal organisations, but his ambitions go beyond running the streets. When a crate of guns goes missing, Thomas recognises an opportunity to move up in the world.",
+			"production_code": "",
+			"runtime": 57,
+			"season_number": 1,
+			"still_path": "/tplu6cXP312IN5rrT5K81zFZpMd.jpg",
+			"vote_average": 8.4,
+			"vote_count": 109
+		}
+	],
+	"name": "Series 1",
+	"overview": "",
+	"id": 59914,
+	"poster_path": "/yMvESLkgmtdAseh6LN97Ex92vvI.jpg",
+	"season_number": 1
+}

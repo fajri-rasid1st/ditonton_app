@@ -52,17 +52,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   AppBar _buildAppBar(BottomNavState state, BuildContext context) {
+    final routeName = state.index == 0
+        ? SearchMoviesPage.routeName
+        : SearchTvShowsPage.routeName;
+
     return AppBar(
       title: Text(state.title),
       actions: <Widget>[
         if (state.index != 2) ...[
           IconButton(
-            onPressed: () => Navigator.pushNamed(
-              context,
-              state.index == 0
-                  ? SearchMoviesPage.routeName
-                  : SearchTvShowsPage.routeName,
-            ),
+            onPressed: () => Navigator.pushNamed(context, routeName),
             icon: const Icon(Icons.search_rounded),
           )
         ],

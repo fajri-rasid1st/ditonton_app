@@ -25,18 +25,12 @@ class _CollectionPageState extends State<CollectionPage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           ListTile(
-            onTap: () => Navigator.pushNamed(
-              context,
-              WatchlistPage.routeName,
-            ),
+            onTap: () => Navigator.pushNamed(context, WatchlistPage.routeName),
             leading: const Icon(Icons.save_alt_rounded),
             title: const Text('Watchlist'),
           ),
           ListTile(
-            onTap: () => Navigator.pushNamed(
-              context,
-              AboutPage.routeName,
-            ),
+            onTap: () => Navigator.pushNamed(context, AboutPage.routeName),
             leading: const Icon(Icons.info_outline_rounded),
             title: const Text('About'),
           ),

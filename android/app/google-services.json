@@ -29,6 +29,13 @@
             {
               "client_id": "916457681326-kd4nq5uvgrh1psdcs77tkjmohhp2c0kk.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "916457681326-6kab6hk62li286k8hksauhppi19198lb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ditonton"
+              }
             }
           ]
         }

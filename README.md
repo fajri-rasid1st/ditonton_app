@@ -1,5 +1,7 @@
 # ditonton
 
+[![Codemagic build status](https://api.codemagic.io/apps/62811f6d2d98fd3ddc3da433/62811f6d2d98fd3ddc3da432/status_badge.svg)](https://codemagic.io/apps/62811f6d2d98fd3ddc3da433/62811f6d2d98fd3ddc3da432/latest_build)
+
 A new Flutter project.
 
 ## Getting Started

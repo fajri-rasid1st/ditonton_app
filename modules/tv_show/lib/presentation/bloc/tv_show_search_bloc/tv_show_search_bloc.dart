@@ -18,8 +18,8 @@ class TvShowSearchBloc extends Bloc<TvShowSearchEvent, TvShowSearchState> {
 
       result.fold(
         (failure) {
-          if (query.isEmpty) {
-            emit(const TvShowSearchError('Search results will appear here.'));
+          if (query.trim().isEmpty) {
+            emit(const TvShowSearchError(''));
           } else {
             emit(TvShowSearchError(failure.message));
           }

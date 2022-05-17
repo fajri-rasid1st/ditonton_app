@@ -22,6 +22,8 @@ class MovieRepositoryImpl implements MovieRepository {
       return const Left(ServerFailure('Failed to connect to the server'));
     } on SocketException {
       return const Left(ConnectionFailure('Failed to connect to the network'));
+    } on TlsException {
+      return const Left(SslFailure('Failed to verify certificate'));
     }
   }
 
@@ -35,6 +37,8 @@ class MovieRepositoryImpl implements MovieRepository {
       return const Left(ServerFailure('Failed to connect to the server'));
     } on SocketException {
       return const Left(ConnectionFailure('Failed to connect to the network'));
+    } on TlsException {
+      return const Left(SslFailure('Failed to verify certificate'));
     }
   }
 
@@ -48,6 +52,8 @@ class MovieRepositoryImpl implements MovieRepository {
       return const Left(ServerFailure('Failed to connect to the server'));
     } on SocketException {
       return const Left(ConnectionFailure('Failed to connect to the network'));
+    } on TlsException {
+      return const Left(SslFailure('Failed to verify certificate'));
     }
   }
 
@@ -61,6 +67,8 @@ class MovieRepositoryImpl implements MovieRepository {
       return const Left(ServerFailure('Failed to connect to the server'));
     } on SocketException {
       return const Left(ConnectionFailure('Failed to connect to the network'));
+    } on TlsException {
+      return const Left(SslFailure('Failed to verify certificate'));
     }
   }
 
@@ -74,6 +82,8 @@ class MovieRepositoryImpl implements MovieRepository {
       return const Left(ServerFailure('Failed to connect to the server'));
     } on SocketException {
       return const Left(ConnectionFailure('Failed to connect to the network'));
+    } on TlsException {
+      return const Left(SslFailure('Failed to verify certificate'));
     }
   }
 
@@ -87,6 +97,8 @@ class MovieRepositoryImpl implements MovieRepository {
       return const Left(ServerFailure('Failed to connect to the server'));
     } on SocketException {
       return const Left(ConnectionFailure('Failed to connect to the network'));
+    } on TlsException {
+      return const Left(SslFailure('Failed to verify certificate'));
     }
   }
 

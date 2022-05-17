@@ -71,7 +71,7 @@ void main() {
     wait: const Duration(milliseconds: 500),
     expect: () => [
       TvShowSearchLoading(),
-      const TvShowSearchError('Search results will appear here.'),
+      const TvShowSearchError(''),
     ],
     verify: (bloc) => verify(mockSearchTvShows.execute('')),
   );

@@ -18,8 +18,8 @@ class MovieSearchBloc extends Bloc<MovieSearchEvent, MovieSearchState> {
 
       result.fold(
         (failure) {
-          if (query.isEmpty) {
-            emit(const MovieSearchError('Search results will appear here.'));
+          if (query.trim().isEmpty) {
+            emit(const MovieSearchError(''));
           } else {
             emit(MovieSearchError(failure.message));
           }

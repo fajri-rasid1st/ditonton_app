@@ -47,6 +47,14 @@ class _WatchlistTvShowsPageState extends State<WatchlistTvShowsPage>
     return BlocBuilder<WatchlistTvShowsBloc, WatchlistTvShowsState>(
       builder: ((context, state) {
         if (state is WatchlistTvShowsHasData) {
+          if (state.tvShows.isEmpty) {
+            return const CustomInformation(
+              asset: 'assets/videotape-pana.svg',
+              title: 'Watchlist is Still Empty',
+              subtitle: 'Your tv show watchlist will appear here.',
+            );
+          }
+
           return SliverListCardItem(tvShows: state.tvShows);
         } else if (state is WatchlistTvShowsError) {
           return Center(

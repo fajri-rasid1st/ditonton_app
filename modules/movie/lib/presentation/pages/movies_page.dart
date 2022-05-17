@@ -1,4 +1,5 @@
 // coverage:ignore-file
+
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,6 +29,64 @@ class _MoviesPageState extends State<MoviesPage>
   Widget build(BuildContext context) {
     super.build(context);
 
+    final nowPlayingError =
+        context.watch<NowPlayingMoviesBloc>().state is NowPlayingMoviesError;
+    final popularError =
+        context.watch<PopularMoviesBloc>().state is PopularMoviesError;
+    final topRatedError =
+        context.watch<TopRatedMoviesBloc>().state is TopRatedMoviesError;
+
+    if (nowPlayingError || popularError || topRatedError) {
+      return _buildErrorPage(context);
+    }
+
+    return _buildMainPage(context);
+  }
+
+  CustomInformation _buildErrorPage(BuildContext context) {
+    return CustomInformation(
+      key: const Key('error_message'),
+      asset: 'assets/404-error-lost-in-space-pana.svg',
+      title: 'Ops, Looks Like You\'re Offline',
+      subtitle: 'Please check your internet connection.',
+      child: BlocBuilder<PageReloadCubit, PageReloadState>(
+        builder: ((context, state) {
+          if (state.isPageReload) {
+            return ElevatedButton.icon(
+              onPressed: null,
+              icon: const SizedBox(
+                width: 16,
+                height: 16,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: kDavysGrey,
+                ),
+              ),
+              label: Text('Please Wait...', style: kDefaultText),
+            );
+          }
+
+          return ElevatedButton.icon(
+            onPressed: () async {
+              context.read<PageReloadCubit>().reload();
+
+              await Future.delayed(const Duration(seconds: 1));
+
+              context.read<NowPlayingMoviesBloc>().add(FetchNowPlayingMovies());
+              context.read<PopularMoviesBloc>().add(FetchPopularMovies());
+              context.read<TopRatedMoviesBloc>().add(FetchTopRatedMovies());
+
+              context.read<PageReloadCubit>().finish();
+            },
+            icon: const Icon(Icons.refresh),
+            label: Text('Fetch Again', style: kDefaultText),
+          );
+        }),
+      ),
+    );
+  }
+
+  SingleChildScrollView _buildMainPage(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.only(bottom: 16),
       child: Column(
@@ -45,14 +104,14 @@ class _MoviesPageState extends State<MoviesPage>
                   height: 180,
                   separatorWidth: 12,
                 );
-              } else if (state is NowPlayingMoviesError) {
-                return Center(
-                  key: const Key('error_message'),
-                  child: Text(state.message),
-                );
               }
 
-              return const Center(child: CircularProgressIndicator());
+              return const SizedBox(
+                height: 180,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
             }),
           ),
           SubHeading(
@@ -67,14 +126,14 @@ class _MoviesPageState extends State<MoviesPage>
                   height: 180,
                   separatorWidth: 12,
                 );
-              } else if (state is PopularMoviesError) {
-                return Center(
-                  key: const Key('error_message'),
-                  child: Text(state.message),
-                );
               }
 
-              return const Center(child: CircularProgressIndicator());
+              return const SizedBox(
+                height: 180,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
             }),
           ),
           SubHeading(
@@ -89,14 +148,14 @@ class _MoviesPageState extends State<MoviesPage>
                   height: 180,
                   separatorWidth: 12,
                 );
-              } else if (state is TopRatedMoviesError) {
-                return Center(
-                  key: const Key('error_message'),
-                  child: Text(state.message),
-                );
               }
 
-              return const Center(child: CircularProgressIndicator());
+              return const SizedBox(
+                height: 180,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
             }),
           ),
         ],

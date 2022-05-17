@@ -93,6 +93,7 @@ class MyApp extends StatelessWidget {
           create: (_) => di.locator<WatchlistTvShowsBloc>(),
         ),
         BlocProvider(create: (_) => BottomNavCubit()),
+        BlocProvider(create: (_) => PageReloadCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -123,7 +124,7 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(
                 builder: (_) => const PopularTvShowsPage(),
               );
-            case topRatedTvShowsroute:
+            case topRatedTvShowsRoute:
               return MaterialPageRoute(
                 builder: (_) => const TopRatedTvShowsPage(),
               );

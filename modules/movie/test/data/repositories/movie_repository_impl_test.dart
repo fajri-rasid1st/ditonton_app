@@ -53,8 +53,6 @@ void main() {
         final result = await repository.getNowPlayingMovies();
 
         // assert
-        verify(mockRemoteDataSource.getNowPlayingMovies());
-
         /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
         final resultList = result.getOrElse(() => []);
 
@@ -73,8 +71,6 @@ void main() {
         final result = await repository.getNowPlayingMovies();
 
         // assert
-        verify(mockRemoteDataSource.getNowPlayingMovies());
-
         expect(
           result,
           equals(const Left(ServerFailure('Failed to connect to the server'))),
@@ -93,12 +89,30 @@ void main() {
         final result = await repository.getNowPlayingMovies();
 
         // assert
-        verify(mockRemoteDataSource.getNowPlayingMovies());
-
         expect(
           result,
           equals(
             const Left(ConnectionFailure('Failed to connect to the network')),
+          ),
+        );
+      },
+    );
+
+    test(
+      'Should return ssl failure when ssl certificate verification failed',
+      () async {
+        // arrange
+        when(mockRemoteDataSource.getNowPlayingMovies())
+            .thenThrow(const TlsException('Failed to verify certificate'));
+
+        // act
+        final result = await repository.getNowPlayingMovies();
+
+        // assert
+        expect(
+          result,
+          equals(
+            const Left(SslFailure('Failed to verify certificate')),
           ),
         );
       },
@@ -159,6 +173,26 @@ void main() {
         );
       },
     );
+
+    test(
+      'Should return ssl failure when ssl certificate verification failed',
+      () async {
+        // arrange
+        when(mockRemoteDataSource.getPopularMovies())
+            .thenThrow(const TlsException('Failed to verify certificate'));
+
+        // act
+        final result = await repository.getPopularMovies();
+
+        // assert
+        expect(
+          result,
+          equals(
+            const Left(SslFailure('Failed to verify certificate')),
+          ),
+        );
+      },
+    );
   });
 
   group('Top rated movies', () {
@@ -215,6 +249,26 @@ void main() {
         );
       },
     );
+
+    test(
+      'Should return ssl failure when ssl certificate verification failed',
+      () async {
+        // arrange
+        when(mockRemoteDataSource.getTopRatedMovies())
+            .thenThrow(const TlsException('Failed to verify certificate'));
+
+        // act
+        final result = await repository.getTopRatedMovies();
+
+        // assert
+        expect(
+          result,
+          equals(
+            const Left(SslFailure('Failed to verify certificate')),
+          ),
+        );
+      },
+    );
   });
 
   group('Get movie detail', () {
@@ -242,8 +296,6 @@ void main() {
         final result = await repository.getMovieDetail(tId);
 
         // assert
-        verify(mockRemoteDataSource.getMovieDetail(tId));
-
         expect(result, equals(const Right(testMovieDetail)));
       },
     );
@@ -259,8 +311,6 @@ void main() {
         final result = await repository.getMovieDetail(tId);
 
         // assert
-        verify(mockRemoteDataSource.getMovieDetail(tId));
-
         expect(
           result,
           equals(const Left(ServerFailure('Failed to connect to the server'))),
@@ -279,12 +329,30 @@ void main() {
         final result = await repository.getMovieDetail(tId);
 
         // assert
-        verify(mockRemoteDataSource.getMovieDetail(tId));
-
         expect(
           result,
           equals(
             const Left(ConnectionFailure('Failed to connect to the network')),
+          ),
+        );
+      },
+    );
+
+    test(
+      'Should return ssl failure when ssl certificate verification failed',
+      () async {
+        // arrange
+        when(mockRemoteDataSource.getMovieDetail(tId))
+            .thenThrow(const TlsException('Failed to verify certificate'));
+
+        // act
+        final result = await repository.getMovieDetail(tId);
+
+        // assert
+        expect(
+          result,
+          equals(
+            const Left(SslFailure('Failed to verify certificate')),
           ),
         );
       },
@@ -307,8 +375,6 @@ void main() {
         final result = await repository.getMovieRecommendations(tId);
 
         // assert
-        verify(mockRemoteDataSource.getMovieRecommendations(tId));
-
         /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
         final resultList = result.getOrElse(() => []);
 
@@ -327,8 +393,6 @@ void main() {
         final result = await repository.getMovieRecommendations(tId);
 
         // assert
-        verify(mockRemoteDataSource.getMovieRecommendations(tId));
-
         expect(
           result,
           equals(const Left(ServerFailure('Failed to connect to the server'))),
@@ -347,11 +411,30 @@ void main() {
         final result = await repository.getMovieRecommendations(tId);
 
         // assert
-        verify(mockRemoteDataSource.getMovieRecommendations(tId));
         expect(
           result,
           equals(
             const Left(ConnectionFailure('Failed to connect to the network')),
+          ),
+        );
+      },
+    );
+
+    test(
+      'Should return ssl failure when ssl certificate verification failed',
+      () async {
+        // arrange
+        when(mockRemoteDataSource.getMovieRecommendations(tId))
+            .thenThrow(const TlsException('Failed to verify certificate'));
+
+        // act
+        final result = await repository.getMovieRecommendations(tId);
+
+        // assert
+        expect(
+          result,
+          equals(
+            const Left(SslFailure('Failed to verify certificate')),
           ),
         );
       },
@@ -411,6 +494,26 @@ void main() {
         expect(
           result,
           const Left(ConnectionFailure('Failed to connect to the network')),
+        );
+      },
+    );
+
+    test(
+      'Should return ssl failure when ssl certificate verification failed',
+      () async {
+        // arrange
+        when(mockRemoteDataSource.searchMovies(tQuery))
+            .thenThrow(const TlsException('Failed to verify certificate'));
+
+        // act
+        final result = await repository.searchMovies(tQuery);
+
+        // assert
+        expect(
+          result,
+          equals(
+            const Left(SslFailure('Failed to verify certificate')),
+          ),
         );
       },
     );

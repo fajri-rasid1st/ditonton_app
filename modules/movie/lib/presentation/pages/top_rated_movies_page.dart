@@ -1,6 +1,6 @@
 // coverage:ignore-file
 
-import 'package:core/presentation/widgets/list_card_item.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie/presentation/bloc/top_rated_movies_bloc/top_rated_movies_bloc.dart';
@@ -31,9 +31,11 @@ class _TopRatedMoviesPageState extends State<TopRatedMoviesPage> {
           if (state is TopRatedMoviesHasData) {
             return ListCardItem(movies: state.movies);
           } else if (state is TopRatedMoviesError) {
-            return Center(
-              key: const Key('error_message'),
-              child: Text(state.message),
+            return const CustomInformation(
+              key: Key('error_message'),
+              asset: 'assets/404-error-lost-in-space-pana.svg',
+              title: 'Ops, Looks Like You\'re Offline',
+              subtitle: 'Please check your internet connection.',
             );
           }
 

@@ -16,7 +16,7 @@ class SearchTvShowsPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
             child: TextField(
               onChanged: (query) => context
                   .read<TvShowSearchBloc>()
@@ -29,35 +29,48 @@ class SearchTvShowsPage extends StatelessWidget {
               textInputAction: TextInputAction.search,
             ),
           ),
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              'Search result',
-              style: kHeading6,
-            ),
-          ),
-          const SizedBox(height: 8),
           BlocBuilder<TvShowSearchBloc, TvShowSearchState>(
             builder: (context, state) {
               if (state is TvShowSearchLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
+                return const Expanded(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 );
               } else if (state is TvShowSearchHasData) {
                 return Expanded(
-                  child: ListCardItem(tvShows: state.tvShows),
+                  child: state.tvShows.isEmpty
+                      ? const CustomInformation(
+                          asset: 'assets/eating-disorder-pana.svg',
+                          title: 'Tv Shows Not Found',
+                          subtitle: 'Try entering another keywords.',
+                        )
+                      : ListCardItem(tvShows: state.tvShows),
                 );
               } else if (state is TvShowSearchError) {
                 return Expanded(
-                  child: Center(
-                    key: const Key('error_message'),
-                    child: Text(state.message),
-                  ),
+                  key: const Key('error_message'),
+                  child: state.message.isEmpty
+                      ? const CustomInformation(
+                          asset: 'assets/3d-glasses-pana.svg',
+                          title: 'What Tv Show Are You Looking For?',
+                          subtitle: 'Search results will appear here.',
+                        )
+                      : const CustomInformation(
+                          asset: 'assets/404-error-lost-in-space-pana.svg',
+                          title: 'Ops, Looks Like You\'re Offline',
+                          subtitle: 'Please check your internet connection.',
+                        ),
                 );
               }
 
-              return Expanded(child: Container());
+              return const Expanded(
+                child: CustomInformation(
+                  asset: 'assets/3d-glasses-pana.svg',
+                  title: 'What Tv Show Are You Looking For?',
+                  subtitle: 'Search results will appear here.',
+                ),
+              );
             },
           ),
         ],

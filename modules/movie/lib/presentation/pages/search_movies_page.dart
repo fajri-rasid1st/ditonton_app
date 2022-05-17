@@ -16,7 +16,7 @@ class SearchMoviesPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
             child: TextField(
               onChanged: (query) => context
                   .read<MovieSearchBloc>()
@@ -29,35 +29,48 @@ class SearchMoviesPage extends StatelessWidget {
               textInputAction: TextInputAction.search,
             ),
           ),
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              'Search result',
-              style: kHeading6,
-            ),
-          ),
-          const SizedBox(height: 8),
           BlocBuilder<MovieSearchBloc, MovieSearchState>(
             builder: (context, state) {
               if (state is MovieSearchLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
+                return const Expanded(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 );
               } else if (state is MovieSearchHasData) {
                 return Expanded(
-                  child: ListCardItem(movies: state.movies),
+                  child: state.movies.isEmpty
+                      ? const CustomInformation(
+                          asset: 'assets/eating-disorder-pana.svg',
+                          title: 'Movies Not Found',
+                          subtitle: 'Try entering another keywords.',
+                        )
+                      : ListCardItem(movies: state.movies),
                 );
               } else if (state is MovieSearchError) {
                 return Expanded(
-                  child: Center(
-                    key: const Key('error_message'),
-                    child: Text(state.message),
-                  ),
+                  key: const Key('error_message'),
+                  child: state.message.isEmpty
+                      ? const CustomInformation(
+                          asset: 'assets/3d-glasses-pana.svg',
+                          title: 'What Movie Are You Looking For?',
+                          subtitle: 'Search results will appear here.',
+                        )
+                      : const CustomInformation(
+                          asset: 'assets/404-error-lost-in-space-pana.svg',
+                          title: 'Ops, Looks Like You\'re Offline',
+                          subtitle: 'Please check your internet connection.',
+                        ),
                 );
               }
 
-              return Expanded(child: Container());
+              return const Expanded(
+                child: CustomInformation(
+                  asset: 'assets/3d-glasses-pana.svg',
+                  title: 'What Movie Are You Looking For?',
+                  subtitle: 'Search results will appear here.',
+                ),
+              );
             },
           ),
         ],

@@ -24,3 +24,8 @@ class ConnectionFailure extends Failure {
 class DatabaseFailure extends Failure {
   const DatabaseFailure(String message) : super(message);
 }
+
+/// A class that will be returned when a **SSL Failure** occurs.
+class SslFailure extends Failure {
+  const SslFailure(String message) : super(message);
+}

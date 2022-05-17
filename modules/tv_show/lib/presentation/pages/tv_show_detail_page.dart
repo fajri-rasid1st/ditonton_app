@@ -62,9 +62,16 @@ class _TvShowDetailPageState extends State<TvShowDetailPage> {
                 isWatchlist: _isWatchlist,
               );
             } else if (state is TvShowDetailError) {
-              return Center(
+              return CustomInformation(
                 key: const Key('error_message'),
-                child: Text(state.message),
+                asset: 'assets/404-error-lost-in-space-pana.svg',
+                title: 'Ops, Looks Like You\'re Offline',
+                subtitle: 'Please check your internet connection.',
+                child: ElevatedButton.icon(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(Icons.arrow_back_rounded),
+                  label: Text('Go Back', style: kSubtitle),
+                ),
               );
             }
 

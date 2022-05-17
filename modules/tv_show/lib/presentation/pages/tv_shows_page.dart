@@ -29,6 +29,64 @@ class _TvShowsPageState extends State<TvShowsPage>
   Widget build(BuildContext context) {
     super.build(context);
 
+    final onTheAirError =
+        context.watch<OnTheAirTvShowsBloc>().state is OnTheAirTvShowsError;
+    final popularError =
+        context.watch<PopularTvShowsBloc>().state is PopularTvShowsError;
+    final topRatedError =
+        context.watch<TopRatedTvShowsBloc>().state is TopRatedTvShowsError;
+
+    if (onTheAirError || popularError || topRatedError) {
+      return _buildErrorPage(context);
+    }
+
+    return _buildMainPage(context);
+  }
+
+  CustomInformation _buildErrorPage(BuildContext context) {
+    return CustomInformation(
+      key: const Key('error_message'),
+      asset: 'assets/404-error-lost-in-space-pana.svg',
+      title: 'Ops, Looks Like You\'re Offline',
+      subtitle: 'Please check your internet connection.',
+      child: BlocBuilder<PageReloadCubit, PageReloadState>(
+        builder: ((context, state) {
+          if (state.isPageReload) {
+            return ElevatedButton.icon(
+              onPressed: null,
+              icon: const SizedBox(
+                width: 16,
+                height: 16,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: kDavysGrey,
+                ),
+              ),
+              label: Text('Please Wait...', style: kDefaultText),
+            );
+          }
+
+          return ElevatedButton.icon(
+            onPressed: () async {
+              context.read<PageReloadCubit>().reload();
+
+              await Future.delayed(const Duration(seconds: 1));
+
+              context.read<OnTheAirTvShowsBloc>().add(FetchOnTheAirTvShows());
+              context.read<PopularTvShowsBloc>().add(FetchPopularTvShows());
+              context.read<TopRatedTvShowsBloc>().add(FetchTopRatedTvShows());
+
+              context.read<PageReloadCubit>().finish();
+            },
+            icon: const Icon(Icons.refresh),
+            label: Text('Fetch Again', style: kDefaultText),
+          );
+        }),
+      ),
+    );
+  }
+
+  SingleChildScrollView _buildMainPage(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.only(bottom: 16),
       child: Column(
@@ -46,14 +104,14 @@ class _TvShowsPageState extends State<TvShowsPage>
                   height: 180,
                   separatorWidth: 12,
                 );
-              } else if (state is OnTheAirTvShowsError) {
-                return Center(
-                  key: const Key('error_message'),
-                  child: Text(state.message),
-                );
               }
 
-              return const Center(child: CircularProgressIndicator());
+              return const SizedBox(
+                height: 180,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
             }),
           ),
           SubHeading(
@@ -68,19 +126,19 @@ class _TvShowsPageState extends State<TvShowsPage>
                   height: 180,
                   separatorWidth: 12,
                 );
-              } else if (state is PopularTvShowsError) {
-                return Center(
-                  key: const Key('error_message'),
-                  child: Text(state.message),
-                );
               }
 
-              return const Center(child: CircularProgressIndicator());
+              return const SizedBox(
+                height: 180,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
             }),
           ),
           SubHeading(
             title: 'Top Rated',
-            onTap: () => Navigator.pushNamed(context, topRatedTvShowsroute),
+            onTap: () => Navigator.pushNamed(context, topRatedTvShowsRoute),
           ),
           BlocBuilder<TopRatedTvShowsBloc, TopRatedTvShowsState>(
             builder: ((context, state) {
@@ -90,14 +148,14 @@ class _TvShowsPageState extends State<TvShowsPage>
                   height: 180,
                   separatorWidth: 12,
                 );
-              } else if (state is TopRatedTvShowsError) {
-                return Center(
-                  key: const Key('error_message'),
-                  child: Text(state.message),
-                );
               }
 
-              return const Center(child: CircularProgressIndicator());
+              return const SizedBox(
+                height: 180,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
             }),
           ),
         ],

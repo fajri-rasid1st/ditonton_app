@@ -47,6 +47,14 @@ class _WatchlistMoviesPageState extends State<WatchlistMoviesPage>
     return BlocBuilder<WatchlistMoviesBloc, WatchlistMoviesState>(
       builder: ((context, state) {
         if (state is WatchlistMoviesHasData) {
+          if (state.movies.isEmpty) {
+            return const CustomInformation(
+              asset: 'assets/videotape-pana.svg',
+              title: 'Watchlist is Still Empty',
+              subtitle: 'Your movie watchlist will appear here.',
+            );
+          }
+
           return SliverListCardItem(movies: state.movies);
         } else if (state is WatchlistMoviesError) {
           return Center(

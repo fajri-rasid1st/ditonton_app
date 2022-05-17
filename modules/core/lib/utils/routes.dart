@@ -12,7 +12,7 @@ const searchMoviesRoute = '/search-movie';
 const tvShowDetailRoute = '/tv-show-detail';
 const onTheAirTvShowsRoute = '/on-the-air-tv-show';
 const popularTvShowsRoute = '/popular-tv-show';
-const topRatedTvShowsroute = '/top-rated-tv-show';
+const topRatedTvShowsRoute = '/top-rated-tv-show';
 const searchTvShowsRoute = '/search-tv-show';
 
 const tvShowSeasonDetailRoute = '/tv-show-season-detail';

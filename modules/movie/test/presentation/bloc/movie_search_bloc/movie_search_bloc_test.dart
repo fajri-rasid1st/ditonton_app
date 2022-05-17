@@ -71,7 +71,7 @@ void main() {
     wait: const Duration(milliseconds: 500),
     expect: () => [
       MovieSearchLoading(),
-      const MovieSearchError('Search results will appear here.'),
+      const MovieSearchError(''),
     ],
     verify: (_) => verify(mockSearchMovies.execute('')),
   );

@@ -22,6 +22,13 @@ void init() {
     ),
   );
   locator.registerFactory(
+    () => MovielistBloc(
+      getNowPlayingMovies: locator(),
+      getPopularMovies: locator(),
+      getTopRatedMovies: locator(),
+    ),
+  );
+  locator.registerFactory(
     () => MovieSearchBloc(searchMovies: locator()),
   );
   locator.registerFactory(
@@ -49,6 +56,13 @@ void init() {
     () => TvShowDetailBloc(
       getTvShowDetail: locator(),
       getTvShowRecommendations: locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => TvShowlistBloc(
+      getOnTheAirTvShows: locator(),
+      getPopularTvShows: locator(),
+      getTopRatedTvShows: locator(),
     ),
   );
   locator.registerFactory(

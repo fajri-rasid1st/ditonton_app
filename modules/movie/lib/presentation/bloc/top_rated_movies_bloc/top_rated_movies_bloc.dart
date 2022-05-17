@@ -11,7 +11,7 @@ class TopRatedMoviesBloc
 
   TopRatedMoviesBloc({required this.getTopRatedMovies})
       : super(TopRatedMoviesEmpty()) {
-    on<TopRatedMoviesEvent>((event, emit) async {
+    on<FetchTopRatedMovies>((event, emit) async {
       emit(TopRatedMoviesLoading());
 
       final result = await getTopRatedMovies.execute();

@@ -27,6 +27,7 @@ export 'presentation/bloc/now_playing_movies_bloc/now_playing_movies_bloc.dart';
 export 'presentation/bloc/popular_movies_bloc/popular_movies_bloc.dart';
 export 'presentation/bloc/top_rated_movies_bloc/top_rated_movies_bloc.dart';
 export 'presentation/bloc/watchlist_movies_bloc/watchlist_movies_bloc.dart';
+export 'presentation/bloc/movie_list_bloc/movie_list_bloc.dart';
 export 'presentation/pages/movie_detail_page.dart';
 export 'presentation/pages/movies_page.dart';
 export 'presentation/pages/popular_movies_page.dart';

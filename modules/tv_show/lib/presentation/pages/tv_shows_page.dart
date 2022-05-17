@@ -19,9 +19,7 @@ class _TvShowsPageState extends State<TvShowsPage>
     super.initState();
 
     Future.microtask(() {
-      context.read<OnTheAirTvShowsBloc>().add(FetchOnTheAirTvShows());
-      context.read<PopularTvShowsBloc>().add(FetchPopularTvShows());
-      context.read<TopRatedTvShowsBloc>().add(FetchTopRatedTvShows());
+      context.read<TvShowlistBloc>().add(FetchTvShowlist());
     });
   }
 
@@ -29,14 +27,7 @@ class _TvShowsPageState extends State<TvShowsPage>
   Widget build(BuildContext context) {
     super.build(context);
 
-    final onTheAirError =
-        context.watch<OnTheAirTvShowsBloc>().state is OnTheAirTvShowsError;
-    final popularError =
-        context.watch<PopularTvShowsBloc>().state is PopularTvShowsError;
-    final topRatedError =
-        context.watch<TopRatedTvShowsBloc>().state is TopRatedTvShowsError;
-
-    if (onTheAirError || popularError || topRatedError) {
+    if (context.watch<TvShowlistBloc>().state is TvShowlistError) {
       return _buildErrorPage(context);
     }
 
@@ -72,9 +63,7 @@ class _TvShowsPageState extends State<TvShowsPage>
 
               await Future.delayed(const Duration(seconds: 1));
 
-              context.read<OnTheAirTvShowsBloc>().add(FetchOnTheAirTvShows());
-              context.read<PopularTvShowsBloc>().add(FetchPopularTvShows());
-              context.read<TopRatedTvShowsBloc>().add(FetchTopRatedTvShows());
+              context.read<TvShowlistBloc>().add(FetchTvShowlist());
 
               context.read<PageReloadCubit>().finish();
             },
@@ -89,76 +78,70 @@ class _TvShowsPageState extends State<TvShowsPage>
   SingleChildScrollView _buildMainPage(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SubHeading(
-            title: 'On The Air',
-            onTap: () => Navigator.pushNamed(context, onTheAirTvShowsRoute),
-          ),
-          BlocBuilder<OnTheAirTvShowsBloc, OnTheAirTvShowsState>(
-            builder: ((context, state) {
-              if (state is OnTheAirTvShowsHasData) {
-                return ItemList(
-                  tvShows: state.tvShows,
+      child: BlocBuilder<TvShowlistBloc, TvShowlistState>(
+        builder: ((context, state) {
+          final hasData = state is TvShowlistHasData;
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SubHeading(
+                title: 'On The Air',
+                onTap: () => Navigator.pushNamed(context, onTheAirTvShowsRoute),
+              ),
+              if (hasData) ...[
+                ItemList(
+                  tvShows: state.onTheAirTvShows,
                   height: 180,
                   separatorWidth: 12,
-                );
-              }
-
-              return const SizedBox(
-                height: 180,
-                child: Center(
-                  child: CircularProgressIndicator(),
                 ),
-              );
-            }),
-          ),
-          SubHeading(
-            title: 'Popular',
-            onTap: () => Navigator.pushNamed(context, popularTvShowsRoute),
-          ),
-          BlocBuilder<PopularTvShowsBloc, PopularTvShowsState>(
-            builder: ((context, state) {
-              if (state is PopularTvShowsHasData) {
-                return ItemList(
-                  tvShows: state.tvShows,
+              ] else ...[
+                const SizedBox(
+                  height: 180,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              ],
+              SubHeading(
+                title: 'Popular',
+                onTap: () => Navigator.pushNamed(context, popularTvShowsRoute),
+              ),
+              if (hasData) ...[
+                ItemList(
+                  tvShows: state.popularTvShows,
                   height: 180,
                   separatorWidth: 12,
-                );
-              }
-
-              return const SizedBox(
-                height: 180,
-                child: Center(
-                  child: CircularProgressIndicator(),
                 ),
-              );
-            }),
-          ),
-          SubHeading(
-            title: 'Top Rated',
-            onTap: () => Navigator.pushNamed(context, topRatedTvShowsRoute),
-          ),
-          BlocBuilder<TopRatedTvShowsBloc, TopRatedTvShowsState>(
-            builder: ((context, state) {
-              if (state is TopRatedTvShowsHasData) {
-                return ItemList(
-                  tvShows: state.tvShows,
+              ] else ...[
+                const SizedBox(
+                  height: 180,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              ],
+              SubHeading(
+                title: 'Top Rated',
+                onTap: () => Navigator.pushNamed(context, topRatedTvShowsRoute),
+              ),
+              if (hasData) ...[
+                ItemList(
+                  tvShows: state.topRatedTvShows,
                   height: 180,
                   separatorWidth: 12,
-                );
-              }
-
-              return const SizedBox(
-                height: 180,
-                child: Center(
-                  child: CircularProgressIndicator(),
                 ),
-              );
-            }),
-          ),
-        ],
+              ] else ...[
+                const SizedBox(
+                  height: 180,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              ],
+            ],
+          );
+        }),
       ),
     );
   }

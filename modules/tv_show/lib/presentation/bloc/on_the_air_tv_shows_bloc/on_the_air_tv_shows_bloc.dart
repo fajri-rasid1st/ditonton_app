@@ -11,7 +11,7 @@ class OnTheAirTvShowsBloc
 
   OnTheAirTvShowsBloc({required this.getOnTheAirTvShows})
       : super(OnTheAirTvShowsEmpty()) {
-    on<OnTheAirTvShowsEvent>((event, emit) async {
+    on<FetchOnTheAirTvShows>((event, emit) async {
       emit(OnTheAirTvShowsLoading());
 
       final result = await getOnTheAirTvShows.execute();

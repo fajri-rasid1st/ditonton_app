@@ -33,6 +33,7 @@ export 'presentation/bloc/on_the_air_tv_shows_bloc/on_the_air_tv_shows_bloc.dart
 export 'presentation/bloc/popular_tv_shows_bloc/popular_tv_shows_bloc.dart';
 export 'presentation/bloc/top_rated_tv_shows_bloc/top_rated_tv_shows_bloc.dart';
 export 'presentation/bloc/watchlist_tv_shows_bloc/watchlist_tv_shows_bloc.dart';
+export 'presentation/bloc/tv_show_list_bloc/tv_show_list_bloc.dart';
 export 'presentation/bloc/tv_show_episodes_bloc/tv_show_episodes_bloc.dart';
 export 'presentation/pages/tv_show_detail_page.dart';
 export 'presentation/pages/tv_shows_page.dart';

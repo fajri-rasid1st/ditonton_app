@@ -11,7 +11,7 @@ class PopularTvShowsBloc
 
   PopularTvShowsBloc({required this.getPopularTvShows})
       : super(PopularTvShowsEmpty()) {
-    on<PopularTvShowsEvent>((event, emit) async {
+    on<FetchPopularTvShows>((event, emit) async {
       emit(PopularTvShowsLoading());
 
       final result = await getPopularTvShows.execute();

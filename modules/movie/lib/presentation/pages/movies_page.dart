@@ -19,9 +19,7 @@ class _MoviesPageState extends State<MoviesPage>
     super.initState();
 
     Future.microtask(() {
-      context.read<NowPlayingMoviesBloc>().add(FetchNowPlayingMovies());
-      context.read<PopularMoviesBloc>().add(FetchPopularMovies());
-      context.read<TopRatedMoviesBloc>().add(FetchTopRatedMovies());
+      context.read<MovielistBloc>().add(FetchMovielist());
     });
   }
 
@@ -29,14 +27,7 @@ class _MoviesPageState extends State<MoviesPage>
   Widget build(BuildContext context) {
     super.build(context);
 
-    final nowPlayingError =
-        context.watch<NowPlayingMoviesBloc>().state is NowPlayingMoviesError;
-    final popularError =
-        context.watch<PopularMoviesBloc>().state is PopularMoviesError;
-    final topRatedError =
-        context.watch<TopRatedMoviesBloc>().state is TopRatedMoviesError;
-
-    if (nowPlayingError || popularError || topRatedError) {
+    if (context.watch<MovielistBloc>().state is MovielistError) {
       return _buildErrorPage(context);
     }
 
@@ -72,9 +63,7 @@ class _MoviesPageState extends State<MoviesPage>
 
               await Future.delayed(const Duration(seconds: 1));
 
-              context.read<NowPlayingMoviesBloc>().add(FetchNowPlayingMovies());
-              context.read<PopularMoviesBloc>().add(FetchPopularMovies());
-              context.read<TopRatedMoviesBloc>().add(FetchTopRatedMovies());
+              context.read<MovielistBloc>().add(FetchMovielist());
 
               context.read<PageReloadCubit>().finish();
             },
@@ -89,76 +78,70 @@ class _MoviesPageState extends State<MoviesPage>
   SingleChildScrollView _buildMainPage(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          const SubHeading(
-            title: 'Now Playing',
-            onTap: null,
-          ),
-          BlocBuilder<NowPlayingMoviesBloc, NowPlayingMoviesState>(
-            builder: ((context, state) {
-              if (state is NowPlayingMoviesHasData) {
-                return ItemList(
-                  movies: state.movies,
+      child: BlocBuilder<MovielistBloc, MovielistState>(
+        builder: ((context, state) {
+          final hasData = state is MovielistHasData;
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const SubHeading(
+                title: 'Now Playing',
+                onTap: null,
+              ),
+              if (hasData) ...[
+                ItemList(
+                  movies: state.nowPlayingMovies,
                   height: 180,
                   separatorWidth: 12,
-                );
-              }
-
-              return const SizedBox(
-                height: 180,
-                child: Center(
-                  child: CircularProgressIndicator(),
                 ),
-              );
-            }),
-          ),
-          SubHeading(
-            title: 'Popular',
-            onTap: () => Navigator.pushNamed(context, popularMoviesRoute),
-          ),
-          BlocBuilder<PopularMoviesBloc, PopularMoviesState>(
-            builder: ((context, state) {
-              if (state is PopularMoviesHasData) {
-                return ItemList(
-                  movies: state.movies,
+              ] else ...[
+                const SizedBox(
+                  height: 180,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              ],
+              SubHeading(
+                title: 'Popular',
+                onTap: () => Navigator.pushNamed(context, popularMoviesRoute),
+              ),
+              if (hasData) ...[
+                ItemList(
+                  movies: state.popularMovies,
                   height: 180,
                   separatorWidth: 12,
-                );
-              }
-
-              return const SizedBox(
-                height: 180,
-                child: Center(
-                  child: CircularProgressIndicator(),
                 ),
-              );
-            }),
-          ),
-          SubHeading(
-            title: 'Top Rated',
-            onTap: () => Navigator.pushNamed(context, topRatedMoviesRoute),
-          ),
-          BlocBuilder<TopRatedMoviesBloc, TopRatedMoviesState>(
-            builder: ((context, state) {
-              if (state is TopRatedMoviesHasData) {
-                return ItemList(
-                  movies: state.movies,
+              ] else ...[
+                const SizedBox(
+                  height: 180,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              ],
+              SubHeading(
+                title: 'Top Rated',
+                onTap: () => Navigator.pushNamed(context, topRatedMoviesRoute),
+              ),
+              if (hasData) ...[
+                ItemList(
+                  movies: state.topRatedMovies,
                   height: 180,
                   separatorWidth: 12,
-                );
-              }
-
-              return const SizedBox(
-                height: 180,
-                child: Center(
-                  child: CircularProgressIndicator(),
                 ),
-              );
-            }),
-          ),
-        ],
+              ] else ...[
+                const SizedBox(
+                  height: 180,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              ],
+            ],
+          );
+        }),
       ),
     );
   }

@@ -48,6 +48,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
+          create: (_) => di.locator<MovielistBloc>(),
+        ),
+        BlocProvider(
           create: (_) => di.locator<MovieWatchlistBloc>(),
         ),
         BlocProvider(
@@ -76,6 +79,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => di.locator<TvShowSearchBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<TvShowlistBloc>(),
         ),
         BlocProvider(
           create: (_) => di.locator<OnTheAirTvShowsBloc>(),

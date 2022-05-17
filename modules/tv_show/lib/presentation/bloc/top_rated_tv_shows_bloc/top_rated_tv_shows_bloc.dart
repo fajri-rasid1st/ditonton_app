@@ -11,7 +11,7 @@ class TopRatedTvShowsBloc
 
   TopRatedTvShowsBloc({required this.getTopRatedTvShows})
       : super(TopRatedTvShowsEmpty()) {
-    on<TopRatedTvShowsEvent>((event, emit) async {
+    on<FetchTopRatedTvShows>((event, emit) async {
       emit(TopRatedTvShowsLoading());
 
       final result = await getTopRatedTvShows.execute();

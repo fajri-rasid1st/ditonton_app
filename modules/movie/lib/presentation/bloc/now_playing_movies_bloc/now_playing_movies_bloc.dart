@@ -11,7 +11,7 @@ class NowPlayingMoviesBloc
 
   NowPlayingMoviesBloc({required this.getNowPlayingMovies})
       : super(NowPlayingMoviesEmpty()) {
-    on<NowPlayingMoviesEvent>((event, emit) async {
+    on<FetchNowPlayingMovies>((event, emit) async {
       emit(NowPlayingMoviesLoading());
 
       final result = await getNowPlayingMovies.execute();

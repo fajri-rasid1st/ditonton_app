@@ -40,11 +40,16 @@ class _TvShowSeasonDetailPageState extends State<TvShowSeasonDetailPage> {
           if (state is TvShowEpisodesHasData) {
             return _buildMainScreen(state.episodes);
           } else if (state is TvShowEpisodesError) {
-            return const CustomInformation(
-              key: Key('error_message'),
+            return CustomInformation(
+              key: const Key('error_message'),
               asset: 'assets/404-error-lost-in-space-pana.svg',
               title: 'Ops, Looks Like You\'re Offline',
               subtitle: 'Please check your internet connection.',
+              child: ElevatedButton.icon(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(Icons.arrow_back_rounded),
+                label: Text('Go Back', style: kSubtitle),
+              ),
             );
           }
 
